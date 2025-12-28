@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Box, Container, Stack, Text, Link, SimpleGrid, Icon } from '@chakra-ui/react';
+import { Box, Container, Stack, Text, SimpleGrid, Icon } from '@chakra-ui/react';
+import Link from 'next/link';
 
 const Footer = () => {
     return (
@@ -11,13 +12,13 @@ const Footer = () => {
 
                     <Box textAlign={{ base: 'center', md: 'left' }}>
                         <Text fontWeight="bold" fontSize="lg" color="text.main">DREAMdvpr</Text>
-                        <Text fontSize="sm">© {new Date().getFullYear()} DREAMdvpr. All rights reserved.</Text>
+                        <Text fontSize="sm">© 2025 DREAMdvpr. All rights reserved.</Text>
                     </Box>
 
                     <Stack direction="row" spacing={8} fontWeight="medium">
-                        <Link href="#" _hover={{ color: 'brand.500' }}>Services</Link>
-                        <Link href="#" _hover={{ color: 'brand.500' }}>Blog</Link>
-                        <Link href="#" _hover={{ color: 'brand.500' }}>Contact</Link>
+                        <Link href="#services" style={{ color: '#86868b', textDecoration: 'none' }}>Services</Link>
+                        <Link href="/blog" style={{ color: '#86868b', textDecoration: 'none' }}>Blog</Link>
+                        <Link href="#contact" style={{ color: '#86868b', textDecoration: 'none' }}>Contact</Link>
                     </Stack>
 
                     <Stack direction="row" spacing={4}>

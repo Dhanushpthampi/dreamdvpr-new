@@ -6,7 +6,7 @@ const colors = {
         600: '#008c8e',
     },
     accent: {
-        500: '#f2ff00',
+        500: '#ff0000ff',
     },
     bg: {
         app: '#f5f5f7',

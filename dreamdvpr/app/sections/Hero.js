@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Box, Container, Heading, Text, Button, Flex, VStack, useBreakpointValue } from '@chakra-ui/react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, PresentationControls, Environment, Float } from '@react-three/drei';
@@ -37,6 +37,28 @@ function SpaceshipModel({ position, isDragging }) {
 
 const Hero = () => {
     const [isDragging, setIsDragging] = React.useState(false);
+    const [content, setContent] = useState({
+        title: "Explore the Future of Web",
+        titleHighlight: "Future of Web",
+        subtitle: "DREAMdvpr crafts digital experiences that are out of this world. Clean, precise, and engineered for performance.",
+        ctaText: "Start Mission",
+    });
+
+    useEffect(() => {
+        fetchContent();
+    }, []);
+
+    const fetchContent = async () => {
+        try {
+            const res = await fetch('/api/content');
+            const data = await res.json();
+            if (data.content?.hero) {
+                setContent(data.content.hero);
+            }
+        } catch (error) {
+            console.error('Error fetching hero content:', error);
+        }
+    };
 
     // Responsive positioning: Center on mobile, Right on desktop
     const modelPosition = useBreakpointValue({
@@ -45,8 +67,25 @@ const Hero = () => {
         lg: [3.5, -0.5, 0]
     }) || [3, 0, 0];
 
+    const [bgColor, setBgColor] = useState('#ffffff');
+
+    useEffect(() => {
+        const updateBgColor = () => {
+            if (typeof window !== 'undefined') {
+                const color = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--color-bg-secondary')
+                    .trim() || '#ffffff';
+                setBgColor(color);
+            }
+        };
+        
+        updateBgColor();
+        window.addEventListener('theme-updated', updateBgColor);
+        return () => window.removeEventListener('theme-updated', updateBgColor);
+    }, []);
+
     return (
-        <Box position="relative" h="100vh" w="100vw" overflow="hidden" bg="white">
+        <Box position="relative" h="100vh" w="100vw" overflow="hidden" bg={bgColor}>
             {/* 3D Scene Layer */}
             <Box position="absolute" inset="0" zIndex="0">
                 <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
@@ -95,8 +134,16 @@ const Hero = () => {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8 }}
                         >
-                            Explore the <br />
-                            <Box as="span" color="brand.500">Future of Web</Box>
+                            {content.title.split(content.titleHighlight || 'Future of Web').map((part, i, arr) => 
+                                i === arr.length - 1 ? (
+                                    <React.Fragment key={i}>
+                                        <Box as="span" color="brand.500">{content.titleHighlight || 'Future of Web'}</Box>
+                                        {part}
+                                    </React.Fragment>
+                                ) : (
+                                    <React.Fragment key={i}>{part}</React.Fragment>
+                                )
+                            )}
                         </MotionHeading>
 
                         <MotionText
@@ -106,7 +153,7 @@ const Hero = () => {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            DREAMdvpr crafts digital experiences that are out of this world. Clean, precise, and engineered for performance.
+                            {content.subtitle}
                         </MotionText>
 
                         <MotionBox
@@ -123,8 +170,9 @@ const Hero = () => {
                                 _hover={{ bg: 'brand.600', transform: 'translateY(-2px)' }}
                                 as="a"
                                 href="#contact"
+                                style={{ textDecoration: 'none' }}
                             >
-                                Start Mission
+                                {content.ctaText}
                             </Button>
                         </MotionBox>
                     </VStack>

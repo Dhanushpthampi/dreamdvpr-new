@@ -1,65 +1,133 @@
 'use client';
 
-import React from 'react';
-import { Box, Container, Heading, SimpleGrid, Text, Link, Tag, HStack } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Heading, SimpleGrid, Text, Tag, HStack } from '@chakra-ui/react';
+import Link from 'next/link';
 
-const BlogCard = ({ category, title, date, color }) => (
-    <Box cursor="pointer" role="group">
-        <Box
-            h="240px"
-            bg={`${color}.100`}
-            rounded="2xl"
-            mb={6}
-            position="relative"
-            overflow="hidden"
-            _groupHover={{ transform: 'translateY(-4px)', shadow: 'md' }}
-            transition="all 0.3s"
-        />
-        <HStack mb={2} spacing={3}>
-            <Tag size="sm" variant="subtle" colorScheme={color} textTransform="uppercase" fontWeight="bold">
-                {category}
-            </Tag>
-            <Text fontSize="xs" color="gray.500" fontWeight="bold">•</Text>
-            <Text fontSize="xs" color="gray.500" fontWeight="bold" textTransform="uppercase">{date}</Text>
-        </HStack>
-        <Heading size="md" lineHeight="tall" _groupHover={{ color: 'brand.500' }} transition="color 0.2s">
-            {title}
-        </Heading>
-    </Box>
+const colorMap = {
+    'Design': 'purple',
+    'Development': 'green',
+    'Strategy': 'orange',
+    'Marketing': 'blue',
+    'Business': 'teal',
+};
+
+const BlogCard = ({ blog, category, title, date, color, imageUrl }) => (
+    <Link href={blog?._id ? `/blog/${blog._id}` : '#'} style={{ textDecoration: 'none' }}>
+        <Box cursor="pointer" role="group">
+            <Box
+                h="240px"
+                bg={imageUrl ? 'transparent' : `${color}.100`}
+                bgImage={imageUrl ? `url(${imageUrl})` : 'none'}
+                bgSize="cover"
+                bgPosition="center"
+                rounded="2xl"
+                mb={6}
+                position="relative"
+                overflow="hidden"
+                _groupHover={{ transform: 'translateY(-4px)', shadow: 'md' }}
+                transition="all 0.3s"
+            />
+            <HStack mb={2} spacing={3}>
+                <Tag size="sm" variant="subtle" colorScheme={color} textTransform="uppercase" fontWeight="bold">
+                    {category}
+                </Tag>
+                <Text fontSize="xs" color="gray.500" fontWeight="bold">•</Text>
+                <Text fontSize="xs" color="gray.500" fontWeight="bold" textTransform="uppercase">{date}</Text>
+            </HStack>
+            <Heading size="md" lineHeight="tall" _groupHover={{ color: 'brand.500' }} transition="color 0.2s">
+                {title}
+            </Heading>
+        </Box>
+    </Link>
 );
 
 const BlogSection = () => {
+    const [blogs, setBlogs] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetchBlogs();
+    }, []);
+
+    const fetchBlogs = async () => {
+        try {
+            const res = await fetch('/api/blogs?published=true');
+            const data = await res.json();
+            // Get only the first 3 published blogs
+            setBlogs((data.blogs || []).slice(0, 3));
+        } catch (error) {
+            console.error('Error fetching blogs:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Default blogs if no blogs are available
+    const defaultBlogs = [
+        {
+            category: 'Design',
+            title: 'The Psychology of Minimalist UI',
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            color: 'purple',
+        },
+        {
+            category: 'Development',
+            title: 'Why React Server Components are the Future',
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            color: 'green',
+        },
+        {
+            category: 'Strategy',
+            title: 'Converting Visitors into Loyal Customers',
+            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            color: 'orange',
+        },
+    ];
+
+    const displayBlogs = blogs.length > 0 ? blogs : defaultBlogs;
+
+    const [bgColor, setBgColor] = useState('#ffffff');
+
+    useEffect(() => {
+        const updateBgColor = () => {
+            if (typeof window !== 'undefined') {
+                const color = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--color-bg-secondary')
+                    .trim() || '#ffffff';
+                setBgColor(color);
+            }
+        };
+        
+        updateBgColor();
+        window.addEventListener('theme-updated', updateBgColor);
+        return () => window.removeEventListener('theme-updated', updateBgColor);
+    }, []);
+
     return (
-        <Box py={24} bg="white" id="blog">
+        <Box py={24} bg={bgColor} id="blog">
             <Container maxW="container.xl">
                 <HStack justify="space-between" align="end" mb={12}>
                     <Heading size="xl">Latest Insights</Heading>
-                    <Link href="#" color="brand.500" fontWeight="bold" display={{ base: 'none', md: 'block' }}>View all articles →</Link>
+                    <Link href="/blog" className="link-primary" style={{ fontWeight: 'bold' }} display={{ base: 'none', md: 'block' }}>View all articles →</Link>
                 </HStack>
 
                 <SimpleGrid columns={{ base: 1, md: 3 }} gap={8}>
-                    <BlogCard
-                        category="Design"
-                        color="purple"
-                        title="The Psychology of Minimalist UI"
-                        date="Oct 12, 2024"
-                    />
-                    <BlogCard
-                        category="Development"
-                        color="green"
-                        title="Why React Server Components are the Future"
-                        date="Oct 28, 2024"
-                    />
-                    <BlogCard
-                        category="Strategy"
-                        color="orange"
-                        title="Converting Visitors into Loyal Customers"
-                        date="Nov 05, 2024"
-                    />
+                    {displayBlogs.map((blog, index) => (
+                        <BlogCard
+                            key={blog._id || index}
+                            blog={blog}
+                            category={blog.category}
+                            color={colorMap[blog.category] || blog.color || 'gray'}
+                            title={blog.title}
+                            date={blog.createdAt ? new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : blog.date}
+                            imageUrl={blog.imageUrl}
+                        />
+                    ))}
                 </SimpleGrid>
 
                 <Box mt={8} textAlign="center" display={{ md: 'none' }}>
-                    <Link href="#" color="brand.500" fontWeight="bold">View all articles →</Link>
+                    <Link href="/blog" className="link-primary" style={{ fontWeight: 'bold' }}>View all articles →</Link>
                 </Box>
             </Container>
         </Box>

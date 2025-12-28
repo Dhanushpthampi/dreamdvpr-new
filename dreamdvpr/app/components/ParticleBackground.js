@@ -43,7 +43,18 @@ const ParticleBackground = () => {
             }
 
             draw() {
-                ctx.fillStyle = `rgba(0, 171, 173, ${this.opacity})`;
+                // Get brand color from CSS variable, fallback to default
+                const brandColor = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--color-brand-500')
+                    .trim() || '#00abad';
+                
+                // Convert hex to rgb
+                const hex = brandColor.replace('#', '');
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -74,7 +85,18 @@ const ParticleBackground = () => {
                     const distance = Math.sqrt(dx * dx + dy * dy);
 
                     if (distance < 120) {
-                        ctx.strokeStyle = `rgba(0, 171, 173, ${0.15 * (1 - distance / 120)})`;
+                        // Get brand color from CSS variable
+                        const brandColor = getComputedStyle(document.documentElement)
+                            .getPropertyValue('--color-brand-500')
+                            .trim() || '#00abad';
+                        
+                        // Convert hex to rgb
+                        const hex = brandColor.replace('#', '');
+                        const r = parseInt(hex.substring(0, 2), 16);
+                        const g = parseInt(hex.substring(2, 4), 16);
+                        const b = parseInt(hex.substring(4, 6), 16);
+                        
+                        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${0.15 * (1 - distance / 120)})`;
                         ctx.lineWidth = 1;
                         ctx.beginPath();
                         ctx.moveTo(particleA.x, particleA.y);
@@ -90,8 +112,15 @@ const ParticleBackground = () => {
         init();
         animate();
 
+        // Listen for theme updates and re-draw particles
+        const handleThemeUpdate = () => {
+            // Particles will use new color on next draw cycle
+        };
+        window.addEventListener('theme-updated', handleThemeUpdate);
+
         return () => {
             window.removeEventListener('resize', resizeCanvas);
+            window.removeEventListener('theme-updated', handleThemeUpdate);
             cancelAnimationFrame(animationFrameId);
         };
     }, []);

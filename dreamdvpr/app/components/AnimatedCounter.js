@@ -6,6 +6,25 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '', label }) => {
     const [count, setCount] = useState(0);
     const countRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
+    const [brandColors, setBrandColors] = useState({ primary: '#00abad', secondary: '#008c8e' });
+
+    useEffect(() => {
+        const updateColors = () => {
+            if (typeof window !== 'undefined') {
+                const primary = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--color-brand-500')
+                    .trim() || '#00abad';
+                const secondary = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--color-brand-600')
+                    .trim() || '#008c8e';
+                setBrandColors({ primary, secondary });
+            }
+        };
+        
+        updateColors();
+        window.addEventListener('theme-updated', updateColors);
+        return () => window.removeEventListener('theme-updated', updateColors);
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -58,7 +77,12 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '', label }) => {
 
     return (
         <div ref={countRef} className="text-center">
-            <div className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#00abad] to-[#008c8e]">
+            <div 
+                className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent"
+                style={{
+                    backgroundImage: `linear-gradient(to right, ${brandColors.primary}, ${brandColors.secondary})`
+                }}
+            >
                 {count}{suffix}
             </div>
             {label && <div className="text-gray-500 mt-2 font-medium">{label}</div>}
