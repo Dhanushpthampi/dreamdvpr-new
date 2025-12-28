@@ -24,7 +24,7 @@ export default async function RootLayout({ children }) {
             }}
           />
         )}
-        <AuthProvider>
+        <AuthProvider> 
           <Providers initialTheme={theme}>
             {children}
           </Providers>
