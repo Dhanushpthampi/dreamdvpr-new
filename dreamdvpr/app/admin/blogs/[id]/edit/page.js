@@ -7,12 +7,12 @@ import {
     Box, Container, Heading, Text, VStack, HStack, Button, Spinner, useToast,
     FormControl, FormLabel, Switch
 } from '@chakra-ui/react';
-import { AdminSidebarWrapper } from '../../../components/AdminSidebar';
-import GlassCard from '../../../components/GlassCard';
-import ThemedInput from '../../../components/ThemedInput';
-import ThemedSelect from '../../../components/ThemedSelect';
-import ThemedButton from '../../../components/ThemedButton';
-import RichTextEditor from '../../../components/RichTextEditor';
+import { AdminSidebarWrapper } from '../../../../components/AdminSidebar';
+import GlassCard from '../../../../components/GlassCard';
+import ThemedInput from '../../../../components/ThemedInput';
+import ThemedSelect from '../../../../components/ThemedSelect';
+import ThemedButton from '../../../../components/ThemedButton';
+import RichTextEditor from '../../../../components/RichTextEditor';
 
 const CATEGORIES = [
     { value: 'Design', label: 'Design' },
