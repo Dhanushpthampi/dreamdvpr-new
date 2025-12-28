@@ -1,6 +1,6 @@
 import './styles/globals.css';
 import { Providers } from './providers';
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 export const metadata = {
   title: 'DREAMdvpr | Premium Web, Mobile & AI Solutions',
   description: 'We build premium, high-performance digital experiences.',
