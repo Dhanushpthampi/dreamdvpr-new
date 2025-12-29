@@ -1,101 +1,94 @@
 'use client';
 
-import { Box, Container, Heading, Text, Button, VStack, Flex } from '@chakra-ui/react';
 import Link from 'next/link';
-import { useThemeColor, useBackgroundColor } from './lib/hooks';
 import ParticleBackground from './components/ParticleBackground';
+import { useThemeColor, useBackgroundColor } from './lib/hooks';
 
 export default function NotFound() {
   const brandColor = useThemeColor('--color-brand-500', '#00abad');
   const bgColor = useBackgroundColor('primary');
 
   return (
-    <Box
-      minH="100vh"
-      bg={bgColor}
-      position="relative"
-      overflow="hidden"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
+    <div
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      style={{ backgroundColor: bgColor }}
     >
+      {/* Particle Background */}
       <ParticleBackground />
-      <Container maxW="container.md" position="relative" zIndex={10} textAlign="center">
-        <VStack spacing={8}>
-          {/* 404 Number with animation */}
-          <Box position="relative">
-            <Heading
-              fontSize={{ base: '8xl', md: '12xl' }}
-              fontWeight="bold"
-              color={brandColor}
-              opacity={0.1}
-              position="absolute"
-              top="50%"
-              left="50%"
-              transform="translate(-50%, -50%)"
-              userSelect="none"
-              pointerEvents="none"
-            >
-              404
-            </Heading>
-            <Heading
-              fontSize={{ base: '6xl', md: '8xl' }}
-              fontWeight="extrabold"
-              bgGradient={`linear(to-r, ${brandColor}, ${brandColor}dd)`}
-              bgClip="text"
-              position="relative"
-              zIndex={1}
-            >
-              404
-            </Heading>
-          </Box>
 
-          {/* Error Message */}
-          <VStack spacing={4}>
-            <Heading size="2xl" color="text.main">
+      {/* Content */}
+      <div className="relative z-10 max-w-3xl w-full px-6 text-center">
+        <div className="flex flex-col items-center gap-8">
+          {/* 404 Number */}
+          <div className="relative">
+            {/* Background 404 */}
+            <h1
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bold select-none pointer-events-none
+                         text-[8rem] md:text-[12rem] opacity-10"
+              style={{ color: brandColor }}
+            >
+              404
+            </h1>
+
+            {/* Foreground 404 */}
+            <h1
+              className="relative z-10 font-extrabold bg-clip-text text-transparent
+                         text-[6rem] md:text-[8rem]"
+              style={{
+                backgroundImage: `linear-gradient(to right, ${brandColor}, ${brandColor}dd)`,
+              }}
+            >
+              404
+            </h1>
+          </div>
+
+          {/* Message */}
+          <div className="flex flex-col gap-4">
+            <h2 className="text-4xl font-bold text-[var(--color-text-main)]">
               Page Not Found
-            </Heading>
-            <Text fontSize="lg" color="text.secondary" maxW="md">
-              Oops! The page you're looking for seems to have drifted off into the digital void.
-              Let's get you back on track.
-            </Text>
-          </VStack>
+            </h2>
+            <p className="text-lg max-w-md mx-auto text-[var(--color-text-secondary)]">
+              Oops! The page you're looking for seems to have drifted off into the
+              digital void. Let&apos;s get you back on track.
+            </p>
+          </div>
 
-          {/* Action Buttons */}
-          <Flex gap={4} flexWrap="wrap" justify="center">
-            <Button
-              as={Link}
+          {/* Buttons */}
+          <div className="flex flex-wrap justify-center gap-4">
+            <Link
               href="/"
-              size="lg"
-              bg={brandColor}
-              color="white"
-              _hover={{ bg: brandColor, transform: 'translateY(-2px)', boxShadow: 'lg' }}
-              transition="all 0.3s"
+              className="px-6 py-3 text-lg font-semibold rounded-lg text-white
+                         transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+              style={{ backgroundColor: brandColor }}
             >
               Go Home
-            </Button>
-            <Button
-              as={Link}
+            </Link>
+
+            <Link
               href="/blog"
-              size="lg"
-              variant="outline"
-              borderColor={brandColor}
-              color={brandColor}
-              _hover={{ bg: brandColor, color: 'white' }}
-              transition="all 0.3s"
+              className="px-6 py-3 text-lg font-semibold rounded-lg border
+                         transition-all duration-300 hover:text-white"
+              style={{
+                borderColor: brandColor,
+                color: brandColor,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = brandColor;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
             >
               Browse Blog
-            </Button>
-          </Flex>
+            </Link>
+          </div>
 
-          {/* Decorative Elements */}
-          <Box mt={8}>
-            <Text fontSize="sm" color="text.secondary" opacity={0.7}>
-              Error Code: 404 | Lost in Space
-            </Text>
-          </Box>
-        </VStack>
-      </Container>
-    </Box>
+          {/* Footer note */}
+          <p className="text-sm opacity-70 text-[var(--color-text-secondary)] mt-8">
+            Error Code: 404 | Lost in Space
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
