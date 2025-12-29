@@ -27,77 +27,86 @@ const Header = () => {
 
     return (
         <>
+<Box
+  as="header"
+  position="fixed"
+  top="0"
+  left="0"
+  right="0"
+  zIndex="1000"
+  transition="all 0.3s"
+  py={scrolled ? 3 : 5}
+  bg={scrolled ? 'whiteAlpha.200' : 'transparent'} // <- theme-aware
+  backdropFilter={scrolled ? 'saturate(180%) blur(20px)' : 'none'}
+  borderBottom= 'none'
+  borderColor="gray.100"
+>
+
+  <Container maxW="container.xl">
+    <Flex align="center" justify="space-between">
+      <Link href="/">
+        <Heading as="h2" size="lg" cursor="pointer" letterSpacing="tight" color="text.main">
+          DREAM<Box as="span" color="brand.500">dvpr</Box>
+        </Heading>
+      </Link>
+
+      <HStack as="nav" spacing={8} display={{ base: 'none', md: 'flex' }}>
+        {navLinks.map((link) =>
+          link.isAnchor ? (
             <Box
-                as="header"
-                position="fixed"
-                top="0"
-                left="0"
-                right="0"
-                zIndex="1000"
-                transition="all 0.3s"
-                py={scrolled ? 3 : 5}
-                bg={scrolled ? glassBg : 'transparent'}
-                backdropFilter={scrolled ? 'saturate(180%) blur(20px)' : 'none'}
-                borderBottom={scrolled ? '1px solid' : 'none'}
-                borderColor="gray.100"
+              key={link.href}
+              as="a"
+              href={link.href}
+              fontWeight="medium"
+              color="text.secondary"
+              _hover={{ color: 'brand.500' }}
+              style={{ textDecoration: 'none', cursor: 'pointer' }}
             >
-                <Container maxW="container.xl">
-                    <Flex align="center" justify="space-between">
-                      <Link href="/">  <Heading as="h2" size="lg" cursor="pointer" letterSpacing="tight">
-                            DREAM<Box as="span" color="brand.500">dvpr</Box>
-                        </Heading></Link>
-
-                        <HStack as="nav" spacing={8} display={{ base: 'none', md: 'flex' }}>
-                            {navLinks.map((link) => (
-                                link.isAnchor ? (
-                                    <Box
-                                        key={link.href}
-                                        as="a"
-                                        href={link.href}
-                                        fontWeight="medium"
-                                        color="text.secondary"
-                                        _hover={{ color: 'brand.500' }}
-                                        style={{ textDecoration: 'none', cursor: 'pointer' }}
-                                    >
-                                        {link.label}
-                                    </Box>
-                                ) : (
-                                    <Link key={link.href} href={link.href} style={{ fontWeight: '500', color: '#86868b', textDecoration: 'none' }} _hover={{ color: 'brand.500' }}>
-                                        {link.label}
-                                    </Link>
-                                )
-                            ))}
-                        </HStack>
-
-                        <HStack spacing={4}>
-                            <Button
-                                variant="solid"
-                                size="sm"
-                                as="a"
-                                href="#contact"
-                                bg="brand.500"
-                                color="white"
-                                _hover={{ bg: 'brand.600' }}
-                                display={{ base: 'none', md: 'flex' }}
-                                style={{ textDecoration: 'none' }}
-                            >
-                                Book a Call
-                            </Button>
-                            <IconButton
-                                icon={
-                                    <Icon viewBox="0 0 24 24" boxSize={6}>
-                                        <path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-                                    </Icon>
-                                }
-                                variant="ghost"
-                                aria-label="Open menu"
-                                onClick={onOpen}
-                                display={{ base: 'flex', md: 'none' }}
-                            />
-                        </HStack>
-                    </Flex>
-                </Container>
+              {link.label}
             </Box>
+          ) : (
+            <Link
+              key={link.href}
+              href={link.href}
+              style={{ fontWeight: '500', color: 'text.secondary', textDecoration: 'none' }}
+            >
+              {link.label}
+            </Link>
+          )
+        )}
+      </HStack>
+
+      <HStack spacing={4}>
+        <Button
+          variant="solid"
+          size="sm"
+          as="a"
+          href="#contact"
+          bg="brand.500"
+          color="white"
+          _hover={{ bg: 'brand.600' }}
+          display={{ base: 'none', md: 'flex' }}
+          style={{ textDecoration: 'none' }}
+        >
+          Book a Call
+        </Button>
+        <IconButton
+          icon={
+            <Icon viewBox="0 0 24 24" boxSize={6}>
+              <path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+            </Icon>
+          }
+          variant="ghost"
+          aria-label="Open menu"
+          onClick={onOpen}
+          display={{ base: 'flex', md: 'none' }}
+          color="text.main"
+        />
+      </HStack>
+    </Flex>
+  </Container>
+</Box>
+
 
             {/* Mobile Menu Drawer */}
             <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
