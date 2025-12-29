@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Box, Container, Heading, Text, VStack, HStack, Tag, Spinner, Button, Icon } from '@chakra-ui/react';
 import Link from 'next/link';
-import Header from '../../sections/Header';
+import Header from '../../homepage/Header';
 import Footer from '../../components/Footer';
 
 const colorMap = {

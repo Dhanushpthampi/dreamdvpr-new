@@ -13,7 +13,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import Header from '../sections/Header';
+import Header from '../homepage/Header';
 import Footer from '../components/Footer';
 import { hexToRgba } from '../lib/utils';
 import { useThemeColor } from '../lib/hooks';

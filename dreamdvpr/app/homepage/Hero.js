@@ -46,7 +46,7 @@ function SpaceshipModel() {
       }
     });
   
-    return <primitive ref={meshRef} object={scene} scale={0.007} />;
+    return <primitive ref={meshRef} object={scene} scale={0.2} />;
   }
   
 
