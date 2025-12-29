@@ -7,23 +7,23 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { normalizeTheme, getInitialTheme } from '../normalize';
-import { applyTheme, createChakraTheme } from '../apply';
+import { applyTheme } from '../apply';
 import { DEFAULT_THEME } from '../constants';
 
 /**
  * Custom hook for managing theme state and updates
  * @param {Object} initialTheme - Initial theme data (from server)
+ * @param {boolean} enabled - Whether to apply theme (for conditional pages)
  * @returns {Object} Theme state and utilities
  */
-export function useTheme(initialTheme = null) {
+export function useTheme(initialTheme = null, enabled = true) {
   const [theme, setTheme] = useState(null);
-  const [chakraTheme, setChakraTheme] = useState(null);
-  const [themeKey, setThemeKey] = useState(0);
 
   /**
    * Fetches theme from API
    */
   const fetchTheme = useCallback(async () => {
+    if (!enabled) return;
     try {
       const res = await fetch('/api/content', { cache: 'no-store' });
       const data = await res.json();
@@ -31,40 +31,38 @@ export function useTheme(initialTheme = null) {
       const normalizedTheme = normalizeTheme(themeData);
       setTheme(normalizedTheme);
       applyTheme(normalizedTheme);
-      const chakraThemeObj = createChakraTheme(normalizedTheme);
-      setChakraTheme(chakraThemeObj);
     } catch (error) {
       console.error('Error fetching theme:', error);
       applyTheme(DEFAULT_THEME);
-      const chakraThemeObj = createChakraTheme(DEFAULT_THEME);
-      setChakraTheme(chakraThemeObj);
+      setTheme(DEFAULT_THEME);
     }
-  }, []);
+  }, [enabled]);
 
   /**
    * Applies theme and updates state
    */
   const applyThemeData = useCallback((themeData) => {
+    if (!enabled) return;
     const normalizedTheme = normalizeTheme(themeData);
     setTheme(normalizedTheme);
     applyTheme(normalizedTheme);
-    const chakraThemeObj = createChakraTheme(normalizedTheme);
-    setChakraTheme(chakraThemeObj);
-    setThemeKey(prev => prev + 1); // Force re-render
-  }, []);
+  }, [enabled]);
 
   // Initialize theme on mount
   useEffect(() => {
+    if (!enabled) return;
     const initial = initialTheme || getInitialTheme();
     if (initial) {
       applyThemeData(initial);
     } else {
       fetchTheme();
     }
-  }, [initialTheme, applyThemeData, fetchTheme]);
+  }, [initialTheme, applyThemeData, fetchTheme, enabled]);
 
   // Listen for theme updates
   useEffect(() => {
+    if (!enabled) return;
+    
     const handleThemeUpdate = (event) => {
       if (event.detail) {
         applyThemeData(event.detail);
@@ -91,12 +89,10 @@ export function useTheme(initialTheme = null) {
         window.removeEventListener('theme-updated', handleThemeUpdate);
       };
     }
-  }, [applyThemeData]);
+  }, [applyThemeData, enabled]);
 
   return {
     theme,
-    chakraTheme,
-    themeKey,
     applyTheme: applyThemeData,
     fetchTheme,
   };

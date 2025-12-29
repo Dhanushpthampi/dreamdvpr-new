@@ -5,11 +5,9 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
-import { Box, Button, HStack } from '@chakra-ui/react';
 import { 
     FaBold, 
     FaItalic, 
-    FaUnderline, 
     FaStrikethrough, 
     FaListUl, 
     FaListOl,
@@ -18,9 +16,6 @@ import {
     FaHeading,
     FaLink,
     FaImage,
-    FaAlignLeft,
-    FaAlignCenter,
-    FaAlignRight,
     FaUndo,
     FaRedo
 } from 'react-icons/fa';
@@ -45,7 +40,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
             Link.configure({
                 openOnClick: false,
                 HTMLAttributes: {
-                    class: 'text-brand-500 underline',
+                    class: 'text-[#00abad] underline',
                 },
             }),
         ],
@@ -108,8 +103,21 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
         editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
     };
 
+    const ToolbarButton = ({ onClick, isActive, disabled, ariaLabel, children }) => (
+        <button
+            onClick={onClick}
+            disabled={disabled}
+            aria-label={ariaLabel}
+            className={`p-2 rounded hover:bg-gray-100 transition-colors ${
+                isActive ? 'bg-[#00abad]/10 text-[#00abad]' : 'text-gray-600'
+            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+        >
+            {children}
+        </button>
+    );
+
     return (
-        <Box border="1px solid" borderColor="gray.200" borderRadius="md" overflow="hidden">
+        <div className="border border-gray-200 rounded-lg overflow-hidden">
             <style jsx global>{`
                 .tiptap {
                     min-height: 400px;
@@ -237,176 +245,135 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
             `}</style>
             
             {/* Toolbar */}
-            <Box bg="gray.50" p={2} borderBottom="1px solid" borderColor="gray.200">
-                <HStack spacing={2} flexWrap="wrap">
+            <div className="bg-gray-50 p-2 border-b border-gray-200">
+                <div className="flex gap-2 flex-wrap">
                     {/* Text Formatting */}
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleBold().run()}
                         isActive={editor.isActive('bold')}
-                        _active={editor.isActive('bold') ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Bold"
+                        ariaLabel="Bold"
                     >
                         <FaBold />
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    </ToolbarButton>
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleItalic().run()}
                         isActive={editor.isActive('italic')}
-                        _active={editor.isActive('italic') ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Italic"
+                        ariaLabel="Italic"
                     >
                         <FaItalic />
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    </ToolbarButton>
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleStrike().run()}
                         isActive={editor.isActive('strike')}
-                        _active={editor.isActive('strike') ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Strikethrough"
+                        ariaLabel="Strikethrough"
                     >
                         <FaStrikethrough />
-                    </Button>
+                    </ToolbarButton>
                     
                     {/* Headings */}
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
                         isActive={editor.isActive('heading', { level: 1 })}
-                        _active={editor.isActive('heading', { level: 1 }) ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Heading 1"
+                        ariaLabel="Heading 1"
                     >
                         <FaHeading /> 1
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    </ToolbarButton>
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
                         isActive={editor.isActive('heading', { level: 2 })}
-                        _active={editor.isActive('heading', { level: 2 }) ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Heading 2"
+                        ariaLabel="Heading 2"
                     >
                         <FaHeading /> 2
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    </ToolbarButton>
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
                         isActive={editor.isActive('heading', { level: 3 })}
-                        _active={editor.isActive('heading', { level: 3 }) ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Heading 3"
+                        ariaLabel="Heading 3"
                     >
                         <FaHeading /> 3
-                    </Button>
+                    </ToolbarButton>
                     
                     {/* Lists */}
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleBulletList().run()}
                         isActive={editor.isActive('bulletList')}
-                        _active={editor.isActive('bulletList') ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Bullet List"
+                        ariaLabel="Bullet List"
                     >
                         <FaListUl />
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    </ToolbarButton>
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleOrderedList().run()}
                         isActive={editor.isActive('orderedList')}
-                        _active={editor.isActive('orderedList') ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Ordered List"
+                        ariaLabel="Ordered List"
                     >
                         <FaListOl />
-                    </Button>
+                    </ToolbarButton>
                     
                     {/* Blockquote */}
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleBlockquote().run()}
                         isActive={editor.isActive('blockquote')}
-                        _active={editor.isActive('blockquote') ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Blockquote"
+                        ariaLabel="Blockquote"
                     >
                         <FaQuoteRight />
-                    </Button>
+                    </ToolbarButton>
                     
                     {/* Code */}
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleCode().run()}
                         isActive={editor.isActive('code')}
-                        _active={editor.isActive('code') ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Inline Code"
+                        ariaLabel="Inline Code"
                     >
                         <FaCode />
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    </ToolbarButton>
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
                         isActive={editor.isActive('codeBlock')}
-                        _active={editor.isActive('codeBlock') ? { bg: 'brand.100', color: 'brand.600' } : {}}
-                        aria-label="Code Block"
+                        ariaLabel="Code Block"
                     >
                         <FaCode /> Block
-                    </Button>
+                    </ToolbarButton>
                     
                     {/* Links and Images */}
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    <ToolbarButton
                         onClick={addLink}
-                        aria-label="Add Link"
+                        ariaLabel="Add Link"
                     >
                         <FaLink />
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    </ToolbarButton>
+                    <ToolbarButton
                         onClick={addImage}
-                        aria-label="Add Image"
+                        ariaLabel="Add Image"
                     >
                         <FaImage />
-                    </Button>
+                    </ToolbarButton>
                     
                     {/* Undo/Redo */}
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().undo().run()}
-                        isDisabled={!editor.can().undo()}
-                        aria-label="Undo"
+                        disabled={!editor.can().undo()}
+                        ariaLabel="Undo"
                     >
                         <FaUndo />
-                    </Button>
-                    <Button
-                        size="sm"
-                        variant="ghost"
+                    </ToolbarButton>
+                    <ToolbarButton
                         onClick={() => editor.chain().focus().redo().run()}
-                        isDisabled={!editor.can().redo()}
-                        aria-label="Redo"
+                        disabled={!editor.can().redo()}
+                        ariaLabel="Redo"
                     >
                         <FaRedo />
-                    </Button>
-                </HStack>
-            </Box>
+                    </ToolbarButton>
+                </div>
+            </div>
             
             {/* Editor Content */}
-            <Box bg="white">
+            <div className="bg-white">
                 <EditorContent 
                     editor={editor} 
                     data-placeholder={placeholder}
                 />
-            </Box>
-        </Box>
+            </div>
+        </div>
     );
 };
 

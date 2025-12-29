@@ -5,5 +5,5 @@
 
 export { DEFAULT_THEME, CSS_VARIABLE_MAP, CHAKRA_COLOR_MAP } from './constants';
 export { normalizeTheme, getInitialTheme } from './normalize';
-export { applyCSSVariables, createChakraTheme, applyTheme } from './apply';
+export { applyCSSVariables, applyTheme } from './apply';
 export { useTheme } from './hooks/useTheme';

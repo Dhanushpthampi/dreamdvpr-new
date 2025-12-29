@@ -3,11 +3,7 @@
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import {
-    Box, Container, Heading, Text, VStack, HStack, Input, Button, FormControl, FormLabel, Icon, Alert, AlertIcon
-} from '@chakra-ui/react';
 import Link from 'next/link';
-import GlassCard from '../components/GlassCard';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -49,120 +45,117 @@ export default function LoginPage() {
     };
 
     return (
-        <Box minH="100vh" bg="bg.app" display="flex" alignItems="center" justifyContent="center" py={12}>
-            <Container maxW="md">
-                <VStack spacing={8}>
+        <div className="min-h-screen flex items-center justify-center py-12 px-4 static-theme" style={{ backgroundColor: '#f5f5f7' }}>
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-[#00abad]/5 via-transparent to-[#00abad]/10" />
+            
+            <div className="container max-w-md relative z-10">
+                <div className="flex flex-col gap-8">
                     {/* Back to Home Link */}
-                    <Box alignSelf="flex-start" mb={-4}>
-                        <Link href="/" style={{ textDecoration: 'none' }}>
-                            <HStack spacing={2} color="text.secondary" _hover={{ color: 'brand.500' }} transition="color 0.2s">
-                                <Icon viewBox="0 0 24 24" boxSize={5}>
-                                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-                                </Icon>
-                                <Text fontWeight="medium">Back to Home</Text>
-                            </HStack>
+                    <div className="self-start -mb-4">
+                        <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-[#00abad] transition-colors duration-200 no-underline">
+                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                            </svg>
+                            <span className="font-medium">Back to Home</span>
                         </Link>
-                    </Box>
+                    </div>
 
                     {/* Logo/Brand */}
-                    <VStack spacing={4} textAlign="center">
-                        <Box bg="brand.500" p={4} rounded="xl" display="inline-block">
-                            <Icon viewBox="0 0 24 24" boxSize={12} color="white">
-                                <path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
-                            </Icon>
-                        </Box>
-                        <VStack spacing={2}>
-                            <Heading size="2xl" color="text.main">Welcome Back</Heading>
-                            <Text color="text.secondary" fontSize="lg">
+                    <div className="flex flex-col items-center gap-4 text-center">
+                        <div className="bg-[#00abad] p-4 rounded-xl inline-block">
+                            <svg viewBox="0 0 24 24" className="w-12 h-12 text-white" fill="currentColor">
+                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
+                            </svg>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <h1 className="text-4xl font-bold" style={{ color: '#1d1d1f' }}>Welcome Back</h1>
+                            <p className="text-lg" style={{ color: '#86868b' }}>
                                 Sign in to your DREAMdvpr account
-                            </Text>
-                        </VStack>
-                    </VStack>
+                            </p>
+                        </div>
+                    </div>
 
                     {/* Login Form */}
-                    <GlassCard p={8} w="full">
+                    <div className="glass-card p-8 w-full rounded-2xl">
                         <form onSubmit={handleSubmit}>
-                            <VStack spacing={6}>
+                            <div className="flex flex-col gap-6">
                                 {error && (
-                                    <Alert status="error" rounded="lg">
-                                        <AlertIcon />
+                                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center gap-2">
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                        </svg>
                                         {error}
-                                    </Alert>
+                                    </div>
                                 )}
 
-                                <FormControl isRequired>
-                                    <FormLabel fontWeight="semibold" color="text.main">Email</FormLabel>
-                                    <Input
+                                <div>
+                                    <label className="block font-semibold mb-2" style={{ color: '#1d1d1f' }}>Email</label>
+                                    <input
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Enter your email"
-                                        size="lg"
-                                        bg="white"
-                                        border="1px solid"
-                                        borderColor="gray.300"
-                                        _hover={{ borderColor: 'brand.400' }}
-                                        _focus={{ borderColor: 'brand.500', boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)' }}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-transparent transition-all"
+                                        required
                                     />
-                                </FormControl>
+                                </div>
 
-                                <FormControl isRequired>
-                                    <FormLabel fontWeight="semibold" color="text.main">Password</FormLabel>
-                                    <Input
+                                <div>
+                                    <label className="block font-semibold mb-2" style={{ color: '#1d1d1f' }}>Password</label>
+                                    <input
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Enter your password"
-                                        size="lg"
-                                        bg="white"
-                                        border="1px solid"
-                                        borderColor="gray.300"
-                                        _hover={{ borderColor: 'brand.400' }}
-                                        _focus={{ borderColor: 'brand.500', boxShadow: '0 0 0 1px var(--chakra-colors-brand-500)' }}
+                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-transparent transition-all"
+                                        required
                                     />
-                                </FormControl>
+                                </div>
 
-                                <Button
+                                <button
                                     type="submit"
-                                    bg="brand.500"
-                                    color="white"
-                                    size="lg"
-                                    w="full"
-                                    isLoading={loading}
-                                    _hover={{ bg: 'brand.600' }}
-                                    _active={{ bg: 'brand.700' }}
+                                    className="w-full px-4 py-3 bg-[#00abad] text-white rounded-lg font-medium hover:bg-[#008c8e] active:bg-[#007a7c] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    disabled={loading}
                                 >
-                                    Sign In
-                                </Button>
-                            </VStack>
+                                    {loading ? (
+                                        <>
+                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                            Signing in...
+                                        </>
+                                    ) : (
+                                        'Sign In'
+                                    )}
+                                </button>
+                            </div>
                         </form>
-                    </GlassCard>
+                    </div>
 
                     {/* Test Credentials */}
-                    <GlassCard p={6} w="full" bg="blue.50">
-                        <VStack align="start" spacing={3}>
-                            <HStack>
-                                <Icon viewBox="0 0 24 24" boxSize={5} color="blue.600">
-                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                                </Icon>
-                                <Text fontWeight="semibold" color="blue.800">Test Credentials</Text>
-                            </HStack>
-                            <VStack align="start" spacing={2} fontSize="sm" color="blue.700" w="full">
-                                <Box>
-                                    <Text fontWeight="medium">Admin Account:</Text>
-                                    <Text>Email: admin@dreamdvpr.com</Text>
-                                    <Text>Password: admin123</Text>
-                                </Box>
-                                <Box>
-                                    <Text fontWeight="medium">Client Account:</Text>
-                                    <Text>Email: client@dreamdvpr.com</Text>
-                                    <Text>Password: client123</Text>
-                                </Box>
-                            </VStack>
-                        </VStack>
-                    </GlassCard>
-                </VStack>
-            </Container>
-        </Box>
+                    {/* <div className="glass-card p-6 w-full rounded-xl bg-blue-50/80">
+                        <div className="flex flex-col items-start gap-3">
+                            <div className="flex items-center gap-2">
+                                <svg viewBox="0 0 24 24" className="w-5 h-5 text-blue-600" fill="currentColor">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                </svg>
+                                <span className="font-semibold text-blue-800">Test Credentials</span>
+                            </div>
+                            <div className="flex flex-col items-start gap-2 text-sm text-blue-700 w-full">
+                                <div>
+                                    <p className="font-medium">Admin Account:</p>
+                                    <p>Email: admin@dreamdvpr.com</p>
+                                    <p>Password: admin123</p>
+                                </div>
+                                <div>
+                                    <p className="font-medium">Client Account:</p>
+                                    <p>Email: client@dreamdvpr.com</p>
+                                    <p>Password: client123</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> */}
+                </div>
+            </div>
+        </div>
     );
 }

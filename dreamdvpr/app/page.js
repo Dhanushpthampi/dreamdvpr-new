@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Box } from '@chakra-ui/react';
 import Header from './homepage/Header';
 import Hero from './homepage/Hero';
 import ServicesGrid from './homepage/ServicesGrid';
@@ -34,14 +33,20 @@ export default function Home() {
   return (
     <>
       {showLoader && <IntroLoader onComplete={handleLoaderComplete} />}
-      <Box
-        as="main"
-        minH="100vh"
-        bg={bgColor}
-        overflowX="hidden"
-        _selection={{ bg: 'brand.500', color: 'white' }}
-        style={{ opacity: showLoader ? 0 : 1, transition: 'opacity 0.5s ease-in' }}
+      <main
+        className="min-h-screen overflow-x-hidden"
+        style={{ 
+          backgroundColor: bgColor,
+          opacity: showLoader ? 0 : 1, 
+          transition: 'opacity 0.5s ease-in'
+        }}
       >
+        <style jsx global>{`
+          ::selection {
+            background-color: var(--color-brand-500);
+            color: white;
+          }
+        `}</style>
         <Header />
         <Hero />
         <ServicesGrid />
@@ -51,7 +56,7 @@ export default function Home() {
         <FAQSection />
         <CTASection />
         <Footer />
-      </Box>
+      </main>
     </>
   );
 }

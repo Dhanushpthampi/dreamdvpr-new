@@ -1,7 +1,5 @@
 'use client';
 
-import { FormControl, FormLabel, Input, Textarea, FormErrorMessage, InputGroup, InputLeftElement } from '@chakra-ui/react';
-
 /**
  * Themed input component with consistent styling
  * @param {Object} props
@@ -13,6 +11,7 @@ import { FormControl, FormLabel, Input, Textarea, FormErrorMessage, InputGroup, 
  * @param {string} props.error - Error message
  * @param {boolean} props.required - Required field
  * @param {React.ReactNode} props.icon - Left icon element
+ * @param {string} props.helperText - Helper text to display below input
  */
 const ThemedInput = ({
     label,
@@ -23,63 +22,87 @@ const ThemedInput = ({
     error,
     required = false,
     icon,
+    helperText,
+    className = '',
     ...rest
 }) => {
     const isTextarea = type === 'textarea';
-    const InputComponent = isTextarea ? Textarea : Input;
+    const InputComponent = isTextarea ? 'textarea' : 'input';
 
-    const inputStyles = {
-        bg: 'rgba(255, 255, 255, 0.6)',
-        border: '1px solid',
-        borderColor: error ? 'red.400' : 'rgba(255, 255, 255, 0.8)',
-        color: 'gray.800',
-        _placeholder: { color: 'gray.500' },
-        _hover: { borderColor: error ? 'red.500' : 'brand.400' },
-        _focus: {
-            borderColor: error ? 'red.500' : 'brand.500',
-            boxShadow: error
-                ? '0 0 0 1px var(--chakra-colors-red-500)'
-                : '0 0 0 1px var(--chakra-colors-brand-500)',
-            bg: 'white',
-        },
-        fontWeight: 'medium',
-    };
+    // Remove helperText from rest props to prevent passing to DOM
+    const { helperText: _, ...domProps } = rest;
+
+    const baseClasses = `w-full px-4 py-3 bg-white/60 border rounded-lg focus:outline-none focus:ring-2 focus:bg-white transition-all font-medium ${
+        error
+            ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
+            : 'border-white/80 hover:border-[#00abad]/50 focus:border-[#00abad] focus:ring-[#00abad]'
+    } ${className}`;
 
     const content = icon ? (
-        <InputGroup>
-            <InputLeftElement pointerEvents="none" color="gray.500">
+        <div className="relative">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
                 {icon}
-            </InputLeftElement>
-            <InputComponent
+            </div>
+            {isTextarea ? (
+                <textarea
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
+                    className={`${baseClasses} pl-10`}
+                    required={required}
+                    {...domProps}
+                />
+            ) : (
+                <input
+                    type={type}
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={onChange}
+                    className={`${baseClasses} pl-10`}
+                    required={required}
+                    {...domProps}
+                />
+            )}
+        </div>
+    ) : (
+        isTextarea ? (
+            <textarea
+                placeholder={placeholder}
+                value={value}
+                onChange={onChange}
+                className={baseClasses}
+                required={required}
+                {...domProps}
+            />
+        ) : (
+            <input
                 type={type}
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
-                {...inputStyles}
-                {...rest}
+                className={baseClasses}
+                required={required}
+                {...domProps}
             />
-        </InputGroup>
-    ) : (
-        <InputComponent
-            type={type}
-            placeholder={placeholder}
-            value={value}
-            onChange={onChange}
-            {...inputStyles}
-            {...rest}
-        />
+        )
     );
 
     return (
-        <FormControl isInvalid={!!error} isRequired={required}>
+        <div className="w-full">
             {label && (
-                <FormLabel fontWeight="semibold" color="gray.700" mb={2}>
+                <label className="block font-semibold mb-2" style={{ color: '#374151' }}>
                     {label}
-                </FormLabel>
+                    {required && <span className="text-red-500 ml-1">*</span>}
+                </label>
             )}
             {content}
-            {error && <FormErrorMessage>{error}</FormErrorMessage>}
-        </FormControl>
+            {helperText && !error && (
+                <p className="mt-1 text-xs" style={{ color: '#86868b' }}>{helperText}</p>
+            )}
+            {error && (
+                <p className="mt-1 text-sm text-red-500">{error}</p>
+            )}
+        </div>
     );
 };
 

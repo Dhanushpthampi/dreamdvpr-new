@@ -3,10 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Box, Container, Heading, Text, VStack, HStack, Spinner, Icon, Button, Badge } from '@chakra-ui/react';
 import { ClientSidebarWrapper } from '../../components/ClientSidebar';
 import GlassCard from '../../components/GlassCard';
-import ThemedButton from '../../components/ThemedButton';
 
 const INDUSTRIES = {
     'ecommerce': 'E-commerce',
@@ -59,9 +57,9 @@ export default function ProfilePage() {
     if (status === 'loading' || loading) {
         return (
             <ClientSidebarWrapper>
-                <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
-                    <Spinner size="xl" color="brand.500" thickness="4px" />
-                </Box>
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                </div>
             </ClientSidebarWrapper>
         );
     }
@@ -72,117 +70,111 @@ export default function ProfilePage() {
 
     return (
         <ClientSidebarWrapper>
-            <Container maxW="container.xl" py={8}>
-                <VStack spacing={8} align="stretch">
+            <div className="container mx-auto max-w-7xl px-4 py-8">
+                <div className="flex flex-col gap-8">
                     {/* Header */}
-                    <HStack justify="space-between">
-                        <Box>
-                            <Heading size="2xl" color="text.main" mb={2}>
+                    <div className="flex justify-between items-center flex-wrap gap-4">
+                        <div>
+                            <h1 className="text-4xl md:text-5xl font-bold mb-2" style={{ color: '#1d1d1f' }}>
                                 My Profile
-                            </Heading>
-                            <Text color="text.secondary" fontSize="lg">
+                            </h1>
+                            <p className="text-lg" style={{ color: '#86868b' }}>
                                 View and manage your profile information
-                            </Text>
-                        </Box>
-                        <ThemedButton
-                            variant="outline"
+                            </p>
+                        </div>
+                        <button
                             onClick={() => router.push('/client/onboarding')}
+                            className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                         >
                             Edit Profile
-                        </ThemedButton>
-                    </HStack>
+                        </button>
+                    </div>
 
                     {/* Profile Card */}
                     <GlassCard p={8}>
-                        <VStack spacing={6} align="stretch">
+                        <div className="flex flex-col gap-6">
                             {/* Personal Information */}
-                            <Box>
-                                <Heading size="md" color="text.main" mb={4}>
+                            <div>
+                                <h2 className="text-xl font-bold mb-4" style={{ color: '#1d1d1f' }}>
                                     Personal Information
-                                </Heading>
-                                <VStack spacing={4} align="stretch">
-                                    <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.100">
-                                        <Text fontWeight="semibold" color="text.secondary">Name</Text>
-                                        <Text color="text.main">{profile.name || 'Not provided'}</Text>
-                                    </HStack>
-                                    <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.100">
-                                        <Text fontWeight="semibold" color="text.secondary">Email</Text>
-                                        <Text color="text.main">{profile.email || 'Not provided'}</Text>
-                                    </HStack>
-                                </VStack>
-                            </Box>
+                                </h2>
+                                <div className="flex flex-col gap-4">
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                                        <p className="font-semibold" style={{ color: '#86868b' }}>Name</p>
+                                        <p style={{ color: '#1d1d1f' }}>{profile.name || 'Not provided'}</p>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                                        <p className="font-semibold" style={{ color: '#86868b' }}>Email</p>
+                                        <p style={{ color: '#1d1d1f' }}>{profile.email || 'Not provided'}</p>
+                                    </div>
+                                </div>
+                            </div>
 
                             {/* Business Information */}
-                            <Box>
-                                <Heading size="md" color="text.main" mb={4}>
+                            <div>
+                                <h2 className="text-xl font-bold mb-4" style={{ color: '#1d1d1f' }}>
                                     Business Information
-                                </Heading>
-                                <VStack spacing={4} align="stretch">
-                                    <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.100">
-                                        <Text fontWeight="semibold" color="text.secondary">Company Name</Text>
-                                        <Text color="text.main">{profile.company || 'Not provided'}</Text>
-                                    </HStack>
-                                    <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.100">
-                                        <Text fontWeight="semibold" color="text.secondary">Industry</Text>
-                                        <Badge colorScheme="brand" px={3} py={1} rounded="full">
+                                </h2>
+                                <div className="flex flex-col gap-4">
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                                        <p className="font-semibold" style={{ color: '#86868b' }}>Company Name</p>
+                                        <p style={{ color: '#1d1d1f' }}>{profile.company || 'Not provided'}</p>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                                        <p className="font-semibold" style={{ color: '#86868b' }}>Industry</p>
+                                        <span className="px-3 py-1 bg-[#00abad]/10 text-[#00abad] rounded-full text-sm font-semibold">
                                             {INDUSTRIES[profile.industry] || profile.industry || 'Not provided'}
-                                        </Badge>
-                                    </HStack>
-                                    <HStack justify="space-between" py={2} borderBottom="1px" borderColor="gray.100">
-                                        <Text fontWeight="semibold" color="text.secondary">Phone Number</Text>
-                                        <Text color="text.main">{profile.phone || 'Not provided'}</Text>
-                                    </HStack>
-                                    <HStack justify="space-between" py={2}>
-                                        <Text fontWeight="semibold" color="text.secondary">Website</Text>
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                                        <p className="font-semibold" style={{ color: '#86868b' }}>Phone Number</p>
+                                        <p style={{ color: '#1d1d1f' }}>{profile.phone || 'Not provided'}</p>
+                                    </div>
+                                    <div className="flex justify-between items-center py-2">
+                                        <p className="font-semibold" style={{ color: '#86868b' }}>Website</p>
                                         {profile.website ? (
-                                            <Button
-                                                as="a"
+                                            <a
                                                 href={profile.website}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                variant="link"
-                                                color="brand.500"
-                                                rightIcon={
-                                                    <Icon viewBox="0 0 24 24" boxSize={4}>
-                                                        <path fill="currentColor" d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
-                                                    </Icon>
-                                                }
+                                                className="text-[#00abad] hover:underline flex items-center gap-1"
                                             >
                                                 {profile.website}
-                                            </Button>
+                                                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+                                                    <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
+                                                </svg>
+                                            </a>
                                         ) : (
-                                            <Text color="text.secondary">Not provided</Text>
+                                            <p style={{ color: '#86868b' }}>Not provided</p>
                                         )}
-                                    </HStack>
-                                </VStack>
-                            </Box>
+                                    </div>
+                                </div>
+                            </div>
 
                             {/* Status */}
-                            <Box>
-                                <Heading size="md" color="text.main" mb={4}>
+                            <div>
+                                <h2 className="text-xl font-bold mb-4" style={{ color: '#1d1d1f' }}>
                                     Profile Status
-                                </Heading>
-                                <HStack spacing={3}>
-                                    <Badge
-                                        colorScheme={profile.onboardingCompleted ? 'green' : 'yellow'}
-                                        px={4}
-                                        py={2}
-                                        rounded="full"
-                                        fontSize="sm"
-                                    >
+                                </h2>
+                                <div className="flex items-center gap-3">
+                                    <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                                        profile.onboardingCompleted
+                                            ? 'bg-green-100 text-green-800'
+                                            : 'bg-yellow-100 text-yellow-800'
+                                    }`}>
                                         {profile.onboardingCompleted ? '✓ Profile Complete' : '⚠ Profile Incomplete'}
-                                    </Badge>
+                                    </span>
                                     {profile.onboardingCompleted && (
-                                        <Text fontSize="sm" color="text.secondary">
+                                        <p className="text-sm" style={{ color: '#86868b' }}>
                                             Your profile is complete and you can create projects
-                                        </Text>
+                                        </p>
                                     )}
-                                </HStack>
-                            </Box>
-                        </VStack>
+                                </div>
+                            </div>
+                        </div>
                     </GlassCard>
-                </VStack>
-            </Container>
+                </div>
+            </div>
         </ClientSidebarWrapper>
     );
 }

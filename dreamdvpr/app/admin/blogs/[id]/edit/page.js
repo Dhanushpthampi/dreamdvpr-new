@@ -3,10 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
-import {
-    Box, Container, Heading, Text, VStack, HStack, Button, Spinner, useToast,
-    FormControl, FormLabel, Switch
-} from '@chakra-ui/react';
 import { AdminSidebarWrapper } from '../../../../components/AdminSidebar';
 import GlassCard from '../../../../components/GlassCard';
 import ThemedInput from '../../../../components/ThemedInput';
@@ -26,7 +22,7 @@ export default function EditBlogPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const params = useParams();
-    const toast = useToast();
+    const [toast, setToast] = useState(null);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [blogData, setBlogData] = useState({
@@ -37,6 +33,11 @@ export default function EditBlogPage() {
         imageUrl: '',
         published: false,
     });
+
+    const showToast = (title, description, type = 'success') => {
+        setToast({ title, description, type });
+        setTimeout(() => setToast(null), 3000);
+    };
 
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -64,22 +65,12 @@ export default function EditBlogPage() {
                     published: data.blog.published || false,
                 });
             } else {
-                toast({
-                    title: 'Error',
-                    description: 'Blog not found',
-                    status: 'error',
-                    duration: 3000,
-                });
+                showToast('Error', 'Blog not found', 'error');
                 router.push('/admin/blogs');
             }
         } catch (error) {
             console.error('Error fetching blog:', error);
-            toast({
-                title: 'Error',
-                description: 'Failed to fetch blog',
-                status: 'error',
-                duration: 3000,
-            });
+            showToast('Error', 'Failed to fetch blog', 'error');
         } finally {
             setLoading(false);
         }
@@ -87,12 +78,7 @@ export default function EditBlogPage() {
 
     const handleSave = async () => {
         if (!blogData.title || !blogData.content || !blogData.category) {
-            toast({
-                title: 'Missing fields',
-                description: 'Title, content, and category are required',
-                status: 'error',
-                duration: 3000,
-            });
+            showToast('Missing fields', 'Title, content, and category are required', 'error');
             return;
         }
 
@@ -107,24 +93,14 @@ export default function EditBlogPage() {
             const data = await res.json();
 
             if (res.ok) {
-                toast({
-                    title: 'Blog updated',
-                    description: 'Blog has been updated successfully',
-                    status: 'success',
-                    duration: 3000,
-                });
-                router.push('/admin/blogs');
+                showToast('Blog updated', 'Blog has been updated successfully', 'success');
+                setTimeout(() => router.push('/admin/blogs'), 1000);
             } else {
                 throw new Error(data.error || 'Failed to update blog');
             }
         } catch (error) {
             console.error('Error saving blog:', error);
-            toast({
-                title: 'Error',
-                description: error.message || 'Failed to update blog',
-                status: 'error',
-                duration: 3000,
-            });
+            showToast('Error', error.message || 'Failed to update blog', 'error');
         } finally {
             setSaving(false);
         }
@@ -133,28 +109,28 @@ export default function EditBlogPage() {
     if (status === 'loading' || loading) {
         return (
             <AdminSidebarWrapper>
-                <Box minH="100vh" display="flex" alignItems="center" justifyContent="center">
-                    <Spinner size="xl" color="brand.500" thickness="4px" />
-                </Box>
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                </div>
             </AdminSidebarWrapper>
         );
     }
 
     return (
         <AdminSidebarWrapper>
-            <Container maxW="container.xl" py={8}>
-                <VStack spacing={8} align="stretch">
+            <div className="container mx-auto max-w-7xl px-4 py-8">
+                <div className="flex flex-col gap-8">
                     {/* Header */}
-                    <HStack justify="space-between">
-                        <Box>
-                            <Heading size="2xl" color="text.main" mb={2}>
+                    <div className="flex justify-between items-center flex-wrap gap-4">
+                        <div>
+                            <h1 className="text-4xl md:text-5xl font-bold mb-2" style={{ color: '#1d1d1f' }}>
                                 Edit Blog Post
-                            </Heading>
-                            <Text color="text.secondary" fontSize="lg">
+                            </h1>
+                            <p className="text-lg" style={{ color: '#86868b' }}>
                                 Update your blog post content and settings
-                            </Text>
-                        </Box>
-                        <HStack spacing={4}>
+                            </p>
+                        </div>
+                        <div className="flex gap-4">
                             <ThemedButton
                                 variant="outline"
                                 onClick={() => router.push('/admin/blogs')}
@@ -168,12 +144,12 @@ export default function EditBlogPage() {
                             >
                                 Save Changes
                             </ThemedButton>
-                        </HStack>
-                    </HStack>
+                        </div>
+                    </div>
 
                     {/* Form */}
                     <GlassCard p={8}>
-                        <VStack spacing={6} align="stretch">
+                        <div className="flex flex-col gap-6">
                             <ThemedInput
                                 label="Title"
                                 value={blogData.title}
@@ -201,30 +177,55 @@ export default function EditBlogPage() {
                                 rows={3}
                                 placeholder="A brief summary of your blog post..."
                             />
-                            <Box>
-                                <Text fontSize="sm" fontWeight="medium" mb={2} color="text.main">
-                                    Content <Text as="span" color="red.500">*</Text>
-                                </Text>
-                                <Text fontSize="xs" color="text.secondary" mb={2}>
+                            <div>
+                                <p className="text-sm font-medium mb-2" style={{ color: '#1d1d1f' }}>
+                                    Content <span className="text-red-500">*</span>
+                                </p>
+                                <p className="text-xs mb-2" style={{ color: '#86868b' }}>
                                     Tip: Press Enter for a new paragraph, Shift+Enter for a line break
-                                </Text>
+                                </p>
                                 <RichTextEditor
                                     value={blogData.content}
                                     onChange={(value) => setBlogData({ ...blogData, content: value })}
                                     placeholder="Write your blog content here. You can format text, add headings, images, code blocks, and more..."
                                 />
-                            </Box>
-                            <FormControl display="flex" alignItems="center">
-                                <FormLabel mb={0}>Published</FormLabel>
-                                <Switch
-                                    isChecked={blogData.published}
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <label className="text-sm font-medium" style={{ color: '#1d1d1f' }}>Published</label>
+                                <input
+                                    type="checkbox"
+                                    checked={blogData.published}
                                     onChange={(e) => setBlogData({ ...blogData, published: e.target.checked })}
+                                    className="w-5 h-5 rounded border-gray-300 text-[#00abad] focus:ring-[#00abad]"
                                 />
-                            </FormControl>
-                        </VStack>
+                            </div>
+                        </div>
                     </GlassCard>
-                </VStack>
-            </Container>
+                </div>
+            </div>
+
+            {/* Toast Notification */}
+            {toast && (
+                <div className={`fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg z-[3000] ${
+                    toast.type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-green-50 border border-green-200 text-green-700'
+                }`}>
+                    <div className="flex items-center gap-2">
+                        {toast.type === 'error' ? (
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                            </svg>
+                        ) : (
+                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                        )}
+                        <div>
+                            <p className="font-semibold">{toast.title}</p>
+                            {toast.description && <p className="text-sm">{toast.description}</p>}
+                        </div>
+                    </div>
+                </div>
+            )}
         </AdminSidebarWrapper>
     );
 }

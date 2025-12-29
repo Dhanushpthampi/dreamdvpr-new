@@ -3,10 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
-import {
-    Box, Container, Heading, Text, VStack, HStack, SimpleGrid,
-    Spinner, Icon, Button, Input, useToast, Badge
-} from '@chakra-ui/react';
+import { AdminSidebarWrapper } from '../../../components/AdminSidebar';
 import GlassCard from '../../../components/GlassCard';
 import StatusBadge from '../../../components/StatusBadge';
 
@@ -14,7 +11,6 @@ export default function AdminClientDetail() {
     const { data: session } = useSession();
     const router = useRouter();
     const params = useParams();
-    const toast = useToast();
 
     const clientId = params.id;
     const [client, setClient] = useState(null);
@@ -57,150 +53,144 @@ export default function AdminClientDetail() {
 
     if (loading) {
         return (
-            <Box minH="100vh" bg="bg.app" display="flex" alignItems="center" justifyContent="center">
-                <Spinner size="xl" color="brand.500" />
-            </Box>
+            <AdminSidebarWrapper>
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                </div>
+            </AdminSidebarWrapper>
         );
     }
 
     if (!client) return null;
 
     return (
-        <Box minH="100vh" bg="bg.app">
-            {/* Header */}
-            <Box bg="white" borderBottom="1px" borderColor="gray.200" py={4}>
-                <Container maxW="container.xl">
-                    <Button
-                        variant="ghost"
-                        onClick={() => router.push('/admin')}
-                        leftIcon={
-                            <Icon viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-                            </Icon>
-                        }
-                    >
-                        Back to Dashboard
-                    </Button>
-                </Container>
-            </Box>
-
-            <Container maxW="container.xl" py={12}>
-                <VStack spacing={8} align="stretch">
+        <AdminSidebarWrapper>
+            <div className="container mx-auto max-w-7xl px-4 py-8">
+                <div className="flex flex-col gap-8">
                     {/* Client Header */}
-                    <Box>
-                        <Heading size="2xl" color="text.main" mb={2}>
+                    <div>
+                        <button
+                            onClick={() => router.push('/admin')}
+                            className="flex items-center gap-2 text-gray-600 hover:text-[#00abad] transition-colors mb-4"
+                        >
+                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                            </svg>
+                            Back to Dashboard
+                        </button>
+                        <h1 className="text-4xl md:text-5xl font-bold mb-2" style={{ color: '#1d1d1f' }}>
                             {client.name}
-                        </Heading>
-                        <Text color="text.secondary" fontSize="lg">
+                        </h1>
+                        <p className="text-lg" style={{ color: '#86868b' }}>
                             {client.email}
-                        </Text>
-                    </Box>
+                        </p>
+                    </div>
 
                     {/* Client Info */}
                     <GlassCard p={6}>
-                        <Heading size="md" color="text.main" mb={6}>Client Information</Heading>
-                        <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
-                            <Box>
-                                <Text fontSize="sm" color="text.secondary" fontWeight="semibold" mb={1}>
+                        <h2 className="text-xl font-bold mb-6" style={{ color: '#1d1d1f' }}>Client Information</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <p className="text-sm font-semibold mb-1" style={{ color: '#86868b' }}>
                                     Company
-                                </Text>
-                                <Text fontSize="md" color="text.main">
+                                </p>
+                                <p className="text-base" style={{ color: '#1d1d1f' }}>
                                     {client.company || 'Not provided'}
-                                </Text>
-                            </Box>
-                            <Box>
-                                <Text fontSize="sm" color="text.secondary" fontWeight="semibold" mb={1}>
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-sm font-semibold mb-1" style={{ color: '#86868b' }}>
                                     Industry
-                                </Text>
+                                </p>
                                 {client.industry ? (
-                                    <Badge colorScheme="blue">{client.industry}</Badge>
+                                    <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">
+                                        {client.industry}
+                                    </span>
                                 ) : (
-                                    <Text fontSize="md" color="text.main">Not provided</Text>
+                                    <p className="text-base" style={{ color: '#1d1d1f' }}>Not provided</p>
                                 )}
-                            </Box>
-                            <Box>
-                                <Text fontSize="sm" color="text.secondary" fontWeight="semibold" mb={1}>
+                            </div>
+                            <div>
+                                <p className="text-sm font-semibold mb-1" style={{ color: '#86868b' }}>
                                     Phone
-                                </Text>
-                                <Text fontSize="md" color="text.main">
+                                </p>
+                                <p className="text-base" style={{ color: '#1d1d1f' }}>
                                     {client.phone || 'Not provided'}
-                                </Text>
-                            </Box>
-                            <Box>
-                                <Text fontSize="sm" color="text.secondary" fontWeight="semibold" mb={1}>
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-sm font-semibold mb-1" style={{ color: '#86868b' }}>
                                     Website
-                                </Text>
-                                <Text fontSize="md" color="text.main">
+                                </p>
+                                <p className="text-base" style={{ color: '#1d1d1f' }}>
                                     {client.website || 'Not provided'}
-                                </Text>
-                            </Box>
-                        </SimpleGrid>
+                                </p>
+                            </div>
+                        </div>
                     </GlassCard>
 
                     {/* Projects */}
-                    <Box>
-                        <HStack justify="space-between" mb={6}>
-                            <Heading size="lg" color="text.main">
+                    <div>
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>
                                 Projects ({projects.length})
-                            </Heading>
-                            <Button
-                                bg="brand.500"
-                                color="white"
-                                size="sm"
-                                _hover={{ bg: 'brand.600' }}
+                            </h2>
+                            <button
                                 onClick={() => alert('Create project for client - coming soon')}
+                                className="px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors text-sm flex items-center gap-2"
                             >
-                                + New Project
-                            </Button>
-                        </HStack>
+                                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                                </svg>
+                                New Project
+                            </button>
+                        </div>
 
                         {projects.length === 0 ? (
-                            <GlassCard p={12} textAlign="center">
-                                <Text color="text.secondary">No projects yet</Text>
+                            <GlassCard p={12} className="text-center">
+                                <p style={{ color: '#86868b' }}>No projects yet</p>
                             </GlassCard>
                         ) : (
-                            <SimpleGrid columns={{ base: 1, md: 2 }} gap={6}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {projects.map((project) => (
                                     <GlassCard
                                         key={project._id}
                                         p={6}
                                         onClick={() => router.push(`/admin/projects/${project._id}`)}
-                                        cursor="pointer"
-                                        transition="all 0.2s"
-                                        _hover={{ transform: 'translateY(-4px)', shadow: 'xl' }}
+                                        className="cursor-pointer"
                                     >
-                                        <VStack align="start" spacing={4}>
-                                            <HStack justify="space-between" w="full">
-                                                <Heading size="md" color="text.main" noOfLines={1}>
+                                        <div className="flex flex-col items-start gap-4">
+                                            <div className="flex justify-between items-center w-full">
+                                                <h3 className="text-lg font-semibold line-clamp-1" style={{ color: '#1d1d1f' }}>
                                                     {project.name}
-                                                </Heading>
+                                                </h3>
                                                 <StatusBadge status={project.status} size="sm" />
-                                            </HStack>
+                                            </div>
 
-                                            <Text fontSize="sm" color="text.secondary" noOfLines={2}>
+                                            <p className="text-sm line-clamp-2" style={{ color: '#86868b' }}>
                                                 {project.description || 'No description'}
-                                            </Text>
+                                            </p>
 
-                                            <HStack fontSize="xs" color="text.secondary">
-                                                <Icon viewBox="0 0 24 24" boxSize={4}>
-                                                    <path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
-                                                </Icon>
-                                                <Text>
+                                            <div className="flex items-center gap-2 text-xs w-full" style={{ color: '#86868b' }}>
+                                                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+                                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+                                                </svg>
+                                                <span>
                                                     Started {new Date(project.startDate).toLocaleDateString()}
-                                                </Text>
-                                            </HStack>
+                                                </span>
+                                            </div>
 
-                                            <Button variant="outline" size="sm" w="full">
+                                            <button className="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm">
                                                 Manage Project →
-                                            </Button>
-                                        </VStack>
+                                            </button>
+                                        </div>
                                     </GlassCard>
                                 ))}
-                            </SimpleGrid>
+                            </div>
                         )}
-                    </Box>
-                </VStack>
-            </Container>
-        </Box>
+                    </div>
+                </div>
+            </div>
+        </AdminSidebarWrapper>
     );
 }

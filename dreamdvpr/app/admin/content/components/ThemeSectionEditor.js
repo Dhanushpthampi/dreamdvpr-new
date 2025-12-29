@@ -3,7 +3,6 @@
  * @module admin/content/components/ThemeSectionEditor
  */
 
-import { VStack, Box, Heading, Divider, SimpleGrid, FormControl, FormLabel, Input, Select } from '@chakra-ui/react';
 import { ColorPicker } from './ColorPicker';
 
 export function ThemeSectionEditor({ section, onChange }) {
@@ -35,10 +34,13 @@ export function ThemeSectionEditor({ section, onChange }) {
   };
 
   return (
-    <VStack spacing={6} align="stretch">
-      <Box>
-        <Heading size="md" mb={4}>Colors</Heading>
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
+    <div className="flex flex-col gap-8">
+      {/* Colors Section */}
+      <div>
+        <h2 className="text-xl font-bold mb-6" style={{ color: '#1d1d1f' }}>
+          Colors
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <ColorPicker
             label="Brand Primary"
             value={section?.colors?.brand500}
@@ -74,39 +76,60 @@ export function ThemeSectionEditor({ section, onChange }) {
             value={section?.colors?.accent500}
             onChange={(value) => handleColorChange('accent500', value)}
           />
-        </SimpleGrid>
-      </Box>
-      <Divider />
-      <Box>
-        <Heading size="md" mb={4}>Fonts</Heading>
-        <VStack spacing={4} align="stretch">
-          <FormControl>
-            <FormLabel>Heading Font</FormLabel>
-            <Input
+        </div>
+      </div>
+
+      <div className="border-t border-gray-200" />
+
+      {/* Fonts Section */}
+      <div>
+        <h2 className="text-xl font-bold mb-6" style={{ color: '#1d1d1f' }}>
+          Fonts
+        </h2>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold" style={{ color: '#1d1d1f' }}>
+              Heading Font
+            </label>
+            <input
+              type="text"
               value={section?.fonts?.heading || ''}
               onChange={(e) => handleFontChange('heading', e.target.value)}
               placeholder="e.g., -apple-system, BlinkMacSystemFont, 'Segoe UI'"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] transition-all"
             />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Body Font</FormLabel>
-            <Input
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold" style={{ color: '#1d1d1f' }}>
+              Body Font
+            </label>
+            <input
+              type="text"
               value={section?.fonts?.body || ''}
               onChange={(e) => handleFontChange('body', e.target.value)}
               placeholder="e.g., -apple-system, BlinkMacSystemFont, 'Segoe UI'"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] transition-all"
             />
-          </FormControl>
-        </VStack>
-      </Box>
-      <Divider />
-      <Box>
-        <Heading size="md" mb={4}>Other Settings</Heading>
-        <VStack spacing={4} align="stretch">
-          <FormControl>
-            <FormLabel>Border Radius</FormLabel>
-            <Select
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-gray-200" />
+
+      {/* Other Settings Section */}
+      <div>
+        <h2 className="text-xl font-bold mb-6" style={{ color: '#1d1d1f' }}>
+          Other Settings
+        </h2>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold" style={{ color: '#1d1d1f' }}>
+              Border Radius
+            </label>
+            <select
               value={section?.borderRadius || 'xl'}
               onChange={(e) => handleOtherChange('borderRadius', e.target.value)}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] transition-all bg-white"
             >
               <option value="none">None</option>
               <option value="sm">Small</option>
@@ -115,18 +138,22 @@ export function ThemeSectionEditor({ section, onChange }) {
               <option value="xl">Extra Large</option>
               <option value="2xl">2X Large</option>
               <option value="full">Full (Circle)</option>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel>Logo URL</FormLabel>
-            <Input
+            </select>
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold" style={{ color: '#1d1d1f' }}>
+              Logo URL
+            </label>
+            <input
+              type="url"
               value={section?.logo || ''}
               onChange={(e) => handleOtherChange('logo', e.target.value)}
               placeholder="https://example.com/logo.png"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] transition-all"
             />
-          </FormControl>
-        </VStack>
-      </Box>
-    </VStack>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

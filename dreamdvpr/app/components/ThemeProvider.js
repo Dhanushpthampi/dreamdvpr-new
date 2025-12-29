@@ -1,25 +1,20 @@
 'use client';
 
-import { ChakraProvider } from '@chakra-ui/react';
+import { usePathname } from 'next/navigation';
 import { useTheme } from '@/app/lib/theme';
-import { createChakraTheme, DEFAULT_THEME } from '@/app/lib/theme';
 
 /**
- * ThemeProvider - Provides theme context to the application
- * Uses centralized theme utilities for maintainability
+ * ThemeProvider - Conditionally applies theme only to homepage and blog pages
+ * Other pages (login, client, admin) use static themes
  */
 export function ThemeProvider({ children, initialTheme = null }) {
-  const { chakraTheme, themeKey } = useTheme(initialTheme);
+  const pathname = usePathname();
+  
+  // Only apply dynamic theme to homepage and blog pages
+  const shouldApplyTheme = pathname === '/' || 
+                          pathname?.startsWith('/blog');
+  
+  useTheme(initialTheme, shouldApplyTheme);
 
-  // Return default theme while loading
-  if (!chakraTheme) {
-    const defaultChakraTheme = createChakraTheme(DEFAULT_THEME);
-    return <ChakraProvider theme={defaultChakraTheme}>{children}</ChakraProvider>;
-  }
-
-  return (
-    <ChakraProvider theme={chakraTheme} key={themeKey}>
-      {children}
-    </ChakraProvider>
-  );
+  return <>{children}</>;
 }

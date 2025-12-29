@@ -1,18 +1,9 @@
 'use client';
 
-import React from 'react';
-import {
-  Box,
-  Heading,
-  Text,
-  GridItem,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useThemeColor } from '../lib/hooks';
 import { hexToRgba } from '../lib/utils';
-
-const MotionGridItem = motion(GridItem);
 
 const isVideo = (url = '') => /\.(mp4|webm|ogg)$/i.test(url);
 const isImage = (url = '') => /\.(gif|png|jpg|jpeg|webp)$/i.test(url);
@@ -26,91 +17,86 @@ const ServiceCard = ({
   isFeatured = false,
 }) => {
   const brandColor = useThemeColor('--color-brand-500', '#00abad');
+  const [hoverScale, setHoverScale] = useState(1);
+  const [hovered, setHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // ✅ SAFE Framer Motion value
-  const hoverScale = useBreakpointValue({
-    base: 1,
-    md: 1.01,
-  });
+  useEffect(() => {
+    const updateScale = () => {
+      setHoverScale(window.innerWidth >= 768 ? 1.01 : 1);
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
-  const mediaHeight = {
-    base: '400px',
-    md:
-      rowSpan > 1
-        ? '320px'
-        : colSpan > 1
-        ? '220px'
-        : '160px',
+  const getMediaHeight = () => {
+    if (typeof window === 'undefined' || window.innerWidth < 768) return '400px';
+    if (rowSpan > 1) return '320px';
+    if (colSpan > 1) return '220px';
+    return '160px';
+  };
+
+  const mediaHeight = getMediaHeight();
+  const getPaddingTop = () => {
+    if (typeof window === 'undefined' || window.innerWidth < 768) return '300px';
+    const baseHeight = rowSpan > 1 ? 320 : colSpan > 1 ? 220 : 160;
+    return `calc(${baseHeight}px - 40px)`;
   };
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
-    e.currentTarget.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
   };
 
   return (
-    <MotionGridItem
-      colSpan={{ base: 1, md: colSpan }}
-      rowSpan={{ base: 2, md: rowSpan }}
-      position="relative"
-      overflow="hidden"
-      rounded="lg"
-      bg="transparent"
-      backdropFilter="saturate(160%) blur(18px)"
-      border="1px solid"
-      borderColor="whiteAlpha.300"
+    <motion.div
+      className="relative overflow-hidden rounded-lg bg-transparent backdrop-saturate-[160%] backdrop-blur-[18px] border border-white/30"
+      style={{
+        gridColumn: `span ${colSpan}`,
+        gridRow: `span ${rowSpan}`,
+        boxShadow: hovered 
+          ? `0 0 18px ${hexToRgba(brandColor, 0.22)}`
+          : `0 0 12px ${hexToRgba(brandColor, 0.15)}`,
+      }}
       onMouseMove={handleMouseMove}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       whileHover={{ scale: hoverScale }}
-      transition="all 0.3s ease"
-      boxShadow={`0 0 12px ${hexToRgba(brandColor, 0.15)}`}
-      _before={{
-        content: '""',
-        position: 'absolute',
-        inset: 0,
-        opacity: 0,
-        rounded: 'inherit',
-        bg: `radial-gradient(
-          700px circle at var(--mouse-x) var(--mouse-y),
-          ${hexToRgba(brandColor, 0.12)},
-          transparent 45%
-        )`,
-        transition: 'opacity 0.4s',
-        zIndex: 2,
-      }}
-      _hover={{
-        _before: { opacity: 1 },
-        boxShadow: `0 0 18px ${hexToRgba(brandColor, 0.22)}`,
-      }}
+      transition={{ duration: 0.3, ease: 'easeInOut' }}
     >
+      {/* Hover gradient overlay */}
+      <div
+        className="absolute inset-0 rounded-inherit pointer-events-none transition-opacity duration-400 z-[2]"
+        style={{
+          opacity: hovered ? 1 : 0,
+          background: `radial-gradient(
+            700px circle at ${mousePos.x}px ${mousePos.y}px,
+            ${hexToRgba(brandColor, 0.12)},
+            transparent 45%
+          )`,
+        }}
+      />
+
       {/* MEDIA */}
       {media && (
-        <Box
-          position="absolute"
-          top={0}
-          left={0}
-          right={0}
-          h={mediaHeight}
-          zIndex={0}
-          overflow="hidden"
-          sx={{
-            WebkitMaskImage:
-              'linear-gradient(to bottom, black 65%, transparent 100%)',
-            maskImage:
-              'linear-gradient(to bottom, black 65%, transparent 100%)',
+        <div
+          className="absolute top-0 left-0 right-0 z-0 overflow-hidden"
+          style={{
+            height: mediaHeight,
+            WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)',
+            maskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)',
           }}
         >
-          <Box
-            w="100%"
-            h="100%"
-            transition="filter 0.35s ease"
-            filter={
-              isFeatured
+          <div
+            className="w-full h-full transition-all duration-350 ease-in-out group"
+            style={{
+              filter: isFeatured
                 ? 'brightness(1) saturate(1)'
-                : 'brightness(0.75) saturate(0.85)'
-            }
-            _hover={{
-              filter: 'brightness(1) saturate(1)',
+                : 'brightness(0.75) saturate(0.85)',
             }}
           >
             {isVideo(media) && (
@@ -121,11 +107,7 @@ const ServiceCard = ({
                 muted
                 playsInline
                 preload="metadata"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
+                className="w-full h-full object-cover"
               />
             )}
 
@@ -133,48 +115,34 @@ const ServiceCard = ({
               <img
                 src={media}
                 alt={title}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
+                className="w-full h-full object-cover"
               />
             )}
-          </Box>
+          </div>
 
           {/* SUBTLE OVERLAY FOR READABILITY */}
-          <Box
-            position="absolute"
-            inset={0}
-            bg="blackAlpha.350"
-            zIndex={1}
-          />
-        </Box>
+          <div className="absolute inset-0 bg-black/35 z-[1]" />
+        </div>
       )}
 
       {/* CONTENT */}
-      <Box
-        position="relative"
-        zIndex={3}
-        pt={{
-          base: '300px',
-          md: `calc(${rowSpan > 1 ? '320px' : colSpan > 1 ? '220px' : '160px'} - 40px)`,
+      <div
+        className="relative z-[3] h-full flex flex-col justify-end"
+        style={{
+          paddingTop: getPaddingTop(),
+          paddingLeft: '1.25rem',
+          paddingRight: '1.25rem',
+          paddingBottom: '1.25rem',
         }}
-        px={{ base: 4, md: 5 }}
-        pb={{ base: 4, md: 5 }}
-        h="100%"
-        display="flex"
-        flexDirection="column"
-        justifyContent="flex-end"
       >
-        <Heading size={{ base: 'xs', md: 'sm' }} mb={1}>
+        <h3 className="text-xs md:text-sm font-semibold mb-1" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
           {title}
-        </Heading>
-        <Text fontSize={{ base: 'xs', md: 'sm' }}>
+        </h3>
+        <p className="text-xs md:text-sm" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
           {description}
-        </Text>
-      </Box>
-    </MotionGridItem>
+        </p>
+      </div>
+    </motion.div>
   );
 };
 

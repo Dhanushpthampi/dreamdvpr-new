@@ -191,3 +191,38 @@ body {
 .bg-app {
   background-color: var(--color-bg-app);
 }
+
+/* Static theme for non-dynamic pages (login, client, admin) */
+.static-theme {
+  --static-brand-500: #00abad;
+  --static-brand-600: #008c8e;
+  --static-bg-app: #f5f5f7;
+  --static-bg-secondary: #ffffff;
+  --static-text-main: #1d1d1f;
+  --static-text-secondary: #86868b;
+}
+
+/* Utility classes using static theme */
+.static-bg-app {
+  background-color: var(--static-bg-app, #f5f5f7);
+}
+
+.static-bg-secondary {
+  background-color: var(--static-bg-secondary, #ffffff);
+}
+
+.static-text-main {
+  color: var(--static-text-main, #1d1d1f);
+}
+
+.static-text-secondary {
+  color: var(--static-text-secondary, #86868b);
+}
+
+.static-brand {
+  color: var(--static-brand-500, #00abad);
+}
+
+.static-bg-brand {
+  background-color: var(--static-brand-500, #00abad);
+}

@@ -1,7 +1,6 @@
 'use client';
 
-import React from 'react';
-import { Box, Container, Heading, Text, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import ParticleBackground from '../components/ParticleBackground';
 import { useContent, useThemeColor, useBackgroundColor } from '../lib/hooks';
 import { hexToRgba } from '../lib/utils';
@@ -10,57 +9,69 @@ const FAQSection = () => {
     const { content } = useContent('faq');
     const brandColor = useThemeColor('--color-brand-500', '#00abad');
     const bgColor = useBackgroundColor('primary');
+    const [openIndex, setOpenIndex] = useState(null);
+
+    const toggleFAQ = (index) => {
+        setOpenIndex(openIndex === index ? null : index);
+    };
 
     return (
-        <Box py={24} bg={bgColor} position="relative" overflow="hidden">
+        <div className="py-24 relative overflow-hidden" style={{ backgroundColor: bgColor }}>
             {/* Particle Background */}
-            <Box position="absolute" inset={0} zIndex={0}>
+            <div className="absolute inset-0 z-0">
                 <ParticleBackground />
-            </Box>
+            </div>
 
-            <Container maxW="container.md" position="relative" zIndex={10}>
+            <div className="container mx-auto max-w-3xl px-4 relative z-[10]">
                 {/* Section Heading */}
-                <Box textAlign="center" mb={16}>
-                    <Heading size="2xl" mb={4} color="text.main">{content?.title}</Heading>
-                    <Text color="text.secondary" fontWeight="medium">{content?.subtitle}</Text>
-                </Box>
+                <div className="text-center mb-16">
+                    <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
+                        {content?.title}
+                    </h2>
+                    <p className="font-medium" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
+                        {content?.subtitle}
+                    </p>
+                </div>
 
                 {/* FAQ Accordion */}
-                <Accordion allowToggle>
+                <div className="space-y-4">
                     {content?.items?.map((faq, i) => (
-                        <AccordionItem
+                        <div
                             key={i}
-                            border="none"
-                            mb={4}
-                            bg="bg.surface"                   // theme-aware background
-                            backdropFilter="blur(20px)"       // frosted effect
-                            rounded="xl"
-                            borderWidth="1px"
-                            borderColor="border.light"
-                            boxShadow={`0 0 20px ${hexToRgba(brandColor, 0.08)}`}
+                            className="mb-4 bg-white/60 backdrop-blur-[20px] rounded-xl border border-gray-200"
+                            style={{
+                                boxShadow: `0 0 20px ${hexToRgba(brandColor, 0.08)}`,
+                            }}
                         >
-                            <h2>
-                                <AccordionButton
-                                    _expanded={{ color: 'brand.500' }}
-                                    py={6}
-                                    px={8}
-                                    _hover={{ bg: 'bg.muted' }}   // subtle hover from theme
-                                    rounded="xl"
+                            <button
+                                onClick={() => toggleFAQ(i)}
+                                className={`w-full py-6 px-8 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-50 ${
+                                    openIndex === i ? 'text-[var(--color-brand-500)]' : ''
+                                }`}
+                                style={{ color: openIndex === i ? 'var(--color-brand-500, #00abad)' : 'var(--color-text-main, #1d1d1f)' }}
+                            >
+                                <span className="flex-1 text-left font-bold text-lg">
+                                    {faq.question}
+                                </span>
+                                <svg
+                                    className={`w-5 h-5 transition-transform ${openIndex === i ? 'rotate-180' : ''}`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
                                 >
-                                    <Box as="span" flex='1' textAlign='left' fontWeight="bold" fontSize="lg">
-                                        {faq.question}
-                                    </Box>
-                                    <AccordionIcon />
-                                </AccordionButton>
-                            </h2>
-                            <AccordionPanel pb={6} px={8} color="text.secondary" fontWeight="medium">
-                                {faq.answer}
-                            </AccordionPanel>
-                        </AccordionItem>
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            {openIndex === i && (
+                                <div className="pb-6 px-8 font-medium" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
+                                    {faq.answer}
+                                </div>
+                            )}
+                        </div>
                     ))}
-                </Accordion>
-            </Container>
-        </Box>
+                </div>
+            </div>
+        </div>
     );
 };
 

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { Box, Container, Heading, SimpleGrid, Text, Tag, HStack } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useBlogs, useBackgroundColor } from '../lib/hooks';
 
@@ -13,35 +12,54 @@ const colorMap = {
     'Business': 'teal',
 };
 
-const BlogCard = ({ blog, category, title, date, color, imageUrl }) => (
-    <Link href={blog?._id ? `/blog/${blog._id}` : '#'} style={{ textDecoration: 'none' }}>
-        <Box cursor="pointer" role="group">
-            <Box
-                h="240px"
-                bg={imageUrl ? 'transparent' : `${color}.100`}
-                bgImage={imageUrl ? `url(${imageUrl})` : 'none'}
-                bgSize="cover"
-                bgPosition="center"
-                rounded="2xl"
-                mb={6}
-                position="relative"
-                overflow="hidden"
-                _groupHover={{ transform: 'translateY(-4px)', shadow: 'md' }}
-                transition="all 0.3s"
-            />
-            <HStack mb={2} spacing={3}>
-                <Tag size="sm" variant="subtle" colorScheme={color} textTransform="uppercase" fontWeight="bold">
-                    {category}
-                </Tag>
-                <Text fontSize="xs" color="gray.500" fontWeight="bold">•</Text>
-                <Text fontSize="xs" color="gray.500" fontWeight="bold" textTransform="uppercase">{date}</Text>
-            </HStack>
-            <Heading size="md" lineHeight="tall" _groupHover={{ color: 'brand.500' }} transition="color 0.2s">
-                {title}
-            </Heading>
-        </Box>
-    </Link>
-);
+const BlogCard = ({ blog, category, title, date, color, imageUrl }) => {
+    const [hovered, setHovered] = React.useState(false);
+
+    return (
+        <Link href={blog?._id ? `/blog/${blog._id}` : '#'} className="block no-underline">
+            <div
+                className="cursor-pointer group"
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+            >
+                <div
+                    className="h-60 rounded-2xl mb-6 relative overflow-hidden transition-all duration-300"
+                    style={{
+                        backgroundColor: imageUrl ? 'transparent' : undefined,
+                        backgroundImage: imageUrl ? `url(${imageUrl})` : 'none',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        transform: hovered ? 'translateY(-4px)' : 'none',
+                        boxShadow: hovered ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
+                    }}
+                />
+                <div className="flex items-center gap-3 mb-2">
+                    <span
+                        className="px-2 py-1 text-xs font-bold uppercase rounded"
+                        style={{
+                            backgroundColor: `var(--color-${color}-100, rgba(0, 0, 0, 0.1))`,
+                            color: `var(--color-${color}-700, #1d1d1f)`,
+                        }}
+                    >
+                        {category}
+                    </span>
+                    <span className="text-xs font-bold" style={{ color: '#6b7280' }}>•</span>
+                    <span className="text-xs font-bold uppercase" style={{ color: '#6b7280' }}>
+                        {date}
+                    </span>
+                </div>
+                <h3
+                    className="text-lg font-semibold leading-relaxed transition-colors duration-200"
+                    style={{
+                        color: hovered ? 'var(--color-brand-500, #00abad)' : 'var(--color-text-main, #1d1d1f)',
+                    }}
+                >
+                    {title}
+                </h3>
+            </div>
+        </Link>
+    );
+};
 
 // Default blogs if no blogs are available
 const defaultBlogs = [
@@ -71,14 +89,22 @@ const BlogSection = () => {
     const displayBlogs = blogs.length > 0 ? blogs : defaultBlogs;
 
     return (
-        <Box py={24} bg={bgColor} id="blog">
-            <Container maxW="container.xl">
-                <HStack justify="space-between" align="end" mb={12}>
-                    <Heading size="xl">Latest Insights</Heading>
-                    <Link href="/blog" className="link-primary" style={{ fontWeight: 'bold' }} display={{ base: 'none', md: 'block' }}>View all articles →</Link>
-                </HStack>
+        <div className="py-24" id="blog" style={{ backgroundColor: bgColor }}>
+            <div className="container mx-auto max-w-7xl px-4">
+                <div className="flex justify-between items-end mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
+                        Latest Insights
+                    </h2>
+                    <Link
+                        href="/blog"
+                        className="hidden md:block font-bold transition-colors hover:text-[var(--color-brand-600)]"
+                        style={{ color: 'var(--color-brand-500, #00abad)' }}
+                    >
+                        View all articles →
+                    </Link>
+                </div>
 
-                <SimpleGrid columns={{ base: 1, md: 3 }} gap={8}>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {displayBlogs.map((blog, index) => (
                         <BlogCard
                             key={blog._id || index}
@@ -90,13 +116,19 @@ const BlogSection = () => {
                             imageUrl={blog.imageUrl}
                         />
                     ))}
-                </SimpleGrid>
+                </div>
 
-                <Box mt={8} textAlign="center" display={{ md: 'none' }}>
-                    <Link href="/blog" className="link-primary" style={{ fontWeight: 'bold' }}>View all articles →</Link>
-                </Box>
-            </Container>
-        </Box>
+                <div className="mt-8 text-center md:hidden">
+                    <Link
+                        href="/blog"
+                        className="font-bold transition-colors hover:text-[var(--color-brand-600)]"
+                        style={{ color: 'var(--color-brand-500, #00abad)' }}
+                    >
+                        View all articles →
+                    </Link>
+                </div>
+            </div>
+        </div>
     );
 };
 

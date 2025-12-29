@@ -3,7 +3,6 @@
  * @module admin/content/components/ComparisonSectionEditor
  */
 
-import { VStack, Divider } from '@chakra-ui/react';
 import { SectionEditor } from './SectionEditor';
 import { ArrayItemEditor } from './ArrayItemEditor';
 import ThemedInput from '@/app/components/ThemedInput';
@@ -58,13 +57,13 @@ export function ComparisonSectionEditor({ section, onChange }) {
   };
 
   return (
-    <VStack spacing={4} align="stretch">
+    <div className="flex flex-col gap-6">
       <SectionEditor
         section={section}
         onChange={onChange}
         fields={['title', 'subtitle']}
       />
-      <Divider />
+      <div className="border-t border-gray-200" />
       <ArrayItemEditor
         title="Traditional Agencies Points"
         items={section.traditionalPoints || []}
@@ -79,7 +78,7 @@ export function ComparisonSectionEditor({ section, onChange }) {
           />
         )}
       />
-      <Divider />
+      <div className="border-t border-gray-200" />
       <ArrayItemEditor
         title="Our Points"
         items={section.ourPoints || []}
@@ -94,6 +93,6 @@ export function ComparisonSectionEditor({ section, onChange }) {
           />
         )}
       />
-    </VStack>
+    </div>
   );
 }

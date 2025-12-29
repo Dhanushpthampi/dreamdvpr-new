@@ -1,37 +1,69 @@
 'use client';
 
 import React from 'react';
-import { Box, Container, Stack, Text, SimpleGrid, Icon } from '@chakra-ui/react';
 import Link from 'next/link';
 
 const Footer = () => {
     return (
-<Box bg="bg.surface" color="text.secondary" py={12} borderTop="1px solid" borderColor="border.light">
-  <Container maxW="container.xl">
-    <Stack direction={{ base: 'column', md: 'row' }} justify="space-between" align="center" spacing={8}>
-      <Box textAlign={{ base: 'center', md: 'left' }}>
-        <Text fontWeight="bold" fontSize="lg" color="text.main">DREAMdvpr</Text>
-        <Text fontSize="sm" color="text.secondary">© 2025 DREAMdvpr. All rights reserved.</Text>
-      </Box>
+        <footer 
+            className="py-12 border-t border-gray-200"
+            style={{ 
+                backgroundColor: 'var(--color-bg-secondary, #ffffff)',
+                color: 'var(--color-text-secondary, #86868b)'
+            }}
+        >
+            <div className="container mx-auto max-w-7xl px-4">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+                    <div className="text-center md:text-left">
+                        <p className="font-bold text-lg mb-1" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
+                            DREAMdvpr
+                        </p>
+                        <p className="text-sm">© 2025 DREAMdvpr. All rights reserved.</p>
+                    </div>
 
-      <Stack direction="row" spacing={8} fontWeight="medium">
-        <Link href="#services" style={{ color: 'text.secondary', textDecoration: 'none' }}>Services</Link>
-        <Link href="/blog" style={{ color: 'text.secondary', textDecoration: 'none' }}>Blog</Link>
-        <Link href="#contact" style={{ color: 'text.secondary', textDecoration: 'none' }}>Contact</Link>
-      </Stack>
+                    <div className="flex flex-row gap-8 font-medium">
+                        <Link 
+                            href="#services" 
+                            className="transition-colors hover:text-[var(--color-brand-500)]"
+                            style={{ color: 'var(--color-text-secondary, #86868b)' }}
+                        >
+                            Services
+                        </Link>
+                        <Link 
+                            href="/blog" 
+                            className="transition-colors hover:text-[var(--color-brand-500)]"
+                            style={{ color: 'var(--color-text-secondary, #86868b)' }}
+                        >
+                            Blog
+                        </Link>
+                        <Link 
+                            href="#contact" 
+                            className="transition-colors hover:text-[var(--color-brand-500)]"
+                            style={{ color: 'var(--color-text-secondary, #86868b)' }}
+                        >
+                            Contact
+                        </Link>
+                    </div>
 
-      <Stack direction="row" spacing={4}>
-        <Box w={10} h={10} bg="bg.muted" rounded="full" display="flex" alignItems="center" justifyContent="center" _hover={{ bg: 'brand.500', color: 'white' }} cursor="pointer" transition="all 0.2s">
-          <Text fontSize="xs" fontWeight="bold">TW</Text>
-        </Box>
-        <Box w={10} h={10} bg="bg.muted" rounded="full" display="flex" alignItems="center" justifyContent="center" _hover={{ bg: 'brand.500', color: 'white' }} cursor="pointer" transition="all 0.2s">
-          <Text fontSize="xs" fontWeight="bold">LI</Text>
-        </Box>
-      </Stack>
-    </Stack>
-  </Container>
-</Box>
-
+                    <div className="flex flex-row gap-4">
+                        <a
+                            href="#"
+                            className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-[var(--color-brand-500)] hover:text-white"
+                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
+                        >
+                            <span className="text-xs font-bold">TW</span>
+                        </a>
+                        <a
+                            href="#"
+                            className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-[var(--color-brand-500)] hover:text-white"
+                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}
+                        >
+                            <span className="text-xs font-bold">LI</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     );
 };
 

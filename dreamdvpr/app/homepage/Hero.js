@@ -1,16 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  Button,
-  Flex,
-  VStack,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import {
   useGLTF,
@@ -21,10 +11,6 @@ import {
 import { motion } from 'framer-motion';
 import { useContent, useBackgroundColor } from '../lib/hooks';
 import ParticleBackground from '../components/ParticleBackground';
-
-const MotionHeading = motion(Heading);
-const MotionText = motion(Text);
-const MotionBox = motion(Box);
 
 /* ===============================
    3D MODEL WITH FREE FLOATING MOTION
@@ -56,23 +42,34 @@ function SpaceshipModel() {
 const Hero = () => {
   const { content } = useContent('hero');
   const bgColor = useBackgroundColor('primary');
+  const [modelPosition, setModelPosition] = useState([0, 0, 0]);
 
-  const modelPosition =
-    useBreakpointValue({
-      base: [0, 0, 0],
-      md: [1.5, 0, 0],
-      lg: [2, 0, 0],
-    }) ?? [0, 0, 0];
+  useEffect(() => {
+    const updatePosition = () => {
+      if (window.innerWidth >= 1024) {
+        setModelPosition([2, 0, 0]);
+      } else if (window.innerWidth >= 768) {
+        setModelPosition([1.5, 0, 0]);
+      } else {
+        setModelPosition([0, 0, 0]);
+      }
+    };
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    return () => window.removeEventListener('resize', updatePosition);
+  }, []);
+
+  const titleParts = content?.title?.split(content?.titleHighlight || 'Future of Web') || [];
 
   return (
-    <Box position="relative" h="100vh" w="100vw" overflow="hidden" bg={bgColor}>
+    <div className="relative h-screen w-screen overflow-hidden" style={{ backgroundColor: bgColor }}>
       {/* Particle Background */}
-      <Box position="absolute" inset={0} zIndex={0}>
+      <div className="absolute inset-0 z-0">
         <ParticleBackground />
-      </Box>
+      </div>
 
       {/* 3D Scene */}
-      <Box position="absolute" inset={0} zIndex={1}>
+      <div className="absolute inset-0 z-[1]">
         <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
           <ambientLight intensity={0.5} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
@@ -81,15 +78,14 @@ const Hero = () => {
 
           <group position={modelPosition}>
             <PresentationControls
-              global={true}       // Drag anywhere on canvas
-              snap={false}        // Free rotation
+              global={true}
+              snap={false}
               speed={1.5}
               rotation={[0, 0, 0]}
               polar={[-Math.PI / 4, Math.PI / 4]}
               azimuth={[-Math.PI, Math.PI]}
               config={{ mass: 1, tension: 120, friction: 14 }}
             >
-              {/* Float just adds gentle rotation + vertical motion, can keep or remove */}
               <Float
                 speed={0.5}
                 rotationIntensity={0.2}
@@ -100,77 +96,60 @@ const Hero = () => {
             </PresentationControls>
           </group>
         </Canvas>
-      </Box>
+      </div>
 
       {/* Content Overlay */}
-      <Container maxW="container.xl" h="100%" position="relative" zIndex={10} pointerEvents="none">
-        <Flex h="100%" align="center" justify={{ base: 'center', md: 'flex-start' }}>
-          <VStack
-            align={{ base: 'center', md: 'flex-start' }}
-            spacing={6}
-            maxW="xl"
-            textAlign={{ base: 'center', md: 'left' }}
-            pointerEvents="auto"
-          >
-            <MotionHeading
-              as="h1"
-              size="4xl"
-              fontWeight="bold"
-              color="text.main"
+      <div className="container mx-auto max-w-7xl h-full relative z-[10] pointer-events-none px-4">
+        <div className="h-full flex items-center justify-center md:justify-start">
+          <div className="flex flex-col items-center md:items-start gap-6 max-w-xl text-center md:text-left pointer-events-auto">
+            <motion.h1
+              className="text-5xl md:text-6xl font-bold"
+              style={{ color: 'var(--color-text-main, #1d1d1f)' }}
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              {content?.title
-                ?.split(content?.titleHighlight || 'Future of Web')
-                .map((part, i, arr) =>
-                  i === arr.length - 1 ? (
-                    <React.Fragment key={i}>
-                      <Box as="span" color="brand.500">
-                        {content?.titleHighlight || 'Future of Web'}
-                      </Box>
-                      {part}
-                    </React.Fragment>
-                  ) : (
-                    <React.Fragment key={i}>{part}</React.Fragment>
-                  )
-                )}
-            </MotionHeading>
+              {titleParts.map((part, i, arr) =>
+                i === arr.length - 1 ? (
+                  <React.Fragment key={i}>
+                    <span style={{ color: 'var(--color-brand-500, #00abad)' }}>
+                      {content?.titleHighlight || 'Future of Web'}
+                    </span>
+                    {part}
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment key={i}>{part}</React.Fragment>
+                )
+              )}
+            </motion.h1>
 
-            <MotionText
-              fontSize="xl"
-              color="text.secondary"
+            <motion.p
+              className="text-xl"
+              style={{ color: 'var(--color-text-secondary, #86868b)' }}
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               {content?.subtitle}
-            </MotionText>
+            </motion.p>
 
-            <MotionBox
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
             >
-              <Button
-                size="lg"
-                colorScheme="brand"
-                bg="brand.500"
-                color="white"
-                _hover={{
-                  bg: 'brand.600',
-                  transform: 'translateY(-2px)',
-                }}
-                as="a"
+              <a
                 href="#contact"
+                className="px-6 py-3 text-lg font-medium text-white rounded-xl transition-all hover:opacity-90 hover:-translate-y-0.5"
+                style={{ backgroundColor: 'var(--color-brand-500, #00abad)' }}
               >
                 {content?.ctaText}
-              </Button>
-            </MotionBox>
-          </VStack>
-        </Flex>
-      </Container>
-    </Box>
+              </a>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

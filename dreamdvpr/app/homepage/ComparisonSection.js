@@ -1,17 +1,6 @@
 'use client';
 
 import React from 'react';
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  SimpleGrid,
-  VStack,
-  HStack,
-  Icon,
-  Badge,
-} from '@chakra-ui/react';
 import ParticleBackground from '../components/ParticleBackground';
 import { useContent, useThemeColor, useBackgroundColor } from '../lib/hooks';
 import { hexToRgba } from '../lib/utils';
@@ -22,114 +11,91 @@ const ComparisonSection = () => {
   const bgColor = useBackgroundColor('primary');
 
   return (
-    <Box
-      py={24}
-      bg={bgColor}
+    <div
+      className="py-24 relative overflow-hidden"
       id="comparison"
-      position="relative"
-      overflow="hidden"
+      style={{ backgroundColor: bgColor }}
     >
       <ParticleBackground />
 
-      <Container maxW="container.xl" position="relative" zIndex={10}>
+      <div className="container mx-auto max-w-7xl px-4 relative z-[10]">
         {/* SECTION HEADER */}
-        <Box textAlign="center" mb={16}>
-          <Heading size="2xl" mb={4} color="text.main">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
             {content?.title}
-          </Heading>
-          <Text color="text.secondary" fontWeight="medium">
+          </h2>
+          <p className="font-medium" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
             {content?.subtitle}
-          </Text>
-        </Box>
+          </p>
+        </div>
 
-        <SimpleGrid
-          columns={{ base: 1, md: 2 }}
-          gap={8}
-          maxW="5xl"
-          mx="auto"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* ❌ TRADITIONAL AGENCIES */}
-          <Box
-            p={8}
-            rounded="2xl"
-            bg="transparent"
-            backdropFilter="saturate(160%) blur(20px)"
-            border="1px solid"
-            borderColor="whiteAlpha.300"
-            opacity={0.6}
-            filter="grayscale(100%)"
+          <div
+            className="p-8 rounded-2xl bg-transparent backdrop-saturate-[160%] backdrop-blur-[20px] border border-white/30 opacity-60 grayscale"
           >
-            <HStack mb={6} spacing={4}>
-              <Box fontSize="3xl">😑</Box>
-              <Heading size="md" color="text.secondary">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="text-3xl">😑</span>
+              <h3 className="text-lg font-semibold" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
                 Traditional Agencies
-              </Heading>
-            </HStack>
+              </h3>
+            </div>
 
-            <VStack align="start" spacing={4}>
+            <div className="flex flex-col items-start gap-4">
               {content?.traditionalPoints?.map((point, i) => (
-                <HStack key={i} spacing={3}>
-                  <Text color="text.secondary">✕</Text>
-                  <Text color="text.secondary">{point}</Text>
-                </HStack>
+                <div key={i} className="flex items-center gap-3">
+                  <span style={{ color: 'var(--color-text-secondary, #86868b)' }}>✕</span>
+                  <p style={{ color: 'var(--color-text-secondary, #86868b)' }}>{point}</p>
+                </div>
               ))}
-            </VStack>
-          </Box>
+            </div>
+          </div>
 
           {/* ✅ DREAMdvpr */}
-          <Box
-            p={8}
-            rounded="2xl"
-            bg="transparent"
-            backdropFilter="saturate(180%) blur(20px)"
-            border="2px solid"
-            borderColor={hexToRgba(brandColor, 0.5)}
-            boxShadow={`0 0 30px ${hexToRgba(brandColor, 0.15)}`}
-            position="relative"
+          <div
+            className="p-8 rounded-2xl bg-transparent backdrop-saturate-[180%] backdrop-blur-[20px] border-2 relative"
+            style={{
+              borderColor: hexToRgba(brandColor, 0.5),
+              boxShadow: `0 0 30px ${hexToRgba(brandColor, 0.15)}`,
+            }}
           >
-            <Badge
-              position="absolute"
-              top={0}
-              right={0}
-              borderTopRightRadius="2xl"
-              borderBottomLeftRadius="xl"
-              px={4}
-              py={1}
-              bg="brand.500"
-              color="white"
+            <span
+              className="absolute top-0 right-0 px-4 py-1 text-white text-xs font-bold rounded-tr-2xl rounded-bl-xl"
+              style={{ backgroundColor: 'var(--color-brand-500, #00abad)' }}
             >
               RECOMMENDED
-            </Badge>
+            </span>
 
-            <HStack mb={6} spacing={4}>
-              <Box fontSize="3xl">🤩</Box>
-              <Heading size="md" color="text.main">
+            <div className="flex items-center gap-4 mb-6">
+              <span className="text-3xl">🤩</span>
+              <h3 className="text-lg font-semibold" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
                 DREAMdvpr
-              </Heading>
-            </HStack>
+              </h3>
+            </div>
 
-            <VStack align="start" spacing={4} fontWeight="medium">
+            <div className="flex flex-col items-start gap-4 font-medium">
               {content?.ourPoints?.map((point, i) => (
-                <HStack key={i} spacing={3}>
-                  <Icon
+                <div key={i} className="flex items-center gap-3">
+                  <svg
                     viewBox="0 0 20 20"
+                    className="w-5 h-5"
                     fill="currentColor"
-                    color="brand.500"
+                    style={{ color: 'var(--color-brand-500, #00abad)' }}
                   >
                     <path
                       fillRule="evenodd"
                       d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                       clipRule="evenodd"
                     />
-                  </Icon>
-                  <Text color="text.main">{point}</Text>
-                </HStack>
+                  </svg>
+                  <p style={{ color: 'var(--color-text-main, #1d1d1f)' }}>{point}</p>
+                </div>
               ))}
-            </VStack>
-          </Box>
-        </SimpleGrid>
-      </Container>
-    </Box>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

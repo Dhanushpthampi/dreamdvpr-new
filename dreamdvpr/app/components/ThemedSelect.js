@@ -1,7 +1,5 @@
 'use client';
 
-import { FormControl, FormLabel, Select, FormErrorMessage } from '@chakra-ui/react';
-
 /**
  * Themed select dropdown component
  * @param {Object} props
@@ -21,42 +19,39 @@ const ThemedSelect = ({
     options = [],
     error,
     required = false,
+    className = '',
     ...rest
 }) => {
     return (
-        <FormControl isInvalid={!!error} isRequired={required}>
+        <div className="w-full">
             {label && (
-                <FormLabel fontWeight="semibold" color="gray.700" mb={2}>
+                <label className="block font-semibold mb-2" style={{ color: '#374151' }}>
                     {label}
-                </FormLabel>
+                    {required && <span className="text-red-500 ml-1">*</span>}
+                </label>
             )}
-            <Select
-                placeholder={placeholder}
+            <select
                 value={value}
                 onChange={onChange}
-                bg="rgba(255, 255, 255, 0.6)"
-                border="1px solid"
-                borderColor={error ? 'red.400' : 'rgba(255, 255, 255, 0.8)'}
-                color="gray.800"
-                fontWeight="medium"
-                _hover={{ borderColor: error ? 'red.500' : 'brand.400' }}
-                _focus={{
-                    borderColor: error ? 'red.500' : 'brand.500',
-                    boxShadow: error
-                        ? '0 0 0 1px var(--chakra-colors-red-500)'
-                        : '0 0 0 1px var(--chakra-colors-brand-500)',
-                    bg: 'white',
-                }}
+                className={`w-full px-4 py-3 bg-white/60 border rounded-lg focus:outline-none focus:ring-2 focus:bg-white transition-all font-medium ${
+                    error
+                        ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
+                        : 'border-white/80 hover:border-[#00abad]/50 focus:border-[#00abad] focus:ring-[#00abad]'
+                } ${className}`}
+                required={required}
                 {...rest}
             >
+                <option value="">{placeholder}</option>
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>
                         {option.label}
                     </option>
                 ))}
-            </Select>
-            {error && <FormErrorMessage>{error}</FormErrorMessage>}
-        </FormControl>
+            </select>
+            {error && (
+                <p className="mt-1 text-sm text-red-500">{error}</p>
+            )}
+        </div>
     );
 };
 

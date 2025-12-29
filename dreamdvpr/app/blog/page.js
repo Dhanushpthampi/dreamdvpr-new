@@ -1,17 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  Box,
-  Container,
-  Heading,
-  Text,
-  SimpleGrid,
-  VStack,
-  HStack,
-  Tag,
-  Spinner,
-} from '@chakra-ui/react';
 import Link from 'next/link';
 import Header from '../homepage/Header';
 import Footer from '../components/Footer';
@@ -34,76 +23,70 @@ const BlogCard = ({ blog }) => {
   const brandColor = useThemeColor('--color-brand-500', '#00abad');
 
   return (
-    <Link href={`/blog/${blog._id}`} style={{ textDecoration: 'none' }}>
-      <Box
-        role="group"
-        cursor="pointer"
-        bg="whiteAlpha.400"
-        backdropFilter="blur(20px) saturate(180%)"
-        rounded="2xl"
-        overflow="hidden"
-        border="1px solid"
-        borderColor="whiteAlpha.300"
-        boxShadow={`0 0 18px ${hexToRgba(brandColor, 0.12)}`}
-        transition="all 0.3s ease"
-        _hover={{
-          transform: 'translateY(-6px)',
-          boxShadow: `0 0 28px ${hexToRgba(brandColor, 0.22)}`,
+    <Link href={`/blog/${blog._id}`} className="block no-underline">
+      <div
+        className="group cursor-pointer bg-white/40 backdrop-blur-[20px] backdrop-saturate-[180%] rounded-2xl overflow-hidden border border-white/30 transition-all duration-300 ease-in-out hover:-translate-y-1.5"
+        style={{
+          boxShadow: `0 0 18px ${hexToRgba(brandColor, 0.12)}`,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.boxShadow = `0 0 28px ${hexToRgba(brandColor, 0.22)}`;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.boxShadow = `0 0 18px ${hexToRgba(brandColor, 0.12)}`;
         }}
       >
         {/* Image */}
-        <Box
-          h="240px"
-          bg={blog.imageUrl ? 'transparent' : `${color}.100`}
-          bgImage={blog.imageUrl ? `url(${blog.imageUrl})` : 'none'}
-          bgSize="cover"
-          bgPosition="center"
+        <div
+          className="h-60 bg-cover bg-center"
+          style={{
+            backgroundColor: blog.imageUrl ? 'transparent' : undefined,
+            backgroundImage: blog.imageUrl ? `url(${blog.imageUrl})` : 'none',
+          }}
         />
 
         {/* Content */}
-        <VStack align="start" p={6} spacing={3}>
-          <HStack spacing={3}>
-            <Tag
-              size="sm"
-              variant="subtle"
-              colorScheme={color}
-              textTransform="uppercase"
-              fontWeight="bold"
+        <div className="flex flex-col items-start p-6 gap-3">
+          <div className="flex items-center gap-3">
+            <span
+              className="px-2 py-1 text-xs font-bold uppercase rounded"
+              style={{
+                backgroundColor: `var(--color-${color}-100, rgba(0, 0, 0, 0.1))`,
+                color: `var(--color-${color}-700, #1d1d1f)`,
+              }}
             >
               {blog.category}
-            </Tag>
-            <Text fontSize="xs" color="text.secondary" fontWeight="bold">
+            </span>
+            <span className="text-xs font-bold" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
               •
-            </Text>
-            <Text
-              fontSize="xs"
-              color="text.secondary"
-              fontWeight="bold"
-              textTransform="uppercase"
+            </span>
+            <span
+              className="text-xs font-bold uppercase"
+              style={{ color: 'var(--color-text-secondary, #86868b)' }}
             >
               {new Date(blog.createdAt).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
                 year: 'numeric',
               })}
-            </Text>
-          </HStack>
+            </span>
+          </div>
 
-          <Heading
-            size="md"
-            lineHeight="tall"
-            color="text.main"
-            transition="color 0.2s"
-            _groupHover={{ color: 'brand.500' }}
+          <h3
+            className="text-lg font-semibold leading-relaxed transition-colors duration-200 group-hover:text-[var(--color-brand-500)]"
+            style={{ color: 'var(--color-text-main, #1d1d1f)' }}
           >
             {blog.title}
-          </Heading>
+          </h3>
 
-          <Text fontSize="sm" color="text.secondary" noOfLines={2}>
+          <p
+            className="text-sm line-clamp-2"
+            style={{ color: 'var(--color-text-secondary, #86868b)' }}
+          >
             {blog.excerpt}
-          </Text>
-        </VStack>
-      </Box>
+          </p>
+        </div>
+      </div>
     </Link>
   );
 };
@@ -133,56 +116,53 @@ export default function BlogPage() {
   };
 
   return (
-    <Box minH="100vh" bg="bg.app">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-app, #f5f5f7)' }}>
       <Header />
 
-      <Box pt={24} pb={16} position="relative">
+      <div className="pt-24 pb-16 relative">
         {/* background glow */}
-        <Box
-          position="absolute"
-          inset={0}
-          bgGradient={`radial(circle at 50% 0%, ${hexToRgba(
-            brandColor,
-            0.12
-          )}, transparent 60%)`}
-          pointerEvents="none"
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `radial-gradient(circle at 50% 0%, ${hexToRgba(brandColor, 0.12)}, transparent 60%)`,
+          }}
         />
 
-        <Container maxW="container.xl" position="relative">
-          <VStack spacing={12} align="stretch">
+        <div className="container mx-auto max-w-7xl px-4 relative">
+          <div className="flex flex-col gap-12">
             {/* Header */}
-            <Box textAlign="center">
-              <Heading size="2xl" mb={4} color="text.main">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
                 Blog
-              </Heading>
-              <Text fontSize="lg" color="text.secondary">
+              </h1>
+              <p className="text-lg" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
                 Latest insights, tips, and updates from DREAMdvpr
-              </Text>
-            </Box>
+              </p>
+            </div>
 
             {/* Content */}
             {loading ? (
-              <Box textAlign="center" py={20}>
-                <Spinner size="xl" color="brand.500" thickness="4px" />
-              </Box>
+              <div className="text-center py-20">
+                <div className="inline-block w-12 h-12 border-4 border-t-[var(--color-brand-500)] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+              </div>
             ) : blogs.length === 0 ? (
-              <Box textAlign="center" py={20}>
-                <Text fontSize="lg" color="text.secondary">
+              <div className="text-center py-20">
+                <p className="text-lg" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
                   No blog posts available yet. Check back soon!
-                </Text>
-              </Box>
+                </p>
+              </div>
             ) : (
-              <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={8}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {blogs.map((blog) => (
                   <BlogCard key={blog._id} blog={blog} />
                 ))}
-              </SimpleGrid>
+              </div>
             )}
-          </VStack>
-        </Container>
-      </Box>
+          </div>
+        </div>
+      </div>
 
       <Footer />
-    </Box>
+    </div>
   );
 }

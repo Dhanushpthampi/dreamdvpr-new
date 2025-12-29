@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Box, Container, Heading, Text, VStack, HStack, Icon, Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalFooter, ModalCloseButton, useDisclosure } from '@chakra-ui/react';
+import { ClientSidebarWrapper } from '../../components/ClientSidebar';
 import GlassCard from '../../components/GlassCard';
 import ThemedInput from '../../components/ThemedInput';
 import MeetingScheduler from '../../components/MeetingScheduler';
@@ -11,7 +11,7 @@ import MeetingScheduler from '../../components/MeetingScheduler';
 export default function NewProjectPage() {
     const { data: session, status } = useSession();
     const router = useRouter();
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [profileLoading, setProfileLoading] = useState(true);
@@ -36,7 +36,7 @@ export default function NewProjectPage() {
                 const data = await res.json();
                 setProfileCompleted(data.user?.onboardingCompleted || false);
                 if (!data.user?.onboardingCompleted) {
-                    onOpen();
+                    setIsModalOpen(true);
                 }
             }
         } catch (error) {
@@ -112,84 +112,84 @@ export default function NewProjectPage() {
 
     if (status === 'loading' || profileLoading) {
         return (
-            <Box minH="100vh" bg="bg.app" display="flex" alignItems="center" justifyContent="center">
-                <Text>Loading...</Text>
-            </Box>
+            <ClientSidebarWrapper>
+                <div className="min-h-screen flex items-center justify-center">
+                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                </div>
+            </ClientSidebarWrapper>
         );
     }
 
     return (
-        <Box minH="100vh" bg="bg.app">
+        <ClientSidebarWrapper>
             {/* Profile Completion Modal */}
-            <Modal isOpen={isOpen} onClose={() => {}} closeOnOverlayClick={false} closeOnEsc={false}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Complete Your Profile First</ModalHeader>
-                    <ModalBody>
-                        <VStack spacing={4} align="stretch">
-                            <Text color="text.secondary">
-                                Before creating a project, please complete your profile setup. This helps us better understand your needs and provide personalized service.
-                            </Text>
-                            <Box bg="brand.50" p={4} rounded="lg">
-                                <Text fontSize="sm" fontWeight="semibold" mb={2}>What you'll need:</Text>
-                                <VStack align="start" spacing={1} fontSize="sm" color="text.secondary">
-                                    <Text>• Company name</Text>
-                                    <Text>• Industry</Text>
-                                    <Text>• Contact information</Text>
-                                </VStack>
-                            </Box>
-                        </VStack>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button variant="ghost" mr={3} onClick={() => router.push('/client')}>
-                            Cancel
-                        </Button>
-                        <Button
-                            bg="brand.500"
-                            color="white"
-                            onClick={() => {
-                                onClose();
-                                router.push('/client/onboarding');
-                            }}
-                            _hover={{ bg: 'brand.600' }}
-                        >
-                            Complete Profile
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+            {isModalOpen && (
+                <>
+                    <div
+                        className="fixed inset-0 bg-black/50 z-[2000]"
+                        onClick={() => {}}
+                    />
+                    <div className="fixed inset-0 flex items-center justify-center z-[2001] p-4">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+                            <div className="px-6 py-4 border-b border-gray-200">
+                                <h2 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>Complete Your Profile First</h2>
+                            </div>
+                            <div className="p-6">
+                                <div className="flex flex-col gap-4">
+                                    <p style={{ color: '#86868b' }}>
+                                        Before creating a project, please complete your profile setup. This helps us better understand your needs and provide personalized service.
+                                    </p>
+                                    <div className="bg-blue-50 p-4 rounded-lg">
+                                        <p className="text-sm font-semibold mb-2">What you'll need:</p>
+                                        <div className="flex flex-col items-start gap-1 text-sm" style={{ color: '#86868b' }}>
+                                            <p>• Company name</p>
+                                            <p>• Industry</p>
+                                            <p>• Contact information</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="px-6 py-4 border-t border-gray-200 flex justify-end gap-3">
+                                <button
+                                    onClick={() => router.push('/client')}
+                                    className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setIsModalOpen(false);
+                                        router.push('/client/onboarding');
+                                    }}
+                                    className="px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors"
+                                >
+                                    Complete Profile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
 
-            {/* Header */}
-            <Box bg="white" borderBottom="1px" borderColor="gray.200" py={4}>
-                <Container maxW="container.xl">
-                    <HStack justify="space-between">
-                        <Heading size="lg" color="text.main">Start a New Project</Heading>
-                        <Button variant="ghost" onClick={() => router.push('/client')}>
-                            ← Back to Dashboard
-                        </Button>
-                    </HStack>
-                </Container>
-            </Box>
-
-            <Container maxW="container.lg" py={16}>
-                <VStack spacing={10}>
+            <div className="container mx-auto max-w-4xl px-4 py-16">
+                <div className="flex flex-col gap-10">
                     {/* Step 1: Project Details */}
                     {step === 1 && (
-                        <GlassCard p={10} w="full">
-                            <VStack spacing={8} align="stretch">
-                                <Box textAlign="center" mb={4}>
-                                    <Box bg="brand.500" p={4} rounded="xl" display="inline-block" mb={6}>
-                                        <Icon viewBox="0 0 24 24" boxSize={12} color="white">
-                                            <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
-                                        </Icon>
-                                    </Box>
-                                    <Heading size="lg" color="text.main" mb={2}>
+                        <GlassCard p={10} className="w-full">
+                            <div className="flex flex-col gap-8">
+                                <div className="text-center mb-4">
+                                    <div className="bg-[#00abad] p-4 rounded-xl inline-block mb-6">
+                                        <svg viewBox="0 0 24 24" className="w-12 h-12 text-white" fill="currentColor">
+                                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                                        </svg>
+                                    </div>
+                                    <h2 className="text-2xl font-bold mb-2" style={{ color: '#1d1d1f' }}>
                                         Tell us about your project
-                                    </Heading>
-                                    <Text color="text.secondary">
+                                    </h2>
+                                    <p style={{ color: '#86868b' }}>
                                         Provide some basic information to get started
-                                    </Text>
-                                </Box>
+                                    </p>
+                                </div>
 
                                 <ThemedInput
                                     label="Project Name"
@@ -211,122 +211,119 @@ export default function NewProjectPage() {
                                     rows={6}
                                 />
 
-                                <Button
-                                    bg="brand.500"
-                                    color="white"
-                                    size="lg"
-                                    w="full"
+                                <button
                                     onClick={handleCreateProject}
-                                    isLoading={loading}
-                                    _hover={{ bg: 'brand.600' }}
+                                    disabled={loading}
+                                    className="w-full px-4 py-3 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg font-medium flex items-center justify-center gap-2"
                                 >
-                                    Continue to Schedule Meeting
-                                </Button>
-                            </VStack>
+                                    {loading ? (
+                                        <>
+                                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                            Creating...
+                                        </>
+                                    ) : (
+                                        'Continue to Schedule Meeting'
+                                    )}
+                                </button>
+                            </div>
                         </GlassCard>
                     )}
 
                     {/* Step 2: Schedule Strategy Meeting */}
                     {step === 2 && (
-                        <GlassCard p={10} w="full">
-                            <VStack spacing={8} align="stretch">
-                                <Box textAlign="center" mb={4}>
-                                    <Box bg="gray.700" p={4} rounded="xl" display="inline-block" mb={6}>
-                                        <Icon viewBox="0 0 24 24" boxSize={12} color="white">
-                                            <path fill="currentColor" d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
-                                        </Icon>
-                                    </Box>
-                                    <Heading size="lg" color="text.main" mb={2}>
+                        <GlassCard p={10} className="w-full">
+                            <div className="flex flex-col gap-8">
+                                <div className="text-center mb-4">
+                                    <div className="bg-gray-700 p-4 rounded-xl inline-block mb-6">
+                                        <svg viewBox="0 0 24 24" className="w-12 h-12 text-white" fill="currentColor">
+                                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
+                                        </svg>
+                                    </div>
+                                    <h2 className="text-2xl font-bold mb-2" style={{ color: '#1d1d1f' }}>
                                         Schedule Your Strategy Meeting
-                                    </Heading>
-                                    <Text color="text.secondary">
+                                    </h2>
+                                    <p style={{ color: '#86868b' }}>
                                         Let's discuss your project in detail
-                                    </Text>
-                                </Box>
+                                    </p>
+                                </div>
 
                                 <MeetingScheduler onSchedule={handleScheduleMeeting} />
-                            </VStack>
+                            </div>
                         </GlassCard>
                     )}
 
                     {/* Step 3: Confirmation */}
                     {step === 3 && (
-                        <GlassCard p={12} w="full" textAlign="center">
-                            <VStack spacing={8}>
-                                <Box bg="green.50" p={4} rounded="full" display="inline-block">
-                                    <Icon viewBox="0 0 24 24" boxSize={20} color="green.500">
-                                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                                    </Icon>
-                                </Box>
+                        <GlassCard p={12} className="w-full text-center">
+                            <div className="flex flex-col items-center gap-8">
+                                <div className="bg-green-50 p-4 rounded-full inline-block">
+                                    <svg viewBox="0 0 24 24" className="w-20 h-20 text-green-500" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                    </svg>
+                                </div>
 
-                                <Heading size="xl" color="text.main">
+                                <h2 className="text-4xl font-bold" style={{ color: '#1d1d1f' }}>
                                     Project Created Successfully!
-                                </Heading>
+                                </h2>
 
-                                <Text fontSize="lg" color="text.secondary" maxW="2xl">
+                                <p className="text-lg max-w-2xl" style={{ color: '#86868b' }}>
                                     We've received your project details and scheduled your strategy meeting.
                                     Our team will review your requirements and prepare for our discussion.
-                                </Text>
+                                </p>
 
-                                <GlassCard p={6} w="full" bg="brand.50">
-                                    <VStack align="start" spacing={3}>
-                                        <Text fontSize="sm" color="text.main" fontWeight="semibold">
+                                <GlassCard p={6} className="w-full bg-blue-50">
+                                    <div className="flex flex-col items-start gap-3">
+                                        <p className="text-sm font-semibold" style={{ color: '#1d1d1f' }}>
                                             What's Next?
-                                        </Text>
-                                        <VStack align="start" spacing={2}>
-                                            <HStack>
-                                                <Icon viewBox="0 0 24 24" boxSize={4} color="brand.500">
-                                                    <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                                                </Icon>
-                                                <Text fontSize="sm" color="text.secondary">
+                                        </p>
+                                        <div className="flex flex-col items-start gap-2">
+                                            <div className="flex items-center gap-2">
+                                                <svg viewBox="0 0 24 24" className="w-4 h-4 text-[#00abad]" fill="currentColor">
+                                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                                                </svg>
+                                                <p className="text-sm" style={{ color: '#86868b' }}>
                                                     Check your email for meeting confirmation
-                                                </Text>
-                                            </HStack>
-                                            <HStack>
-                                                <Icon viewBox="0 0 24 24" boxSize={4} color="brand.500">
-                                                    <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                                                </Icon>
-                                                <Text fontSize="sm" color="text.secondary">
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <svg viewBox="0 0 24 24" className="w-4 h-4 text-[#00abad]" fill="currentColor">
+                                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                                                </svg>
+                                                <p className="text-sm" style={{ color: '#86868b' }}>
                                                     Prepare any materials you'd like to discuss
-                                                </Text>
-                                            </HStack>
-                                            <HStack>
-                                                <Icon viewBox="0 0 24 24" boxSize={4} color="brand.500">
-                                                    <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                                                </Icon>
-                                                <Text fontSize="sm" color="text.secondary">
+                                                </p>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <svg viewBox="0 0 24 24" className="w-4 h-4 text-[#00abad]" fill="currentColor">
+                                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                                                </svg>
+                                                <p className="text-sm" style={{ color: '#86868b' }}>
                                                     Track your project progress in the dashboard
-                                                </Text>
-                                            </HStack>
-                                        </VStack>
-                                    </VStack>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </GlassCard>
 
-                                <HStack spacing={4} w="full" maxW="md">
-                                    <Button
-                                        variant="outline"
-                                        size="lg"
-                                        flex={1}
+                                <div className="flex gap-4 w-full max-w-md">
+                                    <button
                                         onClick={() => router.push(`/client/projects/${projectId}`)}
+                                        className="flex-1 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-lg font-medium"
                                     >
                                         View Project
-                                    </Button>
-                                    <Button
-                                        bg="brand.500"
-                                        color="white"
-                                        size="lg"
-                                        flex={1}
+                                    </button>
+                                    <button
                                         onClick={() => router.push('/client')}
-                                        _hover={{ bg: 'brand.600' }}
+                                        className="flex-1 px-4 py-3 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors text-lg font-medium"
                                     >
                                         Back to Dashboard
-                                    </Button>
-                                </HStack>
-                            </VStack>
+                                    </button>
+                                </div>
+                            </div>
                         </GlassCard>
                     )}
-                </VStack>
-            </Container>
-        </Box>
+                </div>
+            </div>
+        </ClientSidebarWrapper>
     );
 }

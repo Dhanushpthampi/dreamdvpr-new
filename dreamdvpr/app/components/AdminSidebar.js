@@ -1,33 +1,13 @@
 'use client';
 
-import {
-  Box,
-  VStack,
-  HStack,
-  Text,
-  Icon,
-  Avatar,
-  Divider,
-  useDisclosure,
-  IconButton,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerBody,
-  useColorMode,
-} from '@chakra-ui/react';
+import { useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { useThemeColor } from '../lib/hooks';
-import { hexToRgba } from '../lib/utils';
+import { useSession, signOut } from 'next-auth/react';
 
 const AdminSidebar = ({ isMobile = false, onClose }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { data: session } = useSession();
-  const { colorMode } = useColorMode();
-  const brandColor = useThemeColor('--color-brand-500', '#00abad');
 
   const menuItems = [
     { label: 'Dashboard', path: '/admin', icon: 'M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z' },
@@ -46,144 +26,135 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
     if (isMobile && onClose) onClose();
   };
 
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/login' });
+  };
+
   return (
-    <VStack
-      align="stretch"
-      h="full"
-      bg="transparent"
-      backdropFilter="saturate(180%) blur(24px)"
-      borderRight="1px solid"
-      borderColor="whiteAlpha.300"
-    >
+    <div className="flex flex-col h-full bg-white/60 backdrop-blur-[24px] backdrop-saturate-[180%] border-r border-white/30">
       {/* Brand */}
-      <Box p={6} borderBottom="1px solid" borderColor="whiteAlpha.300">
-        <HStack spacing={3}>
-          <Box bg="brand.500" p={2} rounded="lg">
-            <Icon viewBox="0 0 24 24" boxSize={6} color="white">
-              <path fill="currentColor" d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7z" />
-            </Icon>
-          </Box>
-          <VStack align="start" spacing={0}>
-            <Text fontWeight="bold" color="text.main">DREAMdvpr</Text>
-            <Text fontSize="xs" color="text.secondary">Admin Portal</Text>
-          </VStack>
-        </HStack>
-      </Box>
+      <div className="p-6 border-b border-white/30 bg-white/40 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="bg-[#00abad] p-2 rounded-lg">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="currentColor">
+              <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7z" />
+            </svg>
+          </div>
+          <div className="flex flex-col items-start">
+            <p className="font-bold text-[#1d1d1f]">DREAMdvpr</p>
+            <p className="text-xs text-[#86868b]">Admin Portal</p>
+          </div>
+        </div>
+        {isMobile && (
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+            aria-label="Close menu"
+          >
+            <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+          </button>
+        )}
+      </div>
 
       {/* Nav */}
-      <VStack align="stretch" p={4} spacing={1} flex={1}>
+      <div className="flex flex-col p-4 gap-1 flex-1">
         {menuItems.map((item) => {
           const active = isActive(item.path);
           return (
-            <HStack
+            <div
               key={item.path}
-              px={4}
-              py={3}
-              rounded="lg"
-              cursor="pointer"
-              bg={active ? hexToRgba(brandColor, 0.12) : 'transparent'}
-              color={active ? 'brand.500' : 'text.secondary'}
-              fontWeight={active ? 'semibold' : 'medium'}
-              _hover={{
-                bg: hexToRgba(brandColor, 0.18),
-              }}
-              transition="all 0.2s ease"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${
+                active
+                  ? 'bg-[#00abad]/12 text-[#00abad] font-semibold'
+                  : 'text-[#86868b] font-medium hover:bg-[#00abad]/18'
+              }`}
               onClick={() => handleNavigation(item.path, item.badge)}
             >
-              <Icon viewBox="0 0 24 24" boxSize={5}>
-                <path fill="currentColor" d={item.icon} />
-              </Icon>
-              <Text flex={1}>{item.label}</Text>
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                <path d={item.icon} />
+              </svg>
+              <span className="flex-1">{item.label}</span>
               {item.badge && (
-                <Box px={2} py={0.5} rounded="full" bg="whiteAlpha.300">
-                  <Text fontSize="xs">{item.badge}</Text>
-                </Box>
+                <span className="px-2 py-0.5 rounded-full bg-white/30 text-xs">
+                  {item.badge}
+                </span>
               )}
-            </HStack>
+            </div>
           );
         })}
-      </VStack>
+      </div>
 
-      <Divider borderColor="whiteAlpha.300" />
+      <div className="border-t border-white/30" />
 
-      {/* User */}
-      <Box p={4}>
-        <HStack
-          px={4}
-          py={3}
-          rounded="lg"
-          cursor="pointer"
-          _hover={{ bg: 'whiteAlpha.200' }}
-          onClick={() => router.push('/api/auth/signout')}
+      {/* User & Logout */}
+      <div className="p-4 space-y-2">
+        <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/20">
+          <div className="w-8 h-8 rounded-full bg-[#00abad] flex items-center justify-center text-white font-semibold text-sm">
+            {session?.user?.name?.charAt(0) || 'A'}
+          </div>
+          <div className="flex flex-col items-start flex-1 min-w-0">
+            <p className="text-sm font-medium text-[#1d1d1f] truncate w-full">{session?.user?.name}</p>
+            <p className="text-xs text-[#86868b] truncate w-full">{session?.user?.email}</p>
+          </div>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors font-medium"
         >
-          <Avatar size="sm" name={session?.user?.name} />
-          <VStack align="start" spacing={0} flex={1}>
-            <Text fontSize="sm" fontWeight="medium">{session?.user?.name}</Text>
-            <Text fontSize="xs" color="text.secondary">{session?.user?.email}</Text>
-          </VStack>
-        </HStack>
-      </Box>
-    </VStack>
+          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+          </svg>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
   );
 };
 
 export const AdminSidebarWrapper = ({ children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <Box minH="100vh" bg="bg.app">
+    <div className="min-h-screen static-theme" style={{ backgroundColor: '#f5f5f7' }}>
       {/* Mobile Header */}
-      <Box
-        display={{ base: 'flex', lg: 'none' }}
-        alignItems="center"
-        justifyContent="space-between"
-        px={4}
-        py={3}
-        backdropFilter="blur(20px)"
-        borderBottom="1px solid"
-        borderColor="whiteAlpha.300"
-      >
-        <Text fontWeight="bold">DREAMdvpr</Text>
-        <IconButton
-          variant="ghost"
-          onClick={onOpen}
-          icon={
-            <Icon viewBox="0 0 24 24">
-              <path fill="currentColor" d="M3 18h18v-2H3z" />
-            </Icon>
-          }
-        />
-      </Box>
+      <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white/80 backdrop-blur-[20px] border-b border-gray-200 sticky top-0 z-50">
+        <p className="font-bold text-[#1d1d1f]">DREAMdvpr</p>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          aria-label="Open menu"
+        >
+          <svg viewBox="0 0 24 24" className="w-6 h-6 text-[#1d1d1f]" fill="currentColor" stroke="currentColor" strokeWidth="2">
+            <path d="M3 12h18M3 6h18M3 18h18" />
+          </svg>
+        </button>
+      </div>
 
       {/* Desktop */}
-      <Box
-        display={{ base: 'none', lg: 'block' }}
-        position="fixed"
-        left={0}
-        top={0}
-        bottom={0}
-        w="280px"
-        zIndex={10}
-      >
+      <div className="hidden lg:block fixed left-0 top-0 bottom-0 w-[280px] z-10">
         <AdminSidebar />
-      </Box>
+      </div>
 
       {/* Mobile Drawer */}
-      <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
-        <DrawerOverlay />
-        <DrawerContent bg="transparent" backdropFilter="blur(24px)">
-          <DrawerCloseButton />
-          <DrawerBody p={0}>
-            <AdminSidebar isMobile onClose={onClose} />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+      {isOpen && (
+        <>
+          <div
+            className="lg:hidden fixed inset-0 bg-black/50 z-[2000]"
+            onClick={() => setIsOpen(false)}
+          />
+          <div className="lg:hidden fixed left-0 top-0 bottom-0 w-80 bg-white/60 backdrop-blur-[24px] z-[2001] shadow-xl">
+            <AdminSidebar isMobile onClose={() => setIsOpen(false)} />
+          </div>
+        </>
+      )}
 
       {/* Content */}
-      <Box ml={{ base: 0, lg: '280px' }}>
+      <div className="lg:ml-[280px]">
         {children}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

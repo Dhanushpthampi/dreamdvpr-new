@@ -3,7 +3,6 @@
  * @module admin/content/components/CTASectionEditor
  */
 
-import { VStack, Divider } from '@chakra-ui/react';
 import { SectionEditor } from './SectionEditor';
 import { ArrayItemEditor } from './ArrayItemEditor';
 import ThemedInput from '@/app/components/ThemedInput';
@@ -34,13 +33,13 @@ export function CTASectionEditor({ section, onChange }) {
   };
 
   return (
-    <VStack spacing={4} align="stretch">
+    <div className="flex flex-col gap-6">
       <SectionEditor
         section={section}
         onChange={onChange}
         fields={['title', 'subtitle', 'buttonText']}
       />
-      <Divider />
+      <div className="border-t border-gray-200" />
       <ArrayItemEditor
         title="Points/Features"
         items={section.points || []}
@@ -55,6 +54,6 @@ export function CTASectionEditor({ section, onChange }) {
           />
         )}
       />
-    </VStack>
+    </div>
   );
 }

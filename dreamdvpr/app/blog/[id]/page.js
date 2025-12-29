@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Box, Container, Heading, Text, VStack, HStack, Tag, Spinner, Button, Icon } from '@chakra-ui/react';
 import Link from 'next/link';
 import Header from '../../homepage/Header';
 import Footer from '../../components/Footer';
@@ -46,9 +45,9 @@ export default function BlogDetailPage() {
 
     if (loading) {
         return (
-            <Box minH="100vh" bg="bg.app" display="flex" alignItems="center" justifyContent="center">
-                <Spinner size="xl" color="brand.500" thickness="4px" />
-            </Box>
+            <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--color-bg-app, #f5f5f7)' }}>
+                <div className="w-12 h-12 border-4 border-t-[var(--color-brand-500)] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+            </div>
         );
     }
 
@@ -59,145 +58,146 @@ export default function BlogDetailPage() {
     const color = colorMap[blog.category] || 'gray';
 
     return (
-        <Box minH="100vh" bg="bg.app">
+        <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-app, #f5f5f7)' }}>
             <Header />
-            <Box pt={24} pb={16}>
-                <Container maxW="container.md">
-                    <VStack spacing={8} align="stretch">
-                        <Button
-                            variant="ghost"
-                            leftIcon={
-                                <Icon viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-                                </Icon>
-                            }
+            <div className="pt-24 pb-16">
+                <div className="container mx-auto max-w-3xl px-4">
+                    <div className="flex flex-col gap-8">
+                        <button
                             onClick={() => router.push('/blog')}
-                            alignSelf="flex-start"
+                            className="self-start flex items-center gap-2 px-4 py-2 text-sm font-medium transition-colors hover:text-[var(--color-brand-500)]"
+                            style={{ color: 'var(--color-text-secondary, #86868b)' }}
                         >
+                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                            </svg>
                             Back to Blog
-                        </Button>
+                        </button>
 
-                        <VStack spacing={6} align="stretch">
-                            <HStack spacing={3}>
-                                <Tag size="md" variant="subtle" colorScheme={color} textTransform="uppercase" fontWeight="bold">
+                        <div className="flex flex-col gap-6">
+                            <div className="flex items-center gap-3">
+                                <span
+                                    className="px-3 py-1 text-sm font-bold uppercase rounded"
+                                    style={{
+                                        backgroundColor: `var(--color-${color}-100, rgba(0, 0, 0, 0.1))`,
+                                        color: `var(--color-${color}-700, #1d1d1f)`,
+                                    }}
+                                >
                                     {blog.category}
-                                </Tag>
-                                <Text fontSize="sm" color="gray.500">•</Text>
-                                <Text fontSize="sm" color="gray.500">
+                                </span>
+                                <span className="text-sm" style={{ color: '#6b7280' }}>•</span>
+                                <span className="text-sm" style={{ color: '#6b7280' }}>
                                     {new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                                </Text>
-                            </HStack>
+                                </span>
+                            </div>
 
-                            <Heading size="2xl" color="text.main">
+                            <h1 className="text-4xl md:text-5xl font-bold" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
                                 {blog.title}
-                            </Heading>
+                            </h1>
 
                             {blog.imageUrl && (
-                                <Box
-                                    h="400px"
-                                    bgImage={`url(${blog.imageUrl})`}
-                                    bgSize="cover"
-                                    bgPosition="center"
-                                    rounded="2xl"
-                                    overflow="hidden"
+                                <div
+                                    className="h-96 rounded-2xl overflow-hidden bg-cover bg-center"
+                                    style={{ backgroundImage: `url(${blog.imageUrl})` }}
                                 />
                             )}
 
-                            <Box
-                                className="blog-content"
-                                fontSize="lg"
-                                color="text.main"
-                                lineHeight="tall"
+                            <div
+                                className="blog-content text-lg leading-relaxed prose prose-lg max-w-none"
+                                style={{ color: 'var(--color-text-main, #1d1d1f)' }}
                                 dangerouslySetInnerHTML={{ __html: blog.content }}
-                                sx={{
-                                    '& h1, & h2, & h3, & h4, & h5, & h6': {
-                                        fontWeight: 'bold',
-                                        mt: 6,
-                                        mb: 4,
-                                        color: 'text.main',
-                                    },
-                                    '& h1': { fontSize: '3xl' },
-                                    '& h2': { fontSize: '2xl' },
-                                    '& h3': { fontSize: 'xl' },
-                                    '& h4': { fontSize: 'lg' },
-                                    '& p': {
-                                        mb: 4,
-                                        lineHeight: 'tall',
-                                    },
-                                    '& ul': {
-                                        mb: 4,
-                                        pl: 6,
-                                        listStyleType: 'disc',
-                                        listStylePosition: 'outside',
-                                    },
-                                    '& ol': {
-                                        mb: 4,
-                                        pl: 6,
-                                        listStyleType: 'decimal',
-                                        listStylePosition: 'outside',
-                                    },
-                                    '& li': {
-                                        mb: 2,
-                                        display: 'list-item',
-                                    },
-                                    '& ul li::marker': {
-                                        color: 'brand.500',
-                                    },
-                                    '& ol li::marker': {
-                                        color: 'brand.500',
-                                        fontWeight: 'bold',
-                                    },
-                                    '& blockquote': {
-                                        borderLeft: '4px solid',
-                                        borderColor: 'brand.500',
-                                        pl: 4,
-                                        py: 2,
-                                        my: 4,
-                                        fontStyle: 'italic',
-                                        bg: 'gray.50',
-                                    },
-                                    '& code': {
-                                        bg: 'gray.100',
-                                        px: 2,
-                                        py: 1,
-                                        rounded: 'md',
-                                        fontSize: 'sm',
-                                        fontFamily: 'mono',
-                                    },
-                                    '& pre': {
-                                        bg: 'gray.900',
-                                        color: 'white',
-                                        p: 4,
-                                        rounded: 'lg',
-                                        overflowX: 'auto',
-                                        mb: 4,
-                                        '& code': {
-                                            bg: 'transparent',
-                                            color: 'inherit',
-                                            px: 0,
-                                            py: 0,
-                                        },
-                                    },
-                                    '& img': {
-                                        maxW: '100%',
-                                        h: 'auto',
-                                        rounded: 'lg',
-                                        my: 4,
-                                    },
-                                    '& a': {
-                                        color: 'brand.500',
-                                        textDecoration: 'underline',
-                                        _hover: {
-                                            color: 'brand.600',
-                                        },
-                                    },
-                                }}
                             />
-                        </VStack>
-                    </VStack>
-                </Container>
-            </Box>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <Footer />
-        </Box>
+            <style jsx global>{`
+                .blog-content h1,
+                .blog-content h2,
+                .blog-content h3,
+                .blog-content h4,
+                .blog-content h5,
+                .blog-content h6 {
+                    font-weight: bold;
+                    margin-top: 1.5rem;
+                    margin-bottom: 1rem;
+                    color: var(--color-text-main, #1d1d1f);
+                }
+                .blog-content h1 { font-size: 1.875rem; }
+                .blog-content h2 { font-size: 1.5rem; }
+                .blog-content h3 { font-size: 1.25rem; }
+                .blog-content h4 { font-size: 1.125rem; }
+                .blog-content p {
+                    margin-bottom: 1rem;
+                    line-height: 1.75;
+                }
+                .blog-content ul {
+                    margin-bottom: 1rem;
+                    padding-left: 1.5rem;
+                    list-style-type: disc;
+                    list-style-position: outside;
+                }
+                .blog-content ol {
+                    margin-bottom: 1rem;
+                    padding-left: 1.5rem;
+                    list-style-type: decimal;
+                    list-style-position: outside;
+                }
+                .blog-content li {
+                    margin-bottom: 0.5rem;
+                    display: list-item;
+                }
+                .blog-content ul li::marker {
+                    color: var(--color-brand-500, #00abad);
+                }
+                .blog-content ol li::marker {
+                    color: var(--color-brand-500, #00abad);
+                    font-weight: bold;
+                }
+                .blog-content blockquote {
+                    border-left: 4px solid var(--color-brand-500, #00abad);
+                    padding-left: 1rem;
+                    padding-top: 0.5rem;
+                    padding-bottom: 0.5rem;
+                    margin: 1rem 0;
+                    font-style: italic;
+                    background-color: #f9fafb;
+                }
+                .blog-content code {
+                    background-color: #f3f4f6;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 0.375rem;
+                    font-size: 0.875rem;
+                    font-family: monospace;
+                }
+                .blog-content pre {
+                    background-color: #111827;
+                    color: white;
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                    overflow-x: auto;
+                    margin-bottom: 1rem;
+                }
+                .blog-content pre code {
+                    background-color: transparent;
+                    color: inherit;
+                    padding: 0;
+                }
+                .blog-content img {
+                    max-width: 100%;
+                    height: auto;
+                    border-radius: 0.5rem;
+                    margin: 1rem 0;
+                }
+                .blog-content a {
+                    color: var(--color-brand-500, #00abad);
+                    text-decoration: underline;
+                }
+                .blog-content a:hover {
+                    color: var(--color-brand-600, #008c8e);
+                }
+            `}</style>
+        </div>
     );
 }

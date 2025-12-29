@@ -3,7 +3,6 @@
  * @module admin/content/components/SectionEditor
  */
 
-import { VStack } from '@chakra-ui/react';
 import ThemedInput from '@/app/components/ThemedInput';
 
 /**
@@ -18,7 +17,7 @@ export function SectionEditor({ section, onChange, fields = ['title', 'subtitle'
   };
 
   return (
-    <VStack spacing={4} align="stretch">
+    <div className="flex flex-col gap-6">
       {fields.includes('title') && (
         <ThemedInput
           label="Title"
@@ -31,6 +30,7 @@ export function SectionEditor({ section, onChange, fields = ['title', 'subtitle'
           label="Title Highlight (text to highlight in brand color)"
           value={section.titleHighlight || ''}
           onChange={(e) => handleFieldChange('titleHighlight', e.target.value)}
+          helperText="This text will be highlighted in the brand color within the title"
         />
       )}
       {fields.includes('subtitle') && (
@@ -47,6 +47,7 @@ export function SectionEditor({ section, onChange, fields = ['title', 'subtitle'
           label="CTA Button Text"
           value={section.ctaText || ''}
           onChange={(e) => handleFieldChange('ctaText', e.target.value)}
+          placeholder="e.g., Get Started, Learn More"
         />
       )}
       {fields.includes('buttonText') && (
@@ -54,8 +55,9 @@ export function SectionEditor({ section, onChange, fields = ['title', 'subtitle'
           label="Button Text"
           value={section.buttonText || ''}
           onChange={(e) => handleFieldChange('buttonText', e.target.value)}
+          placeholder="e.g., Book a Call, Contact Us"
         />
       )}
-    </VStack>
+    </div>
   );
 }

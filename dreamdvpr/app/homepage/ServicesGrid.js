@@ -1,64 +1,67 @@
 'use client';
 
-import React from 'react';
-import { Box, Container, Heading, Text, Grid } from '@chakra-ui/react';
-
+import React, { useState } from 'react';
 import ParticleBackground from '../components/ParticleBackground';
 import { useContent, useBackgroundColor } from '../lib/hooks';
-
 import ServiceCard from './ServiceCard';
 
 const ServicesGrid = () => {
   const { content } = useContent('services');
   const bgColor = useBackgroundColor('primary');
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
 
   return (
-    <Box py={24} bg={bgColor} id="services" position="relative" overflow="hidden">
+    <div 
+      className="py-24 relative overflow-hidden" 
+      id="services"
+      style={{ backgroundColor: bgColor }}
+    >
       <ParticleBackground />
 
-      <Container maxW="container.xl">
-        <Box textAlign="center" mb={16} maxW="2xl" mx="auto">
-          <Heading size="2xl" mb={4} color="text.main">
+      <div className="container mx-auto max-w-7xl px-4">
+        <div className="text-center mb-16 max-w-2xl mx-auto">
+          <h2 
+            className="text-4xl md:text-5xl font-bold mb-4"
+            style={{ color: 'var(--color-text-main, #1d1d1f)' }}
+          >
             {content?.title || 'Services'}
-          </Heading>
-          <Text fontSize="lg" color="text.secondary">
+          </h2>
+          <p 
+            className="text-lg"
+            style={{ color: 'var(--color-text-secondary, #86868b)' }}
+          >
             {content?.subtitle || ''}
-          </Text>
-        </Box>
+          </p>
+        </div>
 
-<Grid
-  templateColumns={{ base: '1fr', md: 'repeat(3, 1fr)' }}
-  gap={4}
-  autoRows="minmax(220px, auto)"
-  position="relative"
-  onMouseMove={(e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty(
-      '--mouse-x',
-      `${e.clientX - rect.left}px`
-    );
-    e.currentTarget.style.setProperty(
-      '--mouse-y',
-      `${e.clientY - rect.top}px`
-    );
-  }}
-  _before={{
-    content: '""',
-    position: 'absolute',
-    inset: 0,
-    pointerEvents: 'none',
-    bg: `radial-gradient(
-      600px circle at var(--mouse-x) var(--mouse-y),
-      rgba(0, 171, 173, 0.15),
-      transparent 60%
-    )`,
-    opacity: 0,
-    transition: 'opacity 0.3s',
-  }}
-  _hover={{
-    _before: { opacity: 1 },
-  }}
->
+        <div
+          className="grid grid-cols-1 md:grid-cols-3 gap-4 relative"
+          style={{ gridAutoRows: 'minmax(220px, auto)' }}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        >
+          {/* Hover gradient overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-lg"
+            style={{
+              opacity: hovered ? 1 : 0,
+              background: `radial-gradient(
+                600px circle at ${mousePos.x}px ${mousePos.y}px,
+                rgba(0, 171, 173, 0.15),
+                transparent 60%
+              )`,
+            }}
+          />
 
           {(content?.items || []).map((item, index) => (
             <ServiceCard
@@ -69,11 +72,10 @@ const ServicesGrid = () => {
               colSpan={item.colSpan || 1}
               rowSpan={item.rowSpan || 1}
             />
-
           ))}
-        </Grid>
-      </Container>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 };
 

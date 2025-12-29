@@ -1,9 +1,8 @@
 /**
- * Theme application utilities - Applies theme to CSS variables and Chakra UI
+ * Theme application utilities - Applies theme to CSS variables only (Tailwind CSS)
  * @module lib/theme/apply
  */
 
-import { extendTheme } from '@chakra-ui/react';
 import { CSS_VARIABLE_MAP } from './constants';
 
 /**
@@ -39,77 +38,7 @@ export function applyCSSVariables(themeData) {
 }
 
 /**
- * Creates Chakra UI theme configuration from theme data
- * @param {Object} themeData - Normalized theme data
- * @returns {Object} Chakra UI theme configuration
- */
-export function createChakraTheme(themeData) {
-  return extendTheme({
-    colors: {
-      brand: {
-        500: themeData.colors.brand500,
-        600: themeData.colors.brand600,
-      },
-      accent: {
-        500: themeData.colors.accent500,
-      },
-      bg: {
-        app: themeData.colors.bgApp,
-        secondary: themeData.colors.bgSecondary,
-      },
-      text: {
-        main: themeData.colors.textMain,
-        secondary: themeData.colors.textSecondary,
-      },
-    },
-    fonts: {
-      heading: themeData.fonts.heading,
-      body: themeData.fonts.body,
-    },
-    styles: {
-      global: {
-        body: {
-          bg: 'bg.app',
-          color: 'text.main',
-        },
-      },
-    },
-    components: {
-      Button: {
-        baseStyle: {
-          rounded: themeData.borderRadius,
-          fontWeight: 'medium',
-        },
-        variants: {
-          solid: {
-            bg: 'brand.500',
-            color: 'white',
-            _hover: {
-              bg: 'brand.600',
-              boxShadow: 'lg',
-            },
-            _active: {
-              bg: 'brand.600',
-              transform: 'scale(0.98)',
-            },
-          },
-          outline: {
-            borderColor: 'text.main',
-            borderWidth: '2px',
-            color: 'text.main',
-            _hover: {
-              bg: 'gray.100',
-            },
-          },
-        },
-      },
-    },
-  });
-}
-
-/**
- * Applies complete theme (CSS variables only)
- * Note: Chakra theme should be created separately using createChakraTheme
+ * Applies complete theme (CSS variables only for Tailwind CSS)
  * @param {Object} themeData - Normalized theme data
  */
 export function applyTheme(themeData) {
