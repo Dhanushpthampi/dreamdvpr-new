@@ -43,9 +43,9 @@ const Header = () => {
             >
                 <Container maxW="container.xl">
                     <Flex align="center" justify="space-between">
-                        <Heading as="h2" size="lg" cursor="pointer" letterSpacing="tight">
+                      <Link href="/">  <Heading as="h2" size="lg" cursor="pointer" letterSpacing="tight">
                             DREAM<Box as="span" color="brand.500">dvpr</Box>
-                        </Heading>
+                        </Heading></Link>
 
                         <HStack as="nav" spacing={8} display={{ base: 'none', md: 'flex' }}>
                             {navLinks.map((link) => (
