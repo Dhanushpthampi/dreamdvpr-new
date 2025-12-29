@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { Box, Container, Heading, Text, Button, VStack, Image, Flex, HStack, Icon } from '@chakra-ui/react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useContent, useThemeColor } from '../lib/hooks';
 
 const MotionBox = motion(Box);
 const MotionImage = motion(Image);
@@ -11,33 +11,8 @@ const MotionHeading = motion(Heading);
 const MotionText = motion(Text);
 
 const CTASection = () => {
-    const [content, setContent] = useState({
-        title: "Ready to Transform Your Business with DREAMdvpr?",
-        subtitle: "Your Trusted Partner for Transformative Digital Solutions",
-        buttonText: "Book a Call today!",
-        points: [
-            "Premium Quality Guaranteed",
-            "Fast Turnaround Times",
-            "Dedicated Support Team",
-            "Scalable Solutions"
-        ],
-    });
-
-    useEffect(() => {
-        fetchContent();
-    }, []);
-
-    const fetchContent = async () => {
-        try {
-            const res = await fetch('/api/content');
-            const data = await res.json();
-            if (data.content?.cta) {
-                setContent(data.content.cta);
-            }
-        } catch (error) {
-            console.error('Error fetching CTA content:', error);
-        }
-    };
+    const { content } = useContent('cta');
+    const brandColor = useThemeColor('--color-brand-500', '#00abad');
 
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
@@ -47,25 +22,6 @@ const CTASection = () => {
 
     // Astronaut moves up as it enters view, down as it leaves
     const astronautY = useTransform(scrollYProgress, [0, 0.5, 1], [100, 0, 100]);
-
-    // Get brand color from CSS variable for dynamic theming
-    const [brandColor, setBrandColor] = useState('#00abad');
-
-    useEffect(() => {
-        const updateBrandColor = () => {
-            if (typeof window !== 'undefined') {
-                const color = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--color-brand-500')
-                    .trim() || '#00abad';
-                setBrandColor(color);
-            }
-        };
-        
-        updateBrandColor();
-        // Listen for theme updates
-        window.addEventListener('theme-updated', updateBrandColor);
-        return () => window.removeEventListener('theme-updated', updateBrandColor);
-    }, []);
 
     return (
         <Box py={20} bg={brandColor} id="contact" position="relative" overflow="hidden" ref={ref}>
@@ -96,16 +52,16 @@ const CTASection = () => {
                                 fontWeight="bold"
                                 maxW="lg"
                             >
-                                {content.title}
+                                {content?.title}
                             </Heading>
                             <Text
                                 fontSize="lg"
                                 color="white"
                                 opacity={0.9}
                             >
-                                {content.subtitle}
+                                {content?.subtitle}
                             </Text>
-                            {content.points && content.points.length > 0 && (
+                            {content?.points && content.points.length > 0 && (
                                 <VStack align={{ base: 'center', md: 'flex-start' }} spacing={3} w="full">
                                     {content.points.map((point, i) => (
                                         <HStack key={i} spacing={3}>
@@ -128,7 +84,7 @@ const CTASection = () => {
                                 fontSize="md"
                                 fontWeight="bold"
                             >
-                                {content.buttonText}
+                                {content?.buttonText}
                             </Button>
                         </VStack>
                     </MotionBox>

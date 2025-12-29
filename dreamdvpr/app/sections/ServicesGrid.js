@@ -1,39 +1,16 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Box, Container, Heading, Text, Grid, GridItem, Flex, Icon } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import ParticleBackground from '../components/ParticleBackground';
+import { useContent, useThemeColor, useBackgroundColor } from '../lib/hooks';
+import { hexToRgba } from '../lib/utils';
 
 const MotionGridItem = motion(GridItem);
 
 const ServiceCard = ({ title, description, icon, colSpan = 1, rowSpan = 1, iconColor }) => {
-    // Get theme brand color for dynamic shadows
-    const [brandColor, setBrandColor] = React.useState('#00abad');
-
-    React.useEffect(() => {
-        const updateBrandColor = () => {
-            if (typeof window !== 'undefined') {
-                const color = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--color-brand-500')
-                    .trim() || '#00abad';
-                setBrandColor(color);
-            }
-        };
-        
-        updateBrandColor();
-        window.addEventListener('theme-updated', updateBrandColor);
-        return () => window.removeEventListener('theme-updated', updateBrandColor);
-    }, []);
-
-    // Convert hex to rgba
-    const hexToRgba = (hex, alpha) => {
-        const h = hex.replace('#', '');
-        const r = parseInt(h.substring(0, 2), 16);
-        const g = parseInt(h.substring(2, 4), 16);
-        const b = parseInt(h.substring(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    };
+    const brandColor = useThemeColor('--color-brand-500', '#00abad');
 
     return (
         <MotionGridItem
@@ -66,53 +43,17 @@ const ServiceCard = ({ title, description, icon, colSpan = 1, rowSpan = 1, iconC
 };
 
 const ServicesGrid = () => {
-    const [content, setContent] = useState({
-        title: "Our Expertise",
-        subtitle: "A comprehensive suite of digital services designed to elevate your brand.",
-        items: [],
-    });
-
-    useEffect(() => {
-        fetchContent();
-    }, []);
-
-    const fetchContent = async () => {
-        try {
-            const res = await fetch('/api/content');
-            const data = await res.json();
-            if (data.content?.services) {
-                setContent(data.content.services);
-            }
-        } catch (error) {
-            console.error('Error fetching services content:', error);
-        }
-    };
-
-    const [bgColor, setBgColor] = useState('#f5f5f7');
-
-    useEffect(() => {
-        const updateBgColor = () => {
-            if (typeof window !== 'undefined') {
-                const color = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--color-bg-app')
-                    .trim() || '#f5f5f7';
-                setBgColor(color);
-            }
-        };
-        
-        updateBgColor();
-        window.addEventListener('theme-updated', updateBgColor);
-        return () => window.removeEventListener('theme-updated', updateBgColor);
-    }, []);
+    const { content } = useContent('services');
+    const bgColor = useBackgroundColor('primary');
 
     return (
         <Box py={24} bg={bgColor} id="services" position="relative" overflow="hidden">
             <ParticleBackground />
             <Container maxW="container.xl">
                 <Box textAlign="center" mb={16} maxW="2xl" mx="auto">
-                    <Heading size="2xl" mb={4} color="text.main">{content.title}</Heading>
+                    <Heading size="2xl" mb={4} color="text.main">{content?.title || ''}</Heading>
                     <Text fontSize="lg" color="text.secondary">
-                        {content.subtitle}
+                        {content?.subtitle || ''}
                     </Text>
                 </Box>
 
@@ -121,7 +62,7 @@ const ServicesGrid = () => {
                     gap={6}
                     autoRows="minmax(200px, auto)"
                 >
-                    {content.items && content.items.length > 0 ? (
+                    {content?.items && content.items.length > 0 ? (
                         content.items.map((item, index) => (
                             <ServiceCard
                                 key={index}

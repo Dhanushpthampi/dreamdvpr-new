@@ -1,12 +1,12 @@
-import './styles/globals.css';
-import { Providers } from './providers';
+import "./styles/globals.css";
+import { Providers } from "./providers";
+import { AuthProvider } from "./components/AuthProvider";
+import { getContent } from "./lib/getContent";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { AuthProvider } from './components/AuthProvider';
-import { getContent } from './lib/getContent';
-
+import { Analytics } from "@vercel/analytics/next";
 export const metadata = {
-  title: 'DREAMdvpr | Premium Web, Mobile & AI Solutions',
-  description: 'We build premium, high-performance digital experiences.',
+  title: "DREAMdvpr | Premium Digital Solutions",
+  description: "We build premium, high-performance digital experiences.",
 };
 
 export default async function RootLayout({ children }) {
@@ -15,8 +15,8 @@ export default async function RootLayout({ children }) {
   const theme = content?.theme || null;
 
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased min-h-screen flex flex-col" suppressHydrationWarning>
+    <html lang="en">
+      <body className="antialiased min-h-screen flex flex-col">
         {theme && (
           <script
             dangerouslySetInnerHTML={{
@@ -24,11 +24,12 @@ export default async function RootLayout({ children }) {
             }}
           />
         )}
-        <AuthProvider> 
-          <Providers initialTheme={theme}>
-            {children}
-          </Providers>
+        <AuthProvider>
+          <Providers initialTheme={theme}>{children}</Providers>
         </AuthProvider>
+
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Container, Heading, SimpleGrid, Text, Tag, HStack } from '@chakra-ui/react';
 import Link from 'next/link';
+import { useBlogs, useBackgroundColor } from '../lib/hooks';
 
 const colorMap = {
     'Design': 'purple',
@@ -42,67 +43,32 @@ const BlogCard = ({ blog, category, title, date, color, imageUrl }) => (
     </Link>
 );
 
+// Default blogs if no blogs are available
+const defaultBlogs = [
+    {
+        category: 'Design',
+        title: 'The Psychology of Minimalist UI',
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        color: 'purple',
+    },
+    {
+        category: 'Development',
+        title: 'Why React Server Components are the Future',
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        color: 'green',
+    },
+    {
+        category: 'Strategy',
+        title: 'Converting Visitors into Loyal Customers',
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        color: 'orange',
+    },
+];
+
 const BlogSection = () => {
-    const [blogs, setBlogs] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        fetchBlogs();
-    }, []);
-
-    const fetchBlogs = async () => {
-        try {
-            const res = await fetch('/api/blogs?published=true');
-            const data = await res.json();
-            // Get only the first 3 published blogs
-            setBlogs((data.blogs || []).slice(0, 3));
-        } catch (error) {
-            console.error('Error fetching blogs:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Default blogs if no blogs are available
-    const defaultBlogs = [
-        {
-            category: 'Design',
-            title: 'The Psychology of Minimalist UI',
-            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-            color: 'purple',
-        },
-        {
-            category: 'Development',
-            title: 'Why React Server Components are the Future',
-            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-            color: 'green',
-        },
-        {
-            category: 'Strategy',
-            title: 'Converting Visitors into Loyal Customers',
-            date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-            color: 'orange',
-        },
-    ];
-
+    const { blogs } = useBlogs({ published: true, limit: 3 });
+    const bgColor = useBackgroundColor('secondary');
     const displayBlogs = blogs.length > 0 ? blogs : defaultBlogs;
-
-    const [bgColor, setBgColor] = useState('#ffffff');
-
-    useEffect(() => {
-        const updateBgColor = () => {
-            if (typeof window !== 'undefined') {
-                const color = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--color-bg-secondary')
-                    .trim() || '#ffffff';
-                setBgColor(color);
-            }
-        };
-        
-        updateBgColor();
-        window.addEventListener('theme-updated', updateBgColor);
-        return () => window.removeEventListener('theme-updated', updateBgColor);
-    }, []);
 
     return (
         <Box py={24} bg={bgColor} id="blog">

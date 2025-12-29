@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import { Box, Container, Heading, Text, Button, Flex, VStack, useBreakpointValue } from '@chakra-ui/react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, PresentationControls, Environment, Float } from '@react-three/drei';
 import { motion } from 'framer-motion';
+import { useContent, useBackgroundColor } from '../lib/hooks';
 
 const MotionHeading = motion(Heading);
 const MotionText = motion(Text);
@@ -37,28 +38,8 @@ function SpaceshipModel({ position, isDragging }) {
 
 const Hero = () => {
     const [isDragging, setIsDragging] = React.useState(false);
-    const [content, setContent] = useState({
-        title: "Explore the Future of Web",
-        titleHighlight: "Future of Web",
-        subtitle: "DREAMdvpr crafts digital experiences that are out of this world. Clean, precise, and engineered for performance.",
-        ctaText: "Start Mission",
-    });
-
-    useEffect(() => {
-        fetchContent();
-    }, []);
-
-    const fetchContent = async () => {
-        try {
-            const res = await fetch('/api/content');
-            const data = await res.json();
-            if (data.content?.hero) {
-                setContent(data.content.hero);
-            }
-        } catch (error) {
-            console.error('Error fetching hero content:', error);
-        }
-    };
+    const { content } = useContent('hero');
+    const bgColor = useBackgroundColor('secondary');
 
     // Responsive positioning: Center on mobile, Right on desktop
     const modelPosition = useBreakpointValue({
@@ -66,23 +47,6 @@ const Hero = () => {
         md: [2.5, -0.5, 0],
         lg: [3.5, -0.5, 0]
     }) || [3, 0, 0];
-
-    const [bgColor, setBgColor] = useState('#ffffff');
-
-    useEffect(() => {
-        const updateBgColor = () => {
-            if (typeof window !== 'undefined') {
-                const color = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--color-bg-secondary')
-                    .trim() || '#ffffff';
-                setBgColor(color);
-            }
-        };
-        
-        updateBgColor();
-        window.addEventListener('theme-updated', updateBgColor);
-        return () => window.removeEventListener('theme-updated', updateBgColor);
-    }, []);
 
     return (
         <Box position="relative" h="100vh" w="100vw" overflow="hidden" bg={bgColor}>
@@ -134,10 +98,10 @@ const Hero = () => {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8 }}
                         >
-                            {content.title.split(content.titleHighlight || 'Future of Web').map((part, i, arr) => 
+                            {content?.title.split(content?.titleHighlight || 'Future of Web').map((part, i, arr) => 
                                 i === arr.length - 1 ? (
                                     <React.Fragment key={i}>
-                                        <Box as="span" color="brand.500">{content.titleHighlight || 'Future of Web'}</Box>
+                                        <Box as="span" color="brand.500">{content?.titleHighlight || 'Future of Web'}</Box>
                                         {part}
                                     </React.Fragment>
                                 ) : (
@@ -153,7 +117,7 @@ const Hero = () => {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
                         >
-                            {content.subtitle}
+                            {content?.subtitle}
                         </MotionText>
 
                         <MotionBox
@@ -172,7 +136,7 @@ const Hero = () => {
                                 href="#contact"
                                 style={{ textDecoration: 'none' }}
                             >
-                                {content.ctaText}
+                                {content?.ctaText}
                             </Button>
                         </MotionBox>
                     </VStack>
