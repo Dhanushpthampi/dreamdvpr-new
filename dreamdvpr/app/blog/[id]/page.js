@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Header from '../../homepage/Header';
-import Footer from '../../components/Footer';
+import Header from '../../components/homepage/Header';
+import Footer from '../../components/layout/Footer';
 
 const colorMap = {
     'Design': 'purple',

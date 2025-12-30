@@ -9,32 +9,32 @@ import {
   Float,
 } from '@react-three/drei';
 import { motion } from 'framer-motion';
-import { useContent, useBackgroundColor } from '../lib/hooks';
-import ParticleBackground from '../components/ParticleBackground';
+import { useContent, useBackgroundColor } from '../../lib/hooks';
+import ParticleBackground from '../layout/ParticleBackground';
 
 /* ===============================
    3D MODEL WITH FREE FLOATING MOTION
 ================================ */
 function SpaceshipModel() {
-    const { scene } = useGLTF('/Spaceship.glb');
-    const meshRef = useRef(); // <-- removed <any>
-  
-    useFrame((state, delta) => {
-      if (meshRef.current) {
-        const t = state.clock.elapsedTime;
-  
-        meshRef.current.position.x = Math.sin(t * 0.5) * 1.2;
-        meshRef.current.position.y = Math.sin(t * 0.7) * 0.6;
-        meshRef.current.position.z = Math.sin(t * 0.3) * 0.8;
-  
-        meshRef.current.rotation.y = Math.sin(t * 0.2) * 0.3;
-        meshRef.current.rotation.x = Math.sin(t * 0.15) * 0.1;
-      }
-    });
-  
-    return <primitive ref={meshRef} object={scene} scale={0.2} />;
-  }
-  
+  const { scene } = useGLTF('/Spaceship.glb');
+  const meshRef = useRef(); 
+
+  useFrame((state, delta) => {
+    if (meshRef.current) {
+      const t = state.clock.elapsedTime;
+
+      meshRef.current.position.x = Math.sin(t * 0.5) * 1.2;
+      meshRef.current.position.y = Math.sin(t * 0.7) * 0.6;
+      meshRef.current.position.z = Math.sin(t * 0.3) * 0.8;
+
+      meshRef.current.rotation.y = Math.sin(t * 0.2) * 0.3;
+      meshRef.current.rotation.x = Math.sin(t * 0.15) * 0.1;
+    }
+  });
+
+  return <primitive ref={meshRef} object={scene} scale={0.2} />;
+}
+
 
 /* ===============================
    HERO COMPONENT

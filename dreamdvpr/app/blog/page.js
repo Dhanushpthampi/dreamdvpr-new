@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Header from '../homepage/Header';
-import Footer from '../components/Footer';
-import { hexToRgba } from '../lib/utils';
+import Header from '../components/homepage/Header';
+import Footer from '../components/layout/Footer';
+import { hexToRgba } from '../lib/utils/colors';
 import { useThemeColor } from '../lib/hooks';
 
 const colorMap = {

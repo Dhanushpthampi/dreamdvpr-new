@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
-import { ClientSidebarWrapper } from '../../../components/ClientSidebar';
-import GlassCard from '../../../components/GlassCard';
-import StatusBadge from '../../../components/StatusBadge';
-import ProjectTimeline from '../../../components/ProjectTimeline';
-import FileUploadZone from '../../../components/FileUploadZone';
+import { ClientSidebarWrapper } from '@/app/components/client/ClientSidebar';
+import GlassCard from '@/app/components/ui/GlassCard';
+import StatusBadge from '@/app/components/ui/StatusBadge';
+import ProjectTimeline from '@/app/components/shared/ProjectTimeline';
+import FileUploadZone from '@/app/components/shared/FileUploadZone';
 
 export default function ProjectDetailPage() {
     const { data: session } = useSession();
@@ -146,11 +146,10 @@ export default function ProjectDetailPage() {
                                     <button
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
-                                        className={`px-4 py-2 font-semibold transition-colors capitalize ${
-                                            activeTab === tab
+                                        className={`px-4 py-2 font-semibold transition-colors capitalize ${activeTab === tab
                                                 ? 'text-[#00abad] border-b-2 border-[#00abad]'
                                                 : 'text-gray-600 hover:text-[#00abad]'
-                                        }`}
+                                            }`}
                                     >
                                         {tab}
                                     </button>

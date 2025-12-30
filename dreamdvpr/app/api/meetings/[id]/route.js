@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
+import { authOptions } from "@/app/lib/auth";
 import clientPromise from "@/app/lib/db";
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
@@ -13,7 +13,7 @@ export async function PUT(request, { params }) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { id } = params;
+        const { id } = await params;
         const data = await request.json();
         const { scheduledDate, scheduledTime, status, notes, duration } = data;
 
@@ -69,7 +69,7 @@ export async function DELETE(request, { params }) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { id } = params;
+        const { id } = await params;
         const client = await clientPromise;
         const db = client.db("dreamdvpr");
 

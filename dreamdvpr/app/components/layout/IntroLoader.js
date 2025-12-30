@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Text } from '@chakra-ui/react';
-import { useThemeColor } from '../lib/hooks';
+import { useThemeColor } from '@/app/lib/hooks';
 
 /**
  * IntroLoader - Simple intro loader with progress bar

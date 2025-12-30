@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { ClientSidebarWrapper } from '../../components/ClientSidebar';
-import GlassCard from '../../components/GlassCard';
-import StatusBadge from '../../components/StatusBadge';
+import { ClientSidebarWrapper } from '@/app/components/client/ClientSidebar';
+import GlassCard from '@/app/components/ui/GlassCard';
+import StatusBadge from '@/app/components/ui/StatusBadge';
 
 export default function ClientProjectsPage() {
     const { data: session, status } = useSession();

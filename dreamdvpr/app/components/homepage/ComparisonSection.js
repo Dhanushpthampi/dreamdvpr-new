@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import ParticleBackground from '../components/ParticleBackground';
-import { useContent, useThemeColor, useBackgroundColor } from '../lib/hooks';
-import { hexToRgba } from '../lib/utils';
+import ParticleBackground from '../layout/ParticleBackground';
+import { useContent, useThemeColor, useBackgroundColor } from '../../lib/hooks';
+import { hexToRgba } from '../../lib/utils/colors';
 
 const ComparisonSection = () => {
   const { content } = useContent('comparison');

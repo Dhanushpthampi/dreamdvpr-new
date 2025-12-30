@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { ClientSidebarWrapper } from '../../components/ClientSidebar';
-import GlassCard from '../../components/GlassCard';
-import ThemedInput from '../../components/ThemedInput';
-import MeetingScheduler from '../../components/MeetingScheduler';
+import { ClientSidebarWrapper } from '@/app/components/client/ClientSidebar';
+import GlassCard from '@/app/components/ui/GlassCard';
+import ThemedInput from '@/app/components/ui/ThemedInput';
+import MeetingScheduler from '@/app/components/shared/MeetingScheduler';
 
 export default function NewProjectPage() {
     const { data: session, status } = useSession();
@@ -127,7 +127,7 @@ export default function NewProjectPage() {
                 <>
                     <div
                         className="fixed inset-0 bg-black/50 z-[2000]"
-                        onClick={() => {}}
+                        onClick={() => { }}
                     />
                     <div className="fixed inset-0 flex items-center justify-center z-[2001] p-4">
                         <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">

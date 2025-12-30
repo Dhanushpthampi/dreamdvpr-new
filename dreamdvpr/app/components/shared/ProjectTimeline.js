@@ -1,6 +1,6 @@
 'use client';
 
-import StatusBadge from './StatusBadge';
+import StatusBadge from '@/app/components/ui/StatusBadge';
 
 /**
  * Project timeline visualization component
@@ -48,9 +48,8 @@ const ProjectTimeline = ({ events = [], editable = false, onEventClick }) => {
             {events.map((event, index) => (
                 <div
                     key={event._id || index}
-                    className={`flex items-start gap-4 relative py-4 px-2 rounded-lg transition-all duration-200 ${
-                        editable ? 'cursor-pointer hover:bg-[#00abad]/5' : ''
-                    }`}
+                    className={`flex items-start gap-4 relative py-4 px-2 rounded-lg transition-all duration-200 ${editable ? 'cursor-pointer hover:bg-[#00abad]/5' : ''
+                        }`}
                     onClick={() => editable && onEventClick && onEventClick(event)}
                 >
                     {/* Status indicator */}

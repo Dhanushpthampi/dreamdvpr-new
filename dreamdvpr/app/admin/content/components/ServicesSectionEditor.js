@@ -4,7 +4,7 @@
  */
 
 import { SectionEditor } from './SectionEditor';
-import ThemedInput from '@/app/components/ThemedInput';
+import ThemedInput from '@/app/components/ui/ThemedInput';
 
 export function ServicesSectionEditor({ section, onChange }) {
   const handleAddService = () => {

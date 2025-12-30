@@ -65,11 +65,10 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
           return (
             <div
               key={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                active
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${active
                   ? 'bg-[#00abad]/12 text-[#00abad] font-semibold'
                   : 'text-[#86868b] font-medium hover:bg-[#00abad]/18'
-              }`}
+                }`}
               onClick={() => handleNavigation(item.path, item.badge)}
             >
               <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
@@ -115,9 +114,10 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
 
 export const AdminSidebarWrapper = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { data: session, status } = useSession();
 
   return (
-    <div className="min-h-screen static-theme" style={{ backgroundColor: '#f5f5f7' }}>
+    <div className="min-h-screen static-theme" style={{ backgroundColor: '#f5f5f7' }} suppressHydrationWarning>
       {/* Mobile Header */}
       <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white/80 backdrop-blur-[20px] border-b border-gray-200 sticky top-0 z-50">
         <p className="font-bold text-[#1d1d1f]">DREAMdvpr</p>

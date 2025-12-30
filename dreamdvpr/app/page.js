@@ -1,16 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Header from './homepage/Header';
-import Hero from './homepage/Hero';
-import ServicesGrid from './homepage/ServicesGrid';
-import WhyChooseUs from './homepage/WhyChooseUs';
-import ComparisonSection from './homepage/ComparisonSection';
-import BlogSection from './homepage/BlogSection';
-import FAQSection from './homepage/FAQSection';
-import CTASection from './homepage/CTASection';
-import Footer from './components/Footer';
-import IntroLoader from './components/IntroLoader';
+import Header from './components/homepage/Header';
+import Hero from './components/homepage/Hero';
+import ServicesGrid from './components/homepage/ServicesGrid';
+import WhyChooseUs from './components/homepage/WhyChooseUs';
+import ComparisonSection from './components/homepage/ComparisonSection';
+import BlogSection from './components/homepage/BlogSection';
+import FAQSection from './components/homepage/FAQSection';
+import CTASection from './components/homepage/CTASection';
+import Footer from './components/layout/Footer';
+import IntroLoader from './components/layout/IntroLoader';
 import { useBackgroundColor } from './lib/hooks';
 
 export default function Home() {
@@ -35,9 +35,9 @@ export default function Home() {
       {showLoader && <IntroLoader onComplete={handleLoaderComplete} />}
       <main
         className="min-h-screen overflow-x-hidden"
-        style={{ 
+        style={{
           backgroundColor: bgColor,
-          opacity: showLoader ? 0 : 1, 
+          opacity: showLoader ? 0 : 1,
           transition: 'opacity 0.5s ease-in'
         }}
       >

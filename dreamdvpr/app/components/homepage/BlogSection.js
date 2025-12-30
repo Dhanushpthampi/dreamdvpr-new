@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useBlogs, useBackgroundColor } from '../lib/hooks';
+import { useBlogs, useBackgroundColor } from '../../lib/hooks';
 
 const colorMap = {
     'Design': 'purple',

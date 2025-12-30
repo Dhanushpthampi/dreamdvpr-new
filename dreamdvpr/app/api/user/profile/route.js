@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
+import { authOptions } from "@/app/lib/auth";
 import clientPromise from "@/app/lib/db";
 import { NextResponse } from "next/server";
 

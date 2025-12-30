@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useContent, useThemeColor } from '../lib/hooks';
+import { useContent, useThemeColor } from '../../lib/hooks';
 
 const MotionDiv = motion.div;
 

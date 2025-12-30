@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { AdminSidebarWrapper } from '@/app/components/AdminSidebar';
-import GlassCard from '@/app/components/GlassCard';
-import { useContentManagement } from '@/app/lib/content';
+import { AdminSidebarWrapper } from '@/app/components/admin/AdminSidebar';
+import GlassCard from '@/app/components/ui/GlassCard';
+import { useContentManagement } from '@/app/lib/hooks';
 import { HeroSectionEditor } from './components/HeroSectionEditor';
 import { ServicesSectionEditor } from './components/ServicesSectionEditor';
 import { WhyChooseUsSectionEditor } from './components/WhyChooseUsSectionEditor';

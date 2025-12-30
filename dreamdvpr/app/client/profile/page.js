@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { ClientSidebarWrapper } from '../../components/ClientSidebar';
-import GlassCard from '../../components/GlassCard';
+import { ClientSidebarWrapper } from '@/app/components/client/ClientSidebar';
+import GlassCard from '@/app/components/ui/GlassCard';
 
 const INDUSTRIES = {
     'ecommerce': 'E-commerce',
@@ -41,7 +41,7 @@ export default function ProfilePage() {
             if (res.ok) {
                 const data = await res.json();
                 setProfile(data.user);
-                
+
                 // If profile is not completed, redirect to onboarding
                 if (!data.user?.onboardingCompleted) {
                     router.push('/client/onboarding');
@@ -157,11 +157,10 @@ export default function ProfilePage() {
                                     Profile Status
                                 </h2>
                                 <div className="flex items-center gap-3">
-                                    <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                                        profile.onboardingCompleted
+                                    <span className={`px-4 py-2 rounded-full text-sm font-semibold ${profile.onboardingCompleted
                                             ? 'bg-green-100 text-green-800'
                                             : 'bg-yellow-100 text-yellow-800'
-                                    }`}>
+                                        }`}>
                                         {profile.onboardingCompleted ? '✓ Profile Complete' : '⚠ Profile Incomplete'}
                                     </span>
                                     {profile.onboardingCompleted && (

@@ -1,9 +1,9 @@
 'use client';
- 
-import { ThemeProvider } from './components/ThemeProvider';
+
+import { ThemeProvider } from './components/providers/ThemeProvider';
 
 export function Providers({ children, initialTheme = null }) {
-    return ( 
+    return (
         <ThemeProvider initialTheme={initialTheme}>
             {children}
         </ThemeProvider>

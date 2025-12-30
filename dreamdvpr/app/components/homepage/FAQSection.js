@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import ParticleBackground from '../components/ParticleBackground';
-import { useContent, useThemeColor, useBackgroundColor } from '../lib/hooks';
-import { hexToRgba } from '../lib/utils';
+import ParticleBackground from '../layout/ParticleBackground';
+import { useContent, useThemeColor, useBackgroundColor } from '../../lib/hooks';
+import { hexToRgba } from '../../lib/utils/colors';
 
 const FAQSection = () => {
     const { content } = useContent('faq');
@@ -45,9 +45,8 @@ const FAQSection = () => {
                         >
                             <button
                                 onClick={() => toggleFAQ(i)}
-                                className={`w-full py-6 px-8 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-50 ${
-                                    openIndex === i ? 'text-[var(--color-brand-500)]' : ''
-                                }`}
+                                className={`w-full py-6 px-8 rounded-xl flex items-center justify-between transition-colors hover:bg-gray-50 ${openIndex === i ? 'text-[var(--color-brand-500)]' : ''
+                                    }`}
                                 style={{ color: openIndex === i ? 'var(--color-brand-500, #00abad)' : 'var(--color-text-main, #1d1d1f)' }}
                             >
                                 <span className="flex-1 text-left font-bold text-lg">

@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import AnimatedCounter from '../components/AnimatedCounter';
-import { useContent, useThemeColor, useBackgroundColor } from '../lib/hooks';
-import { hexToRgba } from '../lib/utils';
+import AnimatedCounter from '../ui/AnimatedCounter';
+import { useContent, useThemeColor, useBackgroundColor } from '../../lib/hooks';
+import { hexToRgba } from '../../lib/utils/colors';
 
 /* =======================
    Stat Card (Theme-aware)

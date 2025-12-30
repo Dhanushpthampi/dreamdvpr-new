@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
+import { authOptions } from "@/app/lib/auth";
 import clientPromise from "@/app/lib/db";
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
@@ -13,7 +13,12 @@ export async function GET(request, { params }) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { id } = params;
+        const { id } = await params;
+
+        if (!ObjectId.isValid(id)) {
+            return NextResponse.json({ error: 'Invalid Project ID' }, { status: 400 });
+        }
+
         const client = await clientPromise;
         const db = client.db("dreamdvpr");
 
@@ -60,8 +65,11 @@ export async function PUT(request, { params }) {
         if (!session || session.user.role !== 'admin') {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
+        const { id } = await params;
 
-        const { id } = params;
+        if (!ObjectId.isValid(id)) {
+            return NextResponse.json({ error: 'Invalid Project ID' }, { status: 400 });
+        }
         const data = await request.json();
         const { name, description, status, estimatedEndDate, actualEndDate, budget } = data;
 
@@ -107,8 +115,12 @@ export async function DELETE(request, { params }) {
         if (!session || session.user.role !== 'admin') {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
+        const { id } = await params;
 
-        const { id } = params;
+        if (!ObjectId.isValid(id)) {
+            return NextResponse.json({ error: 'Invalid Project ID' }, { status: 400 });
+        }
+
         const client = await clientPromise;
         const db = client.db("dreamdvpr");
 

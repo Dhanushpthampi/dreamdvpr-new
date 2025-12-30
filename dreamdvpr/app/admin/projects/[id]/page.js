@@ -3,13 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
-import { AdminSidebarWrapper } from '../../../components/AdminSidebar';
-import GlassCard from '../../../components/GlassCard';
-import StatusBadge from '../../../components/StatusBadge';
-import ProjectTimeline from '../../../components/ProjectTimeline';
+import { AdminSidebarWrapper } from '@/app/components/admin/AdminSidebar';
+import GlassCard from '@/app/components/ui/GlassCard';
+import StatusBadge from '@/app/components/ui/StatusBadge';
+import ProjectTimeline from '@/app/components/shared/ProjectTimeline';
 
 export default function AdminProjectDetail() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const router = useRouter();
     const params = useParams();
     const [toast, setToast] = useState(null);
@@ -18,6 +18,7 @@ export default function AdminProjectDetail() {
     const [project, setProject] = useState(null);
     const [timeline, setTimeline] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('timeline');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -35,11 +36,17 @@ export default function AdminProjectDetail() {
     };
 
     useEffect(() => {
-        if (projectId) {
-            fetchProject();
-            fetchTimeline();
+        if (status === 'unauthenticated') {
+            router.push('/login');
+        } else if (status === 'authenticated') {
+            if (session?.user?.role !== 'admin') {
+                router.push('/login');
+            } else if (projectId) {
+                fetchProject();
+                fetchTimeline();
+            }
         }
-    }, [projectId]);
+    }, [status, session, router, projectId]);
 
     const fetchProject = async () => {
         try {
@@ -47,9 +54,12 @@ export default function AdminProjectDetail() {
             const data = await res.json();
             if (res.ok) {
                 setProject(data.project);
+            } else {
+                setError(data.error || 'Failed to fetch project');
             }
         } catch (error) {
             console.error('Error fetching project:', error);
+            setError('Connection error');
         } finally {
             setLoading(false);
         }
@@ -169,7 +179,7 @@ export default function AdminProjectDetail() {
         }
     };
 
-    if (loading) {
+    if (status === 'loading' || (status === 'authenticated' && loading)) {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
@@ -179,7 +189,48 @@ export default function AdminProjectDetail() {
         );
     }
 
-    if (!project) return null;
+    if (status === 'unauthenticated' || (status === 'authenticated' && session?.user?.role !== 'admin')) {
+        return (
+            <AdminSidebarWrapper>
+                <div className="min-h-screen flex flex-col items-center justify-center gap-4">
+                    <h2 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>Access Denied</h2>
+                    <p style={{ color: '#86868b' }}>You do not have permission to view this page.</p>
+                    <button
+                        onClick={() => router.push('/login')}
+                        className="px-6 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors"
+                    >
+                        Go to Login
+                    </button>
+                </div>
+            </AdminSidebarWrapper>
+        );
+    }
+
+    if (error || !project) {
+        return (
+            <AdminSidebarWrapper>
+                <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-4">
+                    <h2 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>
+                        {error ? "Error Loading Project" : "Project Not Found"}
+                    </h2>
+                    <p style={{ color: '#86868b' }}>
+                        {error || "We couldn't find the project you're looking for."}
+                    </p>
+                    <button
+                        onClick={() => router.push('/admin')}
+                        className="px-6 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors"
+                    >
+                        Back to Dashboard
+                    </button>
+                    {error && (
+                        <p className="text-xs mt-4 text-red-400">
+                            Status: {error}
+                        </p>
+                    )}
+                </div>
+            </AdminSidebarWrapper>
+        );
+    }
 
     return (
         <AdminSidebarWrapper>
@@ -200,10 +251,10 @@ export default function AdminProjectDetail() {
                                 </button>
                             </div>
                             <h1 className="text-4xl md:text-5xl font-bold mb-2" style={{ color: '#1d1d1f' }}>
-                                {project.name}
+                                {project.name || 'Untitled Project'}
                             </h1>
                             <p className="text-lg" style={{ color: '#86868b' }}>
-                                Client: {project.client?.name} ({project.client?.email})
+                                Client: {project.client?.name || 'Unknown Client'} ({project.client?.email || 'No email'})
                             </p>
                         </div>
                         <div className="flex items-center gap-4">
@@ -229,7 +280,7 @@ export default function AdminProjectDetail() {
                                     Start Date
                                 </p>
                                 <p className="text-base font-medium" style={{ color: '#1d1d1f' }}>
-                                    {new Date(project.startDate).toLocaleDateString()}
+                                    {project?.startDate ? new Date(project.startDate).toLocaleDateString() : 'Not started'}
                                 </p>
                             </div>
                             <div>
@@ -258,11 +309,10 @@ export default function AdminProjectDetail() {
                                     <button
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
-                                        className={`px-4 py-2 font-semibold transition-colors capitalize ${
-                                            activeTab === tab
-                                                ? 'text-[#00abad] border-b-2 border-[#00abad]'
-                                                : 'text-gray-600 hover:text-[#00abad]'
-                                        }`}
+                                        className={`px-4 py-2 font-semibold transition-colors capitalize ${activeTab === tab
+                                            ? 'text-[#00abad] border-b-2 border-[#00abad]'
+                                            : 'text-gray-600 hover:text-[#00abad]'
+                                            }`}
                                     >
                                         {tab === 'timeline' ? 'Timeline Management' : tab === 'files' ? 'Files' : 'Settings'}
                                     </button>
@@ -314,28 +364,103 @@ export default function AdminProjectDetail() {
 
                             {/* Settings Tab */}
                             {activeTab === 'settings' && (
-                                <div className="flex flex-col gap-4 mt-4">
-                                    <div>
-                                        <p className="text-sm font-semibold mb-2">Project Name</p>
-                                        <input
-                                            type="text"
-                                            value={project.name}
-                                            readOnly
-                                            className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg"
-                                        />
+                                <div className="flex flex-col gap-6 mt-4">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <p className="text-sm font-semibold mb-2">Project Name</p>
+                                            <input
+                                                type="text"
+                                                value={project.name}
+                                                onChange={(e) => setProject({ ...project, name: e.target.value })}
+                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold mb-2">Budget ($)</p>
+                                            <input
+                                                type="number"
+                                                value={project.budget || ''}
+                                                onChange={(e) => setProject({ ...project, budget: parseFloat(e.target.value) })}
+                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                                placeholder="e.g., 5000"
+                                            />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold mb-2">Estimated End Date</p>
+                                            <input
+                                                type="date"
+                                                value={project.estimatedEndDate ? project.estimatedEndDate.split('T')[0] : ''}
+                                                onChange={(e) => setProject({ ...project, estimatedEndDate: e.target.value })}
+                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold mb-2">Status</p>
+                                            <select
+                                                value={project.status}
+                                                onChange={(e) => handleUpdateStatus(e.target.value)}
+                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            >
+                                                <option value="onboarding">Onboarding</option>
+                                                <option value="in-progress">In Progress</option>
+                                                <option value="on-hold">On Hold</option>
+                                                <option value="completed">Completed</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div>
                                         <p className="text-sm font-semibold mb-2">Description</p>
                                         <textarea
-                                            value={project.description}
-                                            readOnly
+                                            value={project.description || ''}
+                                            onChange={(e) => setProject({ ...project, description: e.target.value })}
                                             rows={4}
-                                            className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg"
+                                            className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
                                         />
                                     </div>
-                                    <button className="px-4 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition-colors">
-                                        Delete Project
-                                    </button>
+                                    <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                                        <button
+                                            onClick={async () => {
+                                                if (window.confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+                                                    try {
+                                                        const res = await fetch(`/api/projects/${projectId}`, { method: 'DELETE' });
+                                                        if (res.ok) {
+                                                            router.push('/admin');
+                                                        }
+                                                    } catch (error) {
+                                                        console.error('Error deleting project:', error);
+                                                    }
+                                                }
+                                            }}
+                                            className="px-4 py-2 border border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition-colors"
+                                        >
+                                            Delete Project
+                                        </button>
+                                        <button
+                                            onClick={async () => {
+                                                try {
+                                                    const res = await fetch(`/api/projects/${projectId}`, {
+                                                        method: 'PUT',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify({
+                                                            name: project.name,
+                                                            description: project.description,
+                                                            budget: project.budget,
+                                                            estimatedEndDate: project.estimatedEndDate
+                                                        }),
+                                                    });
+                                                    if (res.ok) {
+                                                        showToast('Project updated', '', 'success');
+                                                        fetchProject();
+                                                    }
+                                                } catch (error) {
+                                                    console.error('Error updating project:', error);
+                                                }
+                                            }}
+                                            className="px-6 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors font-semibold"
+                                        >
+                                            Save Changes
+                                        </button>
+                                    </div>
                                 </div>
                             )}
                         </div>
@@ -345,9 +470,8 @@ export default function AdminProjectDetail() {
 
             {/* Toast Notification */}
             {toast && (
-                <div className={`fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg z-[3000] ${
-                    toast.type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-green-50 border border-green-200 text-green-700'
-                }`}>
+                <div className={`fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg z-[3000] ${toast.type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-green-50 border border-green-200 text-green-700'
+                    }`}>
                     <div className="flex items-center gap-2">
                         {toast.type === 'error' ? (
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

@@ -3,11 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { AdminSidebarWrapper } from '../components/AdminSidebar';
-import GlassCard from '../components/GlassCard';
-import StatusBadge from '../components/StatusBadge';
-import ThemedInput from '../components/ThemedInput';
-import ThemedSelect from '../components/ThemedSelect';
+import { AdminSidebarWrapper } from '@/app/components/admin/AdminSidebar';
+import GlassCard from '@/app/components/ui/GlassCard';
+import StatusBadge from '@/app/components/ui/StatusBadge';
+import ThemedInput from '@/app/components/ui/ThemedInput';
+import ThemedSelect from '@/app/components/ui/ThemedSelect';
 
 const INDUSTRIES = [
     { value: 'ecommerce', label: 'E-commerce' },
@@ -216,21 +216,19 @@ export default function AdminDashboard() {
                             <div className="flex gap-4">
                                 <button
                                     onClick={() => setActiveTab('clients')}
-                                    className={`px-4 py-2 font-semibold transition-colors ${
-                                        activeTab === 'clients'
+                                    className={`px-4 py-2 font-semibold transition-colors ${activeTab === 'clients'
                                             ? 'text-[#00abad] border-b-2 border-[#00abad]'
                                             : 'text-gray-600 hover:text-[#00abad]'
-                                    }`}
+                                        }`}
                                 >
                                     Clients
                                 </button>
                                 <button
                                     onClick={() => setActiveTab('projects')}
-                                    className={`px-4 py-2 font-semibold transition-colors ${
-                                        activeTab === 'projects'
+                                    className={`px-4 py-2 font-semibold transition-colors ${activeTab === 'projects'
                                             ? 'text-[#00abad] border-b-2 border-[#00abad]'
                                             : 'text-gray-600 hover:text-[#00abad]'
-                                    }`}
+                                        }`}
                                 >
                                     Projects
                                 </button>
@@ -380,9 +378,8 @@ export default function AdminDashboard() {
 
             {/* Toast Notification */}
             {toast && (
-                <div className={`fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg z-[3000] ${
-                    toast.type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-green-50 border border-green-200 text-green-700'
-                }`}>
+                <div className={`fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg z-[3000] ${toast.type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-green-50 border border-green-200 text-green-700'
+                    }`}>
                     <div className="flex items-center gap-2">
                         {toast.type === 'error' ? (
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

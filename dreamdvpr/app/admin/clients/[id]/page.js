@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
-import { AdminSidebarWrapper } from '../../../components/AdminSidebar';
-import GlassCard from '../../../components/GlassCard';
-import StatusBadge from '../../../components/StatusBadge';
+import { AdminSidebarWrapper } from '@/app/components/admin/AdminSidebar';
+import GlassCard from '@/app/components/ui/GlassCard';
+import StatusBadge from '@/app/components/ui/StatusBadge';
 
 export default function AdminClientDetail() {
     const { data: session } = useSession();

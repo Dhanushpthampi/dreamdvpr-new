@@ -3,7 +3,7 @@
  * @module admin/content/components/SectionEditor
  */
 
-import ThemedInput from '@/app/components/ThemedInput';
+import ThemedInput from '@/app/components/ui/ThemedInput';
 
 /**
  * SectionEditor - Base component for editing section content

@@ -3,7 +3,7 @@
  * @module admin/content/components/ArrayItemEditor
  */
 
-import ThemedInput from '@/app/components/ThemedInput';
+import ThemedInput from '@/app/components/ui/ThemedInput';
 
 /**
  * ArrayItemEditor - Manages a list of items with add/remove functionality

@@ -5,7 +5,7 @@
 
 import { SectionEditor } from './SectionEditor';
 import { ArrayItemEditor } from './ArrayItemEditor';
-import ThemedInput from '@/app/components/ThemedInput';
+import ThemedInput from '@/app/components/ui/ThemedInput';
 
 export function CTASectionEditor({ section, onChange }) {
   const handleAddPoint = () => {

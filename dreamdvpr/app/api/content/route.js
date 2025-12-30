@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
+import { authOptions } from "@/app/lib/auth";
 import clientPromise from "@/app/lib/db";
 import { NextResponse } from "next/server";
-import { DEFAULT_CONTENT } from "@/app/lib/content/constants";
+import { DEFAULT_CONTENT } from "@/app/lib/content";
 
 // GET - Get homepage content
 export async function GET(request) {

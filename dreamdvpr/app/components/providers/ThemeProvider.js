@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useTheme } from '@/app/lib/theme';
+import { useTheme } from '@/app/lib/hooks';
 
 /**
  * ThemeProvider - Conditionally applies theme only to homepage and blog pages

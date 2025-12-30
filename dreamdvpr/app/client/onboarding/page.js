@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import GlassCard from '../../components/GlassCard';
-import ThemedInput from '../../components/ThemedInput';
-import ThemedSelect from '../../components/ThemedSelect';
+import GlassCard from '@/app/components/ui/GlassCard';
+import ThemedInput from '@/app/components/ui/ThemedInput';
+import ThemedSelect from '@/app/components/ui/ThemedSelect';
 
 const INDUSTRIES = [
     { value: 'ecommerce', label: 'E-commerce' },
