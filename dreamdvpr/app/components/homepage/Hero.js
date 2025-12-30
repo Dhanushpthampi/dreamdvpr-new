@@ -23,7 +23,7 @@ function SpaceshipModel() {
     if (meshRef.current) {
       const t = state.clock.elapsedTime;
 
-      meshRef.current.position.x = Math.sin(t * 0.5) * 1.2;
+      meshRef.current.position.x = Math.sin(t * 0.5) * 0.2;
       meshRef.current.position.y = Math.sin(t * 0.7) * 0.6;
       meshRef.current.position.z = Math.sin(t * 0.3) * 0.8;
 
