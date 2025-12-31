@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation';
 import { AdminSidebarWrapper } from '@/app/components/admin/AdminSidebar';
 import GlassCard from '@/app/components/ui/GlassCard';
 import ThemedInput from '@/app/components/ui/ThemedInput';
-import ThemedSelect from '@/app/components/ui/ThemedSelect';
-import ThemedButton from '@/app/components/ui/ThemedButton';
+import ThemedSelect from '@/app/components/ui/ThemedSelect'; 
 import RichTextEditor from '@/app/components/admin/RichTextEditor';
 
 const CATEGORIES = [
@@ -102,19 +101,19 @@ export default function NewBlogPage() {
                             </p>
                         </div>
                         <div className="flex gap-4">
-                            <ThemedButton
+                            <button     
                                 variant="outline"
                                 onClick={() => router.push('/admin/blogs')}
                             >
                                 Cancel
-                            </ThemedButton>
-                            <ThemedButton
+                            </button>
+                            <button
                                 variant="primary"
                                 onClick={handleSave}
                                 isLoading={saving}
                             >
                                 Create Blog
-                            </ThemedButton>
+                            </button>
                         </div>
                     </div>
 
