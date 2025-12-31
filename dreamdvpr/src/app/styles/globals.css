@@ -226,3 +226,11 @@ body {
 .static-bg-brand {
   background-color: var(--static-brand-500, #00abad);
 }
+
+
+/* src/app/styles/globals.css */
+
+::selection {
+  background-color: var(--color-brand-500);
+  color: white;
+}

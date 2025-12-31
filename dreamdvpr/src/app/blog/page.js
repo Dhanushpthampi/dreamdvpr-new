@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Header from '../components/homepage/Header';
-import Footer from '../components/layout/Footer';
+import Footer from '../components/homepage/Footer';
 import { hexToRgba } from '../lib/utils/colors';
 import { useThemeColor } from '../lib/hooks';
 

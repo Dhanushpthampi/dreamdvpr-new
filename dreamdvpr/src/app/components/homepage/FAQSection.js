@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import ParticleBackground from '../layout/ParticleBackground';
+import ParticleBackground from './ParticleBackground';
 import { useContent, useThemeColor, useBackgroundColor } from '../../lib/hooks';
 import { hexToRgba } from '../../lib/utils/colors';
 

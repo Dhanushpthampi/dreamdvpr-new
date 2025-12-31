@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import ParticleBackground from './components/layout/ParticleBackground';
+import ParticleBackground from './components/homepage/ParticleBackground';
 import { useThemeColor, useBackgroundColor } from './lib/hooks';
 
 export default function NotFound() {

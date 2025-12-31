@@ -9,9 +9,11 @@ import ComparisonSection from './components/homepage/ComparisonSection';
 import BlogSection from './components/homepage/BlogSection';
 import FAQSection from './components/homepage/FAQSection';
 import CTASection from './components/homepage/CTASection';
-import Footer from './components/layout/Footer';
-import IntroLoader from './components/layout/IntroLoader';
+import Footer from './components/homepage/Footer';
+import IntroLoader from './components/homepage/IntroLoader';
 import { useBackgroundColor } from './lib/hooks';
+import "./styles/globals.css";      
+
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -41,12 +43,7 @@ export default function Home() {
           transition: 'opacity 0.5s ease-in'
         }}
       >
-        <style jsx global>{`
-          ::selection {
-            background-color: var(--color-brand-500);
-            color: white;
-          }
-        `}</style>
+ 
         <Header />
         <Hero />
         <ServicesGrid />

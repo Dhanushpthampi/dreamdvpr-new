@@ -10,14 +10,14 @@ import {
 } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import { useContent, useBackgroundColor } from '../../lib/hooks';
-import ParticleBackground from '../layout/ParticleBackground';
+import ParticleBackground from './ParticleBackground';
 
 /* ===============================
    3D MODEL WITH FREE FLOATING MOTION
 ================================ */
 function SpaceshipModel() {
   const { scene } = useGLTF('/Spaceship.glb');
-  const meshRef = useRef(); 
+  const meshRef = useRef();
 
   useFrame((state, delta) => {
     if (meshRef.current) {
