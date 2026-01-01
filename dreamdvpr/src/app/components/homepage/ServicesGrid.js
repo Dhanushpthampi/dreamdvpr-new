@@ -25,7 +25,7 @@ const ServicesGrid = () => {
       className="py-24 relative overflow-hidden"
       style={{ backgroundColor: bgColor }}
     >
-      <ParticleBackground />
+      {/* <ParticleBackground /> */}
 
       <div className="container mx-auto max-w-7xl px-4">
         <div className="text-center mb-16 max-w-2xl mx-auto">

@@ -11,6 +11,7 @@ import FAQSection from './components/homepage/FAQSection';
 import CTASection from './components/homepage/CTASection';
 import Footer from './components/homepage/Footer';
 import IntroLoader from './components/homepage/IntroLoader';
+import WaveSeparator from './components/homepage/WaveSeparator';                                      
 import { useBackgroundColor } from './lib/hooks';
 import "./styles/globals.css";      
 
@@ -44,8 +45,8 @@ export default function Home() {
         }}
       >
  
-        <Header />
-        <Hero />
+        <Header /> 
+        <Hero /><WaveSeparator />
         <ServicesGrid />
         <WhyChooseUs />
         <ComparisonSection />

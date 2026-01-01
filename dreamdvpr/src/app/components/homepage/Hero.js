@@ -15,51 +15,58 @@ import ParticleBackground from './ParticleBackground';
 /* ===============================
    3D MODEL WITH FREE FLOATING MOTION
 ================================ */
-function SpaceshipModel() {
+function SpaceshipModel({ scale = 0.2 }) {
   const { scene } = useGLTF('/Spaceship.glb');
   const meshRef = useRef();
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (meshRef.current) {
       const t = state.clock.elapsedTime;
-
       meshRef.current.position.x = Math.sin(t * 0.5) * 0.2;
       meshRef.current.position.y = Math.sin(t * 0.7) * 0.6;
       meshRef.current.position.z = Math.sin(t * 0.3) * 0.8;
-
       meshRef.current.rotation.y = Math.sin(t * 0.2) * 0.3;
       meshRef.current.rotation.x = Math.sin(t * 0.15) * 0.1;
     }
   });
 
-  return <primitive ref={meshRef} object={scene} scale={0.2} />;
+  return <primitive ref={meshRef} object={scene} scale={scale} />;
 }
-
 
 /* ===============================
    HERO COMPONENT
 ================================ */
 const Hero = () => {
-  const { content } = useContent('hero');
+  const { content } = useContent('hero'); // dynamic content
   const bgColor = useBackgroundColor('primary');
-  const [modelPosition, setModelPosition] = useState([0, 0, 0]);
+  const [modelPosition, setModelPosition] = useState([2, 0, 0]); // Desktop default
+  const [modelScale, setModelScale] = useState(0.2);
+  const [textTranslateY, setTextTranslateY] = useState(0);
 
   useEffect(() => {
     const updatePosition = () => {
       if (window.innerWidth >= 1024) {
-        setModelPosition([2, 0, 0]);
+        setModelPosition([2, 0, 0]);   // Desktop: right
+        setModelScale(0.2);
+        setTextTranslateY(0);
       } else if (window.innerWidth >= 768) {
-        setModelPosition([1.5, 0, 0]);
+        setModelPosition([1.5, 0, 0]); // Tablet: moderate right
+        setModelScale(0.2);
+        setTextTranslateY(0);
       } else {
-        setModelPosition([0, 0, 0]);
+        // Mobile: stacked layout
+        setModelPosition([0, -2, 0]); // slightly lower
+        setModelScale(0.14);           // smaller
+        setTextTranslateY(-50);        // move text slightly up
       }
     };
+
     updatePosition();
     window.addEventListener('resize', updatePosition);
     return () => window.removeEventListener('resize', updatePosition);
   }, []);
 
-  const titleParts = content?.title?.split(content?.titleHighlight || 'Future of Web') || [];
+  const titleParts = content?.title?.split(content?.titleHighlight || '') || [];
 
   return (
     <div className="relative h-screen w-screen overflow-hidden" style={{ backgroundColor: bgColor }}>
@@ -86,12 +93,8 @@ const Hero = () => {
               azimuth={[-Math.PI, Math.PI]}
               config={{ mass: 1, tension: 120, friction: 14 }}
             >
-              <Float
-                speed={0.5}
-                rotationIntensity={0.2}
-                floatIntensity={0.1}
-              >
-                <SpaceshipModel />
+              <Float speed={0.5} rotationIntensity={0.2} floatIntensity={0.1}>
+                <SpaceshipModel scale={modelScale} />
               </Float>
             </PresentationControls>
           </group>
@@ -100,11 +103,14 @@ const Hero = () => {
 
       {/* Content Overlay */}
       <div className="container mx-auto max-w-7xl h-full relative z-[10] pointer-events-none px-4">
-        <div className="h-full flex items-center justify-center md:justify-start">
+        <div
+          className="h-full flex items-center justify-center md:justify-start"
+          style={{ transform: `translateY(${textTranslateY}px)` }}
+        >
           <div className="flex flex-col items-center md:items-start gap-6 max-w-xl text-center md:text-left pointer-events-auto">
             <motion.h1
               className="text-5xl md:text-6xl font-bold"
-              style={{ color: 'var(--color-text-main, #1d1d1f)' }}
+              style={{ color: '#ffffff' }} // Hardcoded white
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
@@ -113,7 +119,7 @@ const Hero = () => {
                 i === arr.length - 1 ? (
                   <React.Fragment key={i}>
                     <span style={{ color: 'var(--color-brand-500, #00abad)' }}>
-                      {content?.titleHighlight || 'Future of Web'}
+                      {content?.titleHighlight || ''}
                     </span>
                     {part}
                   </React.Fragment>
@@ -125,7 +131,7 @@ const Hero = () => {
 
             <motion.p
               className="text-xl"
-              style={{ color: 'var(--color-text-secondary, #86868b)' }}
+              style={{ color: '#d1d5db' }} // gray subtitle
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}

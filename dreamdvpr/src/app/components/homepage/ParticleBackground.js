@@ -1,143 +1,155 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import { Box } from '@chakra-ui/react';
+import { useEffect, useRef } from 'react';
 
-const ParticleBackground = () => {
-    const canvasRef = useRef(null);
+export default function DreamSpaceBackground() {
+  const canvasRef = useRef(null);
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let raf;
 
-        const ctx = canvas.getContext('2d');
-        let animationFrameId;
-        let particles = [];
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
 
-        const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        };
+    resize();
+    window.addEventListener('resize', resize);
 
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+    /* ---------------- Stars ---------------- */
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.5 + 0.2;
-            }
+    class Star {
+      constructor() {
+        this.reset();
+      }
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+      reset() {
+        this.depth = Math.random(); // parallax
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.radius = this.depth * 1.5 + 0.3;
+        this.speed = this.depth * 0.15;
+        this.alpha = Math.random() * 0.7 + 0.3;
+        this.twinkle = Math.random() * 0.02 + 0.003;
+      }
 
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
+      update() {
+        this.y += this.speed;
+        this.alpha += Math.sin(Date.now() * this.twinkle) * 0.01;
 
-            draw() {
-                // Get brand color from CSS variable, fallback to default
-                const brandColor = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--color-brand-500')
-                    .trim() || '#00abad';
-                
-                // Convert hex to rgb
-                const hex = brandColor.replace('#', '');
-                const r = parseInt(hex.substring(0, 2), 16);
-                const g = parseInt(hex.substring(2, 4), 16);
-                const b = parseInt(hex.substring(4, 6), 16);
-                
-                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
+        if (this.y > canvas.height) {
+          this.y = 0;
+          this.x = Math.random() * canvas.width;
         }
+      }
 
-        const init = () => {
-            particles = [];
-            const particleCount = Math.floor((canvas.width * canvas.height) / 15000);
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        };
+      draw() {
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(200,220,255,${this.alpha})`;
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
 
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const stars = Array.from({ length: 350 }, () => new Star());
 
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
+    /* ---------------- Shooting Stars ---------------- */
 
-            // Draw connections
-            particles.forEach((particleA, indexA) => {
-                particles.slice(indexA + 1).forEach(particleB => {
-                    const dx = particleA.x - particleB.x;
-                    const dy = particleA.y - particleB.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
+    class ShootingStar {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height * 0.3;
+        this.vx = Math.random() * 8 + 6;
+        this.vy = Math.random() * 4 + 3;
+        this.life = 0;
+        this.maxLife = 40;
+      }
 
-                    if (distance < 120) {
-                        // Get brand color from CSS variable
-                        const brandColor = getComputedStyle(document.documentElement)
-                            .getPropertyValue('--color-brand-500')
-                            .trim() || '#00abad';
-                        
-                        // Convert hex to rgb
-                        const hex = brandColor.replace('#', '');
-                        const r = parseInt(hex.substring(0, 2), 16);
-                        const g = parseInt(hex.substring(2, 4), 16);
-                        const b = parseInt(hex.substring(4, 6), 16);
-                        
-                        ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${0.15 * (1 - distance / 120)})`;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particleA.x, particleA.y);
-                        ctx.lineTo(particleB.x, particleB.y);
-                        ctx.stroke();
-                    }
-                });
-            });
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.life++;
+      }
 
-            animationFrameId = requestAnimationFrame(animate);
-        };
+      draw() {
+        ctx.strokeStyle = `rgba(180,220,255,${1 - this.life / this.maxLife})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x - this.vx * 3, this.y - this.vy * 3);
+        ctx.stroke();
+      }
+    }
 
-        init();
-        animate();
+    const shootingStars = [];
 
-        // Listen for theme updates and re-draw particles
-        const handleThemeUpdate = () => {
-            // Particles will use new color on next draw cycle
-        };
-        window.addEventListener('theme-updated', handleThemeUpdate);
+    /* ---------------- Nebula ---------------- */
 
-        return () => {
-            window.removeEventListener('resize', resizeCanvas);
-            window.removeEventListener('theme-updated', handleThemeUpdate);
-            cancelAnimationFrame(animationFrameId);
-        };
-    }, []);
+    const drawNebula = () => {
+      const g = ctx.createRadialGradient(
+        canvas.width * 0.5,
+        canvas.height * 0.4,
+        100,
+        canvas.width * 0.5,
+        canvas.height * 0.4,
+        canvas.width * 0.7
+      );
 
-    return (
-        <Box
-            as="canvas"
-            ref={canvasRef}
-            position="absolute"
-            top={0}
-            left={0}
-            width="100%"
-            height="100%"
-            zIndex={0}
-            pointerEvents="none"
-        />
-    );
-};
+      g.addColorStop(0, 'rgba(90,120,255,0.06)');
+      g.addColorStop(0.5, 'rgba(160,90,255,0.04)');
+      g.addColorStop(1, 'rgba(0,0,30,0)');
 
-export default ParticleBackground;
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    };
+
+    /* ---------------- Animate ---------------- */
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      drawNebula();
+
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+
+      if (Math.random() < 0.003) {
+        shootingStars.push(new ShootingStar());
+      }
+
+      shootingStars.forEach((s, i) => {
+        s.update();
+        s.draw();
+        if (s.life > s.maxLife) shootingStars.splice(i, 1);
+      });
+
+      raf = requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', resize);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 0,
+        pointerEvents: 'none',
+        background: 'black'
+      }}
+    />
+  );
+}

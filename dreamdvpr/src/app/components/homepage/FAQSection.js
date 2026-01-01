@@ -19,7 +19,7 @@ const FAQSection = () => {
         <div className="py-24 relative overflow-hidden" style={{ backgroundColor: bgColor }}>
             {/* Particle Background */}
             <div className="absolute inset-0 z-0">
-                <ParticleBackground />
+                {/* <ParticleBackground /> */}
             </div>
 
             <div className="container mx-auto max-w-3xl px-4 relative z-[10]">

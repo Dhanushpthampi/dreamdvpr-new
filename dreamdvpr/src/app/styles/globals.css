@@ -234,3 +234,29 @@ body {
   background-color: var(--color-brand-500);
   color: white;
 }
+
+
+.wave {
+  animation: waveMove linear infinite;
+}
+
+.wave-slow {
+  animation-duration: 40s;
+}
+
+.wave-mid {
+  animation-duration: 25s;
+}
+
+.wave-fast {
+  animation-duration: 15s;
+}
+
+@keyframes waveMove {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

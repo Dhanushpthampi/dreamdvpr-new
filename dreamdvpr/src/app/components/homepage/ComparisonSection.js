@@ -16,7 +16,7 @@ const ComparisonSection = () => {
       id="comparison"
       style={{ backgroundColor: bgColor }}
     >
-      <ParticleBackground />
+      {/* <ParticleBackground /> */}
 
       <div className="container mx-auto max-w-7xl px-4 relative z-[10]">
         {/* SECTION HEADER */}
