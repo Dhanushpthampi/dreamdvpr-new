@@ -260,3 +260,8 @@ body {
     transform: translateX(-50%);
   }
 }
+
+
+.perspective-1200 {
+  perspective: 1200px;
+}

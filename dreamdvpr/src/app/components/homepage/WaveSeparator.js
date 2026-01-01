@@ -26,7 +26,7 @@ export default function WaveSeparator() {
   return (
     <div
       ref={ref}
-      className="relative w-full h-[640px] overflow-hidden"
+      className="relative w-full h-[720px] overflow-hidden"
       style={{
         background: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 80%)'
       }}

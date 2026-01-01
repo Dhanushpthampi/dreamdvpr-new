@@ -22,11 +22,11 @@ function SpaceshipModel({ scale = 0.2 }) {
   useFrame((state) => {
     if (meshRef.current) {
       const t = state.clock.elapsedTime;
-      meshRef.current.position.x = Math.sin(t * 0.5) * 0.2;
-      meshRef.current.position.y = Math.sin(t * 0.7) * 0.6;
+      meshRef.current.position.x = Math.sin(t * 0.1) * 0.2;
+      meshRef.current.position.y = Math.sin(t * 0.3) * 0.6;
       meshRef.current.position.z = Math.sin(t * 0.3) * 0.8;
-      meshRef.current.rotation.y = Math.sin(t * 0.2) * 0.3;
-      meshRef.current.rotation.x = Math.sin(t * 0.15) * 0.1;
+      meshRef.current.rotation.y = Math.sin(t * 0.1) * 0.3;
+      meshRef.current.rotation.x = Math.sin(t * 0.07) * 0.1;
     }
   });
 
@@ -47,16 +47,16 @@ const Hero = () => {
     const updatePosition = () => {
       if (window.innerWidth >= 1024) {
         setModelPosition([2, 0, 0]);   // Desktop: right
-        setModelScale(0.2);
+        setModelScale(0.18);
         setTextTranslateY(0);
       } else if (window.innerWidth >= 768) {
-        setModelPosition([1.5, 0, 0]); // Tablet: moderate right
-        setModelScale(0.2);
+        setModelPosition([1.4, 0, 0]); // Tablet: moderate right
+        setModelScale(0.15);
         setTextTranslateY(0);
       } else {
         // Mobile: stacked layout
-        setModelPosition([0, -2, 0]); // slightly lower
-        setModelScale(0.14);           // smaller
+        setModelPosition([0, -1.5, 0]); // slightly lower
+        setModelScale(0.12);           // smaller
         setTextTranslateY(-50);        // move text slightly up
       }
     };

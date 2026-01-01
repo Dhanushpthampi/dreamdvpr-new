@@ -17,10 +17,14 @@ const CTASection = () => {
       style={{ backgroundColor: brandColor }}
     >
       <div className="container mx-auto max-w-7xl px-4 relative z-[10]">
-        <div className="flex flex-col md:flex-row items-end justify-between gap-12 min-h-[400px]">
+        <div className="flex flex-col md:flex-row items-end justify-between gap-12 min-h-[600px] md:min-h-[400px]">
           {/* Left Column - Text Content */}
           <MotionDiv
-            className="flex-1 order-1"
+              className="
+    w-full md:flex-1
+    order-1
+    flex justify-center
+  "
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
@@ -39,7 +43,7 @@ const CTASection = () => {
               {content?.points && content.points.length > 0 && (
                 <div className="flex flex-col items-center md:items-start gap-3 w-full">
                   {content.points.map((point, i) => (
-                    <div key={i} className="flex items-center gap-3">
+                    <div key={i} className="flex items-center justify-start gap-3">
                       <svg
                         viewBox="0 0 20 20"
                         className="w-5 h-5"
@@ -71,7 +75,7 @@ const CTASection = () => {
 
           {/* Astronaut Image - Always absolute */}
           <MotionDiv
-            className="flex-1 order-2 absolute bottom-0 right-0 md:right-0 md:left-auto left-1/2 md:left-auto transform md:transform-none -translate-x-1/2 md:translate-x-0 flex justify-end"
+            className="flex-1 order-2 absolute bottom-0   md:right-0 md:left-auto left-1/2 md:left-auto transform md:transform-none -translate-x-1/2 md:translate-x-0 flex justify-end"
             initial={{ y: 200 }}
             whileInView={{ y: 100 }}
             transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
