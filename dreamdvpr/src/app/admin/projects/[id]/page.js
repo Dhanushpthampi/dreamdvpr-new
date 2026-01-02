@@ -7,6 +7,10 @@ import { AdminSidebarWrapper } from '@/app/components/admin/AdminSidebar';
 import GlassCard from '@/app/components/ui/GlassCard';
 import StatusBadge from '@/app/components/ui/StatusBadge';
 import ProjectTimeline from '@/app/components/shared/ProjectTimeline';
+import InvoiceGenerator from '@/app/components/admin/InvoiceGenerator';
+import ProposalGenerator from '@/app/components/admin/ProposalGenerator';
+import NdaGenerator from '@/app/components/admin/NdaGenerator';
+import ContractGenerator from '@/app/components/admin/ContractGenerator';
 
 export default function AdminProjectDetail() {
     const { data: session, status } = useSession();
@@ -305,7 +309,7 @@ export default function AdminProjectDetail() {
                         {/* Tab Navigation */}
                         <div className="mb-6 border-b border-gray-200">
                             <div className="flex gap-4">
-                                {['timeline', 'files', 'settings'].map((tab) => (
+                                {['timeline', 'files', 'invoices', 'proposals', 'nda', 'contracts', 'settings'].map((tab) => (
                                     <button
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
@@ -314,7 +318,7 @@ export default function AdminProjectDetail() {
                                             : 'text-gray-600 hover:text-[#00abad]'
                                             }`}
                                     >
-                                        {tab === 'timeline' ? 'Timeline Management' : tab === 'files' ? 'Files' : 'Settings'}
+                                        {tab === 'timeline' ? 'Timeline' : tab === 'files' ? 'Files' : tab === 'invoices' ? 'Invoice' : tab === 'proposals' ? 'Proposal' : tab === 'nda' ? 'NDA' : tab === 'contracts' ? 'Contract' : 'Settings'}
                                     </button>
                                 ))}
                             </div>
@@ -359,6 +363,56 @@ export default function AdminProjectDetail() {
                             {activeTab === 'files' && (
                                 <div className="text-center py-12">
                                     <p style={{ color: '#86868b' }}>File management coming soon</p>
+                                </div>
+                            )}
+
+                            {/* Invoice Tab */}
+                            {activeTab === 'invoices' && (
+                                <div className="mt-4">
+                                    <InvoiceGenerator
+                                        initialClientId={project.client?._id}
+                                        initialProjectId={project._id}
+                                        readOnlyContext={true}
+                                        clients={project.client ? [project.client] : []}
+                                        projects={[project]}
+                                    />
+                                </div>
+                            )}
+
+                            {/* Proposal Tab */}
+                            {activeTab === 'proposals' && (
+                                <div className="mt-4">
+                                    <ProposalGenerator
+                                        initialClientId={project.client?._id}
+                                        initialProjectId={project._id}
+                                        readOnlyContext={true}
+                                        clients={project.client ? [project.client] : []}
+                                        projects={[project]}
+                                    />
+                                </div>
+                            )}
+
+                            {/* NDA Tab */}
+                            {activeTab === 'nda' && (
+                                <div className="mt-4">
+                                    <NdaGenerator
+                                        initialClientId={project.client?._id}
+                                        readOnlyContext={true}
+                                        clients={project.client ? [project.client] : []}
+                                    />
+                                </div>
+                            )}
+
+                            {/* Contract Tab */}
+                            {activeTab === 'contracts' && (
+                                <div className="mt-4">
+                                    <ContractGenerator
+                                        initialClientId={project.client?._id}
+                                        initialProjectId={project._id}
+                                        readOnlyContext={true}
+                                        clients={project.client ? [project.client] : []}
+                                        projects={[project]}
+                                    />
                                 </div>
                             )}
 
