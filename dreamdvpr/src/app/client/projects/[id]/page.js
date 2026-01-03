@@ -7,7 +7,7 @@ import { ClientSidebarWrapper } from '@/app/components/client/ClientSidebar';
 import GlassCard from '@/app/components/ui/GlassCard';
 import StatusBadge from '@/app/components/ui/StatusBadge';
 import ProjectTimeline from '@/app/components/shared/ProjectTimeline';
-import FileUploadZone from '@/app/components/shared/FileUploadZone';
+import FileExplorer from '@/app/components/shared/FileExplorer';
 
 export default function ProjectDetailPage() {
     const { data: session } = useSession();
@@ -147,8 +147,8 @@ export default function ProjectDetailPage() {
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
                                         className={`px-4 py-2 font-semibold transition-colors capitalize ${activeTab === tab
-                                                ? 'text-[#00abad] border-b-2 border-[#00abad]'
-                                                : 'text-gray-600 hover:text-[#00abad]'
+                                            ? 'text-[#00abad] border-b-2 border-[#00abad]'
+                                            : 'text-gray-600 hover:text-[#00abad]'
                                             }`}
                                     >
                                         {tab}
@@ -185,27 +185,8 @@ export default function ProjectDetailPage() {
 
                             {/* Files Tab */}
                             {activeTab === 'files' && (
-                                <div className="flex flex-col gap-8 mt-4">
-                                    <div>
-                                        <h2 className="text-xl font-bold mb-4" style={{ color: '#1d1d1f' }}>
-                                            Shared Files
-                                        </h2>
-                                        <p className="mb-6" style={{ color: '#86868b' }}>
-                                            Upload files to share with our team or download files we've shared with you
-                                        </p>
-                                        <FileUploadZone onFilesSelected={handleFilesSelected} />
-                                    </div>
-
-                                    <div>
-                                        <h3 className="text-base font-semibold mb-4" style={{ color: '#1d1d1f' }}>
-                                            Uploaded Files
-                                        </h3>
-                                        <GlassCard p={12} className="text-center">
-                                            <p style={{ color: '#86868b' }}>
-                                                No files uploaded yet
-                                            </p>
-                                        </GlassCard>
-                                    </div>
+                                <div className="mt-4">
+                                    <FileExplorer projectId={project._id} />
                                 </div>
                             )}
 

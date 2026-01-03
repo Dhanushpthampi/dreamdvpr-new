@@ -25,6 +25,7 @@
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
     "framer-motion": "^11.18.2",
+    "googleapis": "^169.0.0",
     "lowlight": "^3.3.0",
     "mongodb": "^7.0.0",
     "next": "16.1.1",

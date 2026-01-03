@@ -11,6 +11,7 @@ import InvoiceGenerator from '@/app/components/admin/InvoiceGenerator';
 import ProposalGenerator from '@/app/components/admin/ProposalGenerator';
 import NdaGenerator from '@/app/components/admin/NdaGenerator';
 import ContractGenerator from '@/app/components/admin/ContractGenerator';
+import FileExplorer from '@/app/components/shared/FileExplorer';
 
 export default function AdminProjectDetail() {
     const { data: session, status } = useSession();
@@ -361,8 +362,8 @@ export default function AdminProjectDetail() {
 
                             {/* Files Tab */}
                             {activeTab === 'files' && (
-                                <div className="text-center py-12">
-                                    <p style={{ color: '#86868b' }}>File management coming soon</p>
+                                <div className="mt-4">
+                                    <FileExplorer projectId={project._id} />
                                 </div>
                             )}
 
