@@ -38,7 +38,7 @@ const ServicesGrid = () => {
         </div>
 
         <div
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 relative items-stretch"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 relative items-stretch"
           onMouseMove={handleMouseMove}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}

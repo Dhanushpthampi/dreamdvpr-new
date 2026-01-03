@@ -33,11 +33,10 @@ const ThemedSelect = ({
             <select
                 value={value}
                 onChange={onChange}
-                className={`w-full px-4 py-3 bg-white/60 border rounded-lg focus:outline-none focus:ring-2 focus:bg-white transition-all font-medium ${
-                    error
+                className={`w-full px-4 py-3 bg-white/60 border rounded-lg focus:outline-none focus:ring-2 focus:bg-white transition-all font-medium ${error
                         ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
-                        : 'border-white/80 hover:border-[#00abad]/50 focus:border-[#00abad] focus:ring-[#00abad]'
-                } ${className}`}
+                        : 'border-gray-300 hover:border-[#00abad]/50 focus:border-[#00abad] focus:ring-[#00abad]'
+                    } ${className}`}
                 required={required}
                 {...rest}
             >

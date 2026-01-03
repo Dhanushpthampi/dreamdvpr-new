@@ -3,6 +3,7 @@ import { authOptions } from "@/app/lib/auth";
 import clientPromise from "@/app/lib/db";
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
+import { logAction } from "@/app/lib/logger";
 import { createFolder, uploadFile, listFiles } from "@/app/lib/googleDrive";
 
 // GET - List files
@@ -150,6 +151,16 @@ export async function POST(request, { params }) {
                 throw error;
             }
         }
+
+        await logAction({
+            action: 'File Uploaded',
+            userId: session.user.id,
+            userName: session.user.name,
+            targetId: uploadedFile.id,
+            targetName: file.name,
+            details: `Uploaded file "${file.name}" to project folder`,
+            type: 'success'
+        });
 
         return NextResponse.json({ success: true, file: uploadedFile });
 

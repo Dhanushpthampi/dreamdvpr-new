@@ -3,6 +3,7 @@ import { authOptions } from "@/app/lib/auth";
 import clientPromise from "@/app/lib/db";
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
+import { logAction } from "@/app/lib/logger";
 
 // GET - Get single project
 export async function GET(request, { params }) {
@@ -96,6 +97,15 @@ export async function PUT(request, { params }) {
             return NextResponse.json({ error: 'Project not found' }, { status: 404 });
         }
 
+        await logAction({
+            action: 'Project Updated',
+            userId: session.user.id,
+            userName: session.user.name,
+            targetId: id,
+            details: `Updated project status/details: ${status || 'metadata updated'}`,
+            type: 'info'
+        });
+
         return NextResponse.json({
             success: true,
             message: 'Project updated successfully'
@@ -134,6 +144,15 @@ export async function DELETE(request, { params }) {
         await db.collection("timeline_events").deleteMany({ projectId: new ObjectId(id) });
         await db.collection("shared_files").deleteMany({ projectId: new ObjectId(id) });
         await db.collection("meetings").deleteMany({ projectId: new ObjectId(id) });
+
+        await logAction({
+            action: 'Project Deleted',
+            userId: session.user.id,
+            userName: session.user.name,
+            targetId: id,
+            details: `Permanently deleted project and all associated records`,
+            type: 'warning'
+        });
 
         return NextResponse.json({
             success: true,

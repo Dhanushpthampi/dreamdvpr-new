@@ -4,6 +4,7 @@ import clientPromise from "@/app/lib/db";
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
 import bcrypt from "bcryptjs";
+import { logAction } from "@/app/lib/logger";
 
 // GET - List all clients (admin only)
 export async function GET(request) {
@@ -79,6 +80,16 @@ export async function POST(request) {
         };
 
         const result = await db.collection("users").insertOne(newUser);
+
+        await logAction({
+            action: 'Client Created',
+            userId: session.user.id,
+            userName: session.user.name,
+            targetId: result.insertedId,
+            targetName: newUser.name,
+            details: `Admin created a new client: ${newUser.name} (${newUser.company})`,
+            type: 'success'
+        });
 
         return NextResponse.json({
             success: true,

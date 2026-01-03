@@ -23,24 +23,10 @@ const INDUSTRIES = [
 export default function AdminDashboard() {
     const { data: session, status } = useSession();
     const router = useRouter();
-    const [clients, setClients] = useState([]);
+    const [stats, setStats] = useState({ clients: 0, projects: 0, active: 0, completed: 0 });
+    const [logs, setLogs] = useState([]);
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [creating, setCreating] = useState(false);
-    const [activeTab, setActiveTab] = useState('clients');
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [toast, setToast] = useState(null);
-
-    const [newClient, setNewClient] = useState({
-        name: '',
-        email: '',
-        password: '',
-        company: '',
-        industry: '',
-        phone: '',
-        website: '',
-    });
 
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -49,87 +35,38 @@ export default function AdminDashboard() {
             if (session?.user?.role !== 'admin') {
                 router.push('/login');
             } else {
-                fetchData();
+                fetchDashboardData();
             }
         }
     }, [status, session, router]);
 
-    const showToast = (title, description, type = 'success') => {
-        setToast({ title, description, type });
-        setTimeout(() => setToast(null), 3000);
-    };
-
-    const fetchData = async () => {
+    const fetchDashboardData = async () => {
         try {
-            const [clientsRes, projectsRes] = await Promise.all([
+            const [clientsRes, projectsRes, logsRes] = await Promise.all([
                 fetch('/api/clients'),
-                fetch('/api/projects')
+                fetch('/api/projects'),
+                fetch('/api/admin/logs')
             ]);
 
             const clientsData = await clientsRes.json();
             const projectsData = await projectsRes.json();
+            const logsData = await logsRes.json();
 
-            setClients(clientsData.clients || []);
-            setProjects(projectsData.projects || []);
+            const pList = projectsData.projects || [];
+            setProjects(pList);
+            setStats({
+                clients: (clientsData.clients || []).length,
+                projects: pList.length,
+                active: pList.filter(p => p.status === 'in-progress').length,
+                completed: pList.filter(p => p.status === 'completed').length
+            });
+            setLogs(logsData.logs || []);
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching dashboard data:', error);
         } finally {
             setLoading(false);
         }
     };
-
-    const handleCreateClient = async () => {
-        if (!newClient.name || !newClient.email || !newClient.password) {
-            showToast('Missing required fields', 'Name, email, and password are required', 'error');
-            return;
-        }
-
-        setCreating(true);
-        try {
-            const res = await fetch('/api/clients', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...newClient,
-                    role: 'client',
-                    onboardingCompleted: true,
-                }),
-            });
-
-            if (res.ok) {
-                showToast('Client created successfully', '', 'success');
-                setNewClient({
-                    name: '',
-                    email: '',
-                    password: '',
-                    company: '',
-                    industry: '',
-                    phone: '',
-                    website: '',
-                });
-                setIsModalOpen(false);
-                fetchData();
-            } else {
-                const data = await res.json();
-                showToast('Failed to create client', data.error || 'An error occurred', 'error');
-            }
-        } catch (error) {
-            console.error('Error creating client:', error);
-            showToast('Error', 'An error occurred while creating the client', 'error');
-        } finally {
-            setCreating(false);
-        }
-    };
-
-    const filteredClients = clients.filter(client =>
-        client.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        client.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        client.company?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    const filteredProjects = projects.filter(project =>
-        project.name?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
     if (status === 'loading' || loading) {
         return (
@@ -141,13 +78,6 @@ export default function AdminDashboard() {
         );
     }
 
-    const stats = {
-        totalClients: clients.length,
-        totalProjects: projects.length,
-        activeProjects: projects.filter(p => p.status === 'in-progress').length,
-        completedProjects: projects.filter(p => p.status === 'completed').length,
-    };
-
     return (
         <AdminSidebarWrapper>
             <div className="container mx-auto max-w-7xl px-4 py-8">
@@ -155,349 +85,146 @@ export default function AdminDashboard() {
                     {/* Header */}
                     <div>
                         <h1 className="text-4xl md:text-5xl font-bold mb-2" style={{ color: '#1d1d1f' }}>
-                            Admin Dashboard
+                            Platform Overview
                         </h1>
                         <p className="text-lg" style={{ color: '#86868b' }}>
-                            Manage clients, projects, and timelines
+                            Real-time monitoring and business analytics
                         </p>
                     </div>
 
-                    {/* Stats */}
-                    <div className="grid grid-cols-4 gap-2 md:gap-6">
-                        <GlassCard p={3} className="md:p-6">
-                            <div className="flex flex-col items-start gap-1 md:gap-2">
-                                <p className="text-[10px] md:text-sm font-medium" style={{ color: '#86868b' }}>
-                                    Total Clients
-                                </p>
-                                <h2 className="text-lg md:text-3xl font-bold text-[#00abad]">
-                                    {stats.totalClients}
-                                </h2>
-                            </div>
-                        </GlassCard>
-
-                        <GlassCard p={3} className="md:p-6">
-                            <div className="flex flex-col items-start gap-1 md:gap-2">
-                                <p className="text-[10px] md:text-sm font-medium" style={{ color: '#86868b' }}>
-                                    Total Projects
-                                </p>
-                                <h2 className="text-lg md:text-3xl font-bold" style={{ color: '#1d1d1f' }}>
-                                    {stats.totalProjects}
-                                </h2>
-                            </div>
-                        </GlassCard>
-
-                        <GlassCard p={3} className="md:p-6">
-                            <div className="flex flex-col items-start gap-1 md:gap-2">
-                                <p className="text-[10px] md:text-sm font-medium" style={{ color: '#86868b' }}>
-                                    Active Projects
-                                </p>
-                                <h2 className="text-lg md:text-3xl font-bold text-blue-500">
-                                    {stats.activeProjects}
-                                </h2>
-                            </div>
-                        </GlassCard>
-
-                        <GlassCard p={3} className="md:p-6">
-                            <div className="flex flex-col items-start gap-1 md:gap-2">
-                                <p className="text-[10px] md:text-sm font-medium" style={{ color: '#86868b' }}>
-                                    Completed
-                                </p>
-                                <h2 className="text-lg md:text-3xl font-bold text-green-500">
-                                    {stats.completedProjects}
-                                </h2>
-                            </div>
-                        </GlassCard>
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {[
+                            { label: 'Total Clients', value: stats.clients, color: '#00abad' },
+                            { label: 'Total Projects', value: stats.projects, color: '#1d1d1f' },
+                            { label: 'Active Tasks', value: stats.active, color: '#3b82f6' },
+                            { label: 'Success Rate', value: `${stats.projects > 0 ? Math.round((stats.completed / stats.projects) * 100) : 0}%`, color: '#10b981' }
+                        ].map((s, idx) => (
+                            <GlassCard key={idx} p={6} className="relative overflow-hidden group">
+                                <div className="flex flex-col gap-1">
+                                    <p className="text-xs font-bold uppercase tracking-wider" style={{ color: '#86868b' }}>{s.label}</p>
+                                    <h2 className="text-3xl font-black" style={{ color: s.color }}>{s.value}</h2>
+                                </div>
+                                <div className="absolute -right-2 -bottom-2 opacity-5 translate-y-2 group-hover:translate-y-0 transition-transform">
+                                    <svg viewBox="0 0 24 24" className="w-16 h-16" fill="currentColor">
+                                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                                    </svg>
+                                </div>
+                            </GlassCard>
+                        ))}
                     </div>
 
-                    {/* Main Content */}
-                    <GlassCard p={6}>
-                        {/* Tabs */}
-                        <div className="mb-6 border-b border-gray-200">
-                            <div className="flex gap-4">
-                                <button
-                                    onClick={() => setActiveTab('clients')}
-                                    className={`px-4 py-2 font-semibold transition-colors ${activeTab === 'clients'
-                                            ? 'text-[#00abad] border-b-2 border-[#00abad]'
-                                            : 'text-gray-600 hover:text-[#00abad]'
-                                        }`}
-                                >
-                                    Clients
-                                </button>
-                                <button
-                                    onClick={() => setActiveTab('projects')}
-                                    className={`px-4 py-2 font-semibold transition-colors ${activeTab === 'projects'
-                                            ? 'text-[#00abad] border-b-2 border-[#00abad]'
-                                            : 'text-gray-600 hover:text-[#00abad]'
-                                        }`}
-                                >
-                                    Projects
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Clients Tab */}
-                        {activeTab === 'clients' && (
-                            <div className="flex flex-col gap-6">
-                                <div className="flex justify-between items-center flex-wrap gap-4">
-                                    <div className="relative flex-1 max-w-md">
-                                        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                                            </svg>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="Search clients..."
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="w-full pl-10 pr-4 py-2 bg-white/60 border border-white/80 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad]"
-                                        />
-                                    </div>
-                                    <button
-                                        onClick={() => setIsModalOpen(true)}
-                                        className="px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors flex items-center gap-2"
-                                    >
-                                        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                                        </svg>
-                                        Add Client
-                                    </button>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        {/* Charts Area */}
+                        <div className="lg:col-span-2 space-y-8">
+                            <GlassCard p={8}>
+                                <div className="flex justify-between items-center mb-8">
+                                    <h3 className="text-xl font-bold">Project Status Distribution</h3>
                                 </div>
-
-                                <div className="overflow-x-auto">
-                                    <table className="w-full">
-                                        <thead>
-                                            <tr className="border-b border-gray-200">
-                                                <th className="text-left py-3 px-4 font-semibold text-sm" style={{ color: '#1d1d1f' }}>Name</th>
-                                                <th className="text-left py-3 px-4 font-semibold text-sm" style={{ color: '#1d1d1f' }}>Email</th>
-                                                <th className="text-left py-3 px-4 font-semibold text-sm" style={{ color: '#1d1d1f' }}>Company</th>
-                                                <th className="text-left py-3 px-4 font-semibold text-sm" style={{ color: '#1d1d1f' }}>Industry</th>
-                                                <th className="text-left py-3 px-4 font-semibold text-sm" style={{ color: '#1d1d1f' }}>Projects</th>
-                                                <th className="text-left py-3 px-4 font-semibold text-sm" style={{ color: '#1d1d1f' }}>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {filteredClients.map((client) => {
-                                                const clientProjects = projects.filter(p => p.clientId === client._id);
-                                                return (
-                                                    <tr key={client._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                                        <td className="py-3 px-4 font-medium">{client.name}</td>
-                                                        <td className="py-3 px-4" style={{ color: '#86868b' }}>{client.email}</td>
-                                                        <td className="py-3 px-4">{client.company || '-'}</td>
-                                                        <td className="py-3 px-4">
-                                                            {client.industry ? (
-                                                                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-semibold">
-                                                                    {client.industry}
-                                                                </span>
-                                                            ) : '-'}
-                                                        </td>
-                                                        <td className="py-3 px-4">{clientProjects.length}</td>
-                                                        <td className="py-3 px-4">
-                                                            <button
-                                                                onClick={() => router.push(`/admin/clients/${client._id}`)}
-                                                                className="px-3 py-1 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm"
-                                                            >
-                                                                View
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
-                                        </tbody>
-                                    </table>
-
-                                    {filteredClients.length === 0 && (
-                                        <div className="text-center py-12">
-                                            <p style={{ color: '#86868b' }}>No clients found</p>
+                                <div className="flex items-center gap-12 flex-wrap md:flex-nowrap">
+                                    <div className="relative w-48 h-48 rounded-full border-[16px] border-gray-100 flex items-center justify-center">
+                                        <div className="text-center">
+                                            <p className="text-3xl font-bold">{stats.projects}</p>
+                                            <p className="text-[10px] text-gray-500 font-bold uppercase italic">Total</p>
                                         </div>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Projects Tab */}
-                        {activeTab === 'projects' && (
-                            <div className="flex flex-col gap-6">
-                                <div className="relative max-w-md">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-                                        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                                        {/* Simple CSS Donut Visualization */}
+                                        <svg viewBox="0 0 36 36" className="absolute inset-0 w-full h-full -rotate-90">
+                                            <path
+                                                className="text-[#00abad] fill-none stroke-current"
+                                                strokeWidth="2"
+                                                strokeDasharray={`${(stats.active / (stats.projects || 1)) * 100}, 100`}
+                                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                            />
                                         </svg>
                                     </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Search projects..."
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        className="w-full pl-10 pr-4 py-2 bg-white/60 border border-white/80 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad]"
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {filteredProjects.map((project) => (
-                                        <GlassCard
-                                            key={project._id}
-                                            p={6}
-                                            onClick={() => router.push(`/admin/projects/${project._id}`)}
-                                            className="cursor-pointer"
-                                        >
-                                            <div className="flex flex-col items-start gap-4">
-                                                <div className="flex justify-between items-center w-full">
-                                                    <h3 className="text-base font-semibold line-clamp-1" style={{ color: '#1d1d1f' }}>
-                                                        {project.name}
-                                                    </h3>
-                                                    <StatusBadge status={project.status} size="sm" />
+                                    <div className="flex-1 grid grid-cols-1 gap-4">
+                                        {[
+                                            { label: 'In Progress', count: stats.active, color: '#00abad' },
+                                            { label: 'Completed', count: stats.completed, color: '#10b981' },
+                                            { label: 'Pending', count: stats.projects - stats.active - stats.completed, color: '#f59e0b' }
+                                        ].map(item => (
+                                            <div key={item.label} className="flex items-center justify-between p-3 bg-white/40 rounded-xl border border-white/60">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
+                                                    <span className="text-sm font-semibold">{item.label}</span>
                                                 </div>
-
-                                                <p className="text-xs" style={{ color: '#86868b' }}>
-                                                    Client: {project.client?.name || 'Unknown'}
-                                                </p>
-
-                                                <p className="text-sm line-clamp-2" style={{ color: '#86868b' }}>
-                                                    {project.description || 'No description'}
-                                                </p>
-
-                                                <button className="w-full px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm">
-                                                    Manage →
-                                                </button>
+                                                <span className="font-bold">{item.count}</span>
                                             </div>
-                                        </GlassCard>
+                                        ))}
+                                    </div>
+                                </div>
+                            </GlassCard>
+
+                            <GlassCard p={8}>
+                                <h3 className="text-xl font-bold mb-6">Volume & Growth</h3>
+                                <div className="h-48 flex items-end gap-2 px-2">
+                                    {/* Mock Bar Chart for Visual Polish */}
+                                    {[40, 70, 45, 90, 65, 85, 100, 60, 75, 55, 80, 95].map((h, i) => (
+                                        <div key={i} className="flex-1 bg-[#00abad]/10 rounded-t-lg group relative cursor-help" style={{ height: `${h}%` }}>
+                                            <div className="absolute inset-0 bg-[#00abad] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg" />
+                                        </div>
                                     ))}
                                 </div>
+                                <div className="flex justify-between mt-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">
+                                    <span>Jan</span>
+                                    <span>Dec</span>
+                                </div>
+                            </GlassCard>
+                        </div>
 
-                                {filteredProjects.length === 0 && (
-                                    <div className="text-center py-12">
-                                        <p style={{ color: '#86868b' }}>No projects found</p>
+                        {/* Recent Activity Logs */}
+                        <div className="lg:col-span-1">
+                            <GlassCard p={0} className="h-full flex flex-col overflow-hidden">
+                                <div className="p-6 border-b border-white/20 bg-white/40 sticky top-0 z-10">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-xl font-bold">Activity Monitor</h3>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                                            <span className="text-[10px] font-bold text-gray-500 uppercase italic">Live logs</span>
+                                        </div>
                                     </div>
-                                )}
-                            </div>
-                        )}
-                    </GlassCard>
+                                </div>
+                                <div className="flex-1 overflow-y-auto max-h-[700px] p-6 space-y-6">
+                                    {logs.length === 0 ? (
+                                        <div className="text-center py-20">
+                                            <p className="text-gray-400 italic">No recent activity detected.</p>
+                                        </div>
+                                    ) : (
+                                        logs.map((log, idx) => (
+                                            <div key={idx} className="flex gap-4 group">
+                                                <div className="flex flex-col items-center">
+                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm shadow-sm transition-transform group-hover:scale-110 ${log.type === 'error' ? 'bg-red-500 text-white' :
+                                                        log.type === 'success' ? 'bg-green-500 text-white' :
+                                                            'bg-[#00abad] text-white'
+                                                        }`}>
+                                                        {log.userName?.charAt(0) || 'S'}
+                                                    </div>
+                                                    {idx !== logs.length - 1 && <div className="w-px flex-1 bg-gray-200 my-2" />}
+                                                </div>
+                                                <div className="flex-1 pt-0.5">
+                                                    <div className="flex justify-between items-start mb-1">
+                                                        <p className="text-sm font-bold text-[#1d1d1f]">{log.action}</p>
+                                                        <span className="text-[10px] text-gray-400 font-medium whitespace-nowrap">
+                                                            {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-xs text-gray-500 leading-relaxed">
+                                                        <span className="font-semibold text-gray-700">{log.userName}</span> {log.details}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                                <div className="p-4 bg-gray-50 border-t border-gray-100 text-center">
+                                    <button className="text-xs font-bold text-[#00abad] hover:underline">View Historical Archives →</button>
+                                </div>
+                            </GlassCard>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            {/* Toast Notification */}
-            {toast && (
-                <div className={`fixed top-4 right-4 px-6 py-4 rounded-lg shadow-lg z-[3000] ${toast.type === 'error' ? 'bg-red-50 border border-red-200 text-red-700' : 'bg-green-50 border border-green-200 text-green-700'
-                    }`}>
-                    <div className="flex items-center gap-2">
-                        {toast.type === 'error' ? (
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                            </svg>
-                        ) : (
-                            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                            </svg>
-                        )}
-                        <div>
-                            <p className="font-semibold">{toast.title}</p>
-                            {toast.description && <p className="text-sm">{toast.description}</p>}
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Add Client Modal */}
-            {isModalOpen && (
-                <>
-                    <div
-                        className="fixed inset-0 bg-black/50 z-[2000]"
-                        onClick={() => setIsModalOpen(false)}
-                    />
-                    <div className="fixed inset-0 flex items-center justify-center z-[2001] p-4">
-                        <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-                                <h2 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>Add New Client</h2>
-                                <button
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                                >
-                                    <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor">
-                                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                                    </svg>
-                                </button>
-                            </div>
-                            <div className="p-6">
-                                <div className="flex flex-col gap-4">
-                                    <ThemedInput
-                                        label="Full Name"
-                                        placeholder="John Doe"
-                                        value={newClient.name}
-                                        onChange={(e) => setNewClient({ ...newClient, name: e.target.value })}
-                                        required
-                                    />
-                                    <ThemedInput
-                                        label="Email"
-                                        type="email"
-                                        placeholder="john@example.com"
-                                        value={newClient.email}
-                                        onChange={(e) => setNewClient({ ...newClient, email: e.target.value })}
-                                        required
-                                    />
-                                    <ThemedInput
-                                        label="Password"
-                                        type="password"
-                                        placeholder="Enter password"
-                                        value={newClient.password}
-                                        onChange={(e) => setNewClient({ ...newClient, password: e.target.value })}
-                                        required
-                                    />
-                                    <ThemedInput
-                                        label="Company Name"
-                                        placeholder="Acme Inc."
-                                        value={newClient.company}
-                                        onChange={(e) => setNewClient({ ...newClient, company: e.target.value })}
-                                    />
-                                    <ThemedSelect
-                                        label="Industry"
-                                        placeholder="Select industry"
-                                        value={newClient.industry}
-                                        onChange={(e) => setNewClient({ ...newClient, industry: e.target.value })}
-                                        options={INDUSTRIES}
-                                    />
-                                    <ThemedInput
-                                        label="Phone"
-                                        type="tel"
-                                        placeholder="+1 (555) 123-4567"
-                                        value={newClient.phone}
-                                        onChange={(e) => setNewClient({ ...newClient, phone: e.target.value })}
-                                    />
-                                    <ThemedInput
-                                        label="Website"
-                                        type="url"
-                                        placeholder="https://example.com"
-                                        value={newClient.website}
-                                        onChange={(e) => setNewClient({ ...newClient, website: e.target.value })}
-                                    />
-                                </div>
-                            </div>
-                            <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
-                                <button
-                                    onClick={() => setIsModalOpen(false)}
-                                    className="px-4 py-2 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={handleCreateClient}
-                                    disabled={creating}
-                                    className="px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                                >
-                                    {creating ? (
-                                        <>
-                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                            Creating...
-                                        </>
-                                    ) : (
-                                        'Create Client'
-                                    )}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </>
-            )}
         </AdminSidebarWrapper>
     );
 }
+

@@ -5,11 +5,11 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
-import { 
-    FaBold, 
-    FaItalic, 
-    FaStrikethrough, 
-    FaListUl, 
+import {
+    FaBold,
+    FaItalic,
+    FaStrikethrough,
+    FaListUl,
     FaListOl,
     FaQuoteRight,
     FaCode,
@@ -89,17 +89,22 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
 
     const addLink = () => {
         const previousUrl = editor.getAttributes('link').href;
-        const url = window.prompt('Enter URL:', previousUrl);
-        
+        let url = window.prompt('Enter URL:', previousUrl);
+
         if (url === null) {
             return;
         }
-        
+
         if (url === '') {
             editor.chain().focus().extendMarkRange('link').unsetLink().run();
             return;
         }
-        
+
+        // Ensure absolute URL if it doesn't look like an internal link
+        if (url && !url.startsWith('http') && !url.startsWith('/') && !url.startsWith('#') && !url.startsWith('mailto:')) {
+            url = `https://${url}`;
+        }
+
         editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
     };
 
@@ -108,9 +113,8 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
             onClick={onClick}
             disabled={disabled}
             aria-label={ariaLabel}
-            className={`p-2 rounded hover:bg-gray-100 transition-colors ${
-                isActive ? 'bg-[#00abad]/10 text-[#00abad]' : 'text-gray-600'
-            } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`p-2 rounded hover:bg-gray-100 transition-colors ${isActive ? 'bg-[#00abad]/10 text-[#00abad]' : 'text-gray-600'
+                } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
             {children}
         </button>
@@ -243,7 +247,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     font-style: italic;
                 }
             `}</style>
-            
+
             {/* Toolbar */}
             <div className="bg-gray-50 p-2 border-b border-gray-200">
                 <div className="flex gap-2 flex-wrap">
@@ -269,7 +273,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     >
                         <FaStrikethrough />
                     </ToolbarButton>
-                    
+
                     {/* Headings */}
                     <ToolbarButton
                         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
@@ -292,7 +296,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     >
                         <FaHeading /> 3
                     </ToolbarButton>
-                    
+
                     {/* Lists */}
                     <ToolbarButton
                         onClick={() => editor.chain().focus().toggleBulletList().run()}
@@ -308,7 +312,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     >
                         <FaListOl />
                     </ToolbarButton>
-                    
+
                     {/* Blockquote */}
                     <ToolbarButton
                         onClick={() => editor.chain().focus().toggleBlockquote().run()}
@@ -317,7 +321,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     >
                         <FaQuoteRight />
                     </ToolbarButton>
-                    
+
                     {/* Code */}
                     <ToolbarButton
                         onClick={() => editor.chain().focus().toggleCode().run()}
@@ -333,7 +337,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     >
                         <FaCode /> Block
                     </ToolbarButton>
-                    
+
                     {/* Links and Images */}
                     <ToolbarButton
                         onClick={addLink}
@@ -347,7 +351,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     >
                         <FaImage />
                     </ToolbarButton>
-                    
+
                     {/* Undo/Redo */}
                     <ToolbarButton
                         onClick={() => editor.chain().focus().undo().run()}
@@ -365,11 +369,11 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     </ToolbarButton>
                 </div>
             </div>
-            
+
             {/* Editor Content */}
             <div className="bg-white">
-                <EditorContent 
-                    editor={editor} 
+                <EditorContent
+                    editor={editor}
                     data-placeholder={placeholder}
                 />
             </div>

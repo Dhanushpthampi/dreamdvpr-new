@@ -3,6 +3,7 @@ import { authOptions } from "@/app/lib/auth";
 import clientPromise from "@/app/lib/db";
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
+import { logAction } from "@/app/lib/logger";
 
 // GET - List all projects (filtered by role)
 export async function GET(request) {
@@ -79,12 +80,12 @@ export async function POST(request) {
         } else {
             user = await db.collection("users").findOne({ email: session.user.email });
             clientId = user._id;
-            
+
             // Check if client has completed onboarding
             if (!user.onboardingCompleted) {
-                return NextResponse.json({ 
+                return NextResponse.json({
                     error: 'Please complete your profile before creating a project',
-                    requiresOnboarding: true 
+                    requiresOnboarding: true
                 }, { status: 400 });
             }
         }
@@ -93,7 +94,7 @@ export async function POST(request) {
             clientId,
             name,
             description,
-            status: 'onboarding',
+            status: 'pending',
             startDate: new Date(),
             estimatedEndDate: null,
             actualEndDate: null,
@@ -103,6 +104,16 @@ export async function POST(request) {
         };
 
         const result = await db.collection("projects").insertOne(project);
+
+        await logAction({
+            action: 'Project Created',
+            userId: session.user.id,
+            userName: session.user.name,
+            targetId: result.insertedId,
+            targetName: name,
+            details: `Project "${name}" was created for client ${user ? user.name : providedClientId}`,
+            type: 'info'
+        });
 
         return NextResponse.json({
             success: true,
