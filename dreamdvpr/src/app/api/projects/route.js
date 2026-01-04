@@ -60,34 +60,25 @@ export async function POST(request) {
     try {
         const session = await getServerSession(authOptions);
 
-        if (!session) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        if (session.user.role !== 'admin') {
+            return NextResponse.json({ error: 'Permission denied' }, { status: 403 });
         }
 
         const data = await request.json();
         const { name, description, clientId: providedClientId } = data;
 
+        if (!providedClientId) {
+            return NextResponse.json({ error: 'Client ID is required' }, { status: 400 });
+        }
+
         const client = await clientPromise;
         const db = client.db("dreamdvpr");
 
-        let clientId;
-        let user;
+        const clientId = new ObjectId(providedClientId);
+        const targetClient = await db.collection("users").findOne({ _id: clientId });
 
-        // If admin is creating project, they provide clientId
-        // If client is creating project, use their own ID
-        if (session.user.role === 'admin' && providedClientId) {
-            clientId = new ObjectId(providedClientId);
-        } else {
-            user = await db.collection("users").findOne({ email: session.user.email });
-            clientId = user._id;
-
-            // Check if client has completed onboarding
-            if (!user.onboardingCompleted) {
-                return NextResponse.json({
-                    error: 'Please complete your profile before creating a project',
-                    requiresOnboarding: true
-                }, { status: 400 });
-            }
+        if (!targetClient) {
+            return NextResponse.json({ error: 'Client not found' }, { status: 404 });
         }
 
         const project = {
@@ -111,7 +102,7 @@ export async function POST(request) {
             userName: session.user.name,
             targetId: result.insertedId,
             targetName: name,
-            details: `Project "${name}" was created for client ${user ? user.name : providedClientId}`,
+            details: `Admin created project "${name}" for client ${targetClient.name}`,
             type: 'info'
         });
 

@@ -77,161 +77,148 @@ export default function ProjectDetailPage() {
         <ClientSidebarWrapper>
             <div className="container mx-auto max-w-7xl px-4 py-8">
                 <div className="flex flex-col gap-8">
-                    {/* Project Header */}
-                    <div className="flex justify-between items-start flex-wrap gap-4">
-                        <div className="flex-1">
-                            <div className="flex items-center gap-4 mb-4">
-                                <button
-                                    onClick={() => router.push('/client')}
-                                    className="flex items-center gap-2 text-gray-600 hover:text-[#00abad] transition-colors"
-                                >
-                                    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
-                                    </svg>
-                                    Back to Dashboard
-                                </button>
-                                <StatusBadge status={project.status} />
+                    {/* Project Header / Hero */}
+                    <div className="animate-in fade-in slide-in-from-top-6 duration-1000">
+                        <div className="overflow-hidden bg-white border border-gray-200 rounded-3xl shadow-xl">
+                            <div className="relative p-8 md:p-12">
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#00abad]/5 to-transparent pointer-events-none" />
+                                <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
+                                    <div className="flex-1 space-y-6">
+                                        <div className="flex items-center gap-4 mb-2">
+                                            <button
+                                                onClick={() => router.push('/client/projects')}
+                                                className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-[#00abad] transition-colors"
+                                            >
+                                                <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+                                                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                                                </svg>
+                                                Back to Projects
+                                            </button>
+                                            <span className="text-xs font-bold text-gray-300 uppercase tracking-widest">•</span>
+                                            <StatusBadge status={project.status} size="sm" />
+                                        </div>
+
+                                        <div className="space-y-4">
+                                            <h1 className="text-4xl md:text-5xl font-black text-[#1d1d1f] leading-none tracking-tight">
+                                                {project.name}
+                                            </h1>
+                                            <p className="text-gray-500 text-lg font-medium leading-relaxed max-w-3xl">
+                                                {project.description || 'Tracking detailed milestones and deliverables for this mission.'}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-6 bg-gray-50/50 p-6 rounded-2xl border border-gray-100">
+                                        <div className="text-right">
+                                            <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Inception</p>
+                                            <p className="text-lg font-black text-[#1d1d1f]">{new Date(project.startDate).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}</p>
+                                        </div>
+                                        {project.status === 'completed' && (
+                                            <>
+                                                <div className="w-px h-12 bg-gray-200" />
+                                                <div className="text-right">
+                                                    <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Completed</p>
+                                                    <p className="text-lg font-black text-green-600">{new Date(project.actualEndDate || project.updatedAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}</p>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                            <h1 className="text-4xl md:text-5xl font-bold mb-2" style={{ color: '#1d1d1f' }}>
-                                {project.name}
-                            </h1>
-                            <p className="text-lg" style={{ color: '#86868b' }}>
-                                {project.description}
-                            </p>
                         </div>
                     </div>
 
-                    {/* Project Info */}
-                    <GlassCard p={6}>
-                        <div className="flex gap-8 flex-wrap">
-                            <div className="flex flex-col items-start gap-1">
-                                <p className="text-sm font-semibold" style={{ color: '#86868b' }}>
-                                    Start Date
-                                </p>
-                                <p className="text-base font-medium" style={{ color: '#1d1d1f' }}>
-                                    {new Date(project.startDate).toLocaleDateString()}
-                                </p>
-                            </div>
-
-                            {project.estimatedEndDate && (
-                                <div className="flex flex-col items-start gap-1">
-                                    <p className="text-sm font-semibold" style={{ color: '#86868b' }}>
-                                        Estimated Completion
-                                    </p>
-                                    <p className="text-base font-medium" style={{ color: '#1d1d1f' }}>
-                                        {new Date(project.estimatedEndDate).toLocaleDateString()}
-                                    </p>
-                                </div>
-                            )}
-
-                            {project.actualEndDate && (
-                                <div className="flex flex-col items-start gap-1">
-                                    <p className="text-sm font-semibold" style={{ color: '#86868b' }}>
-                                        Completed On
-                                    </p>
-                                    <p className="text-base font-medium" style={{ color: '#1d1d1f' }}>
-                                        {new Date(project.actualEndDate).toLocaleDateString()}
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    </GlassCard>
-
-                    {/* Tabs */}
-                    <GlassCard p={6}>
-                        {/* Tab Navigation */}
-                        <div className="mb-6 border-b border-gray-200">
-                            <div className="flex gap-4">
-                                {['timeline', 'files', 'details'].map((tab) => (
-                                    <button
-                                        key={tab}
-                                        onClick={() => setActiveTab(tab)}
-                                        className={`px-4 py-2 font-semibold transition-colors capitalize ${activeTab === tab
-                                            ? 'text-[#00abad] border-b-2 border-[#00abad]'
-                                            : 'text-gray-600 hover:text-[#00abad]'
-                                            }`}
-                                    >
-                                        {tab}
-                                    </button>
-                                ))}
-                            </div>
+                    {/* Detailed Content Tabs */}
+                    <GlassCard p={0} className="overflow-hidden animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                        <div className="border-b border-gray-100 px-8 pt-6 flex gap-4 md:gap-8 overflow-x-auto no-scrollbar">
+                            {[
+                                { id: 'timeline', label: 'Timeline', icon: 'M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z' },
+                                { id: 'files', label: 'Deliverables', icon: 'M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z' },
+                                { id: 'details', label: 'Project Info', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z' }
+                            ].map((tab) => (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setActiveTab(tab.id)}
+                                    className={`pb-4 px-2 flex items-center gap-2 border-b-2 transition-all font-bold text-sm whitespace-nowrap ${activeTab === tab.id
+                                        ? 'border-[#00abad] text-[#00abad]'
+                                        : 'border-transparent text-gray-400 hover:text-gray-600'}`}
+                                >
+                                    <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+                                        <path d={tab.icon} />
+                                    </svg>
+                                    {tab.label}
+                                </button>
+                            ))}
                         </div>
 
-                        {/* Tab Panels */}
-                        <div>
-                            {/* Timeline Tab */}
+                        <div className="p-8">
                             {activeTab === 'timeline' && (
-                                <div className="flex flex-col gap-6 mt-4">
-                                    <h2 className="text-xl font-bold" style={{ color: '#1d1d1f' }}>
-                                        Project Timeline
-                                    </h2>
+                                <div className="space-y-6">
+                                    <div className="flex justify-between items-center">
+                                        <h3 className="text-xl font-bold text-[#1d1d1f]">Project Milestones</h3>
+                                        <p className="text-xs font-medium text-gray-400">Chronological Roadmap</p>
+                                    </div>
                                     {timeline.length > 0 ? (
                                         <ProjectTimeline events={timeline} editable={false} />
                                     ) : (
-                                        <div className="text-center py-16">
-                                            <svg viewBox="0 0 24 24" className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="currentColor">
-                                                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
-                                            </svg>
-                                            <p className="text-lg font-medium mb-2" style={{ color: '#86868b' }}>
-                                                No timeline events yet
-                                            </p>
-                                            <p className="text-sm" style={{ color: '#86868b' }}>
-                                                Our team will add milestones as the project progresses
-                                            </p>
+                                        <div className="text-center py-20 bg-gray-50/50 rounded-2xl border border-dashed border-gray-200">
+                                            <p className="text-gray-400 font-medium italic">Our team is mapping out your project milestones...</p>
                                         </div>
                                     )}
                                 </div>
                             )}
 
-                            {/* Files Tab */}
                             {activeTab === 'files' && (
-                                <div className="mt-4">
+                                <div className="space-y-6">
+                                    <div className="flex justify-between items-center">
+                                        <h3 className="text-xl font-bold text-[#1d1d1f]">Shared Deliverables</h3>
+                                        <p className="text-xs font-medium text-gray-400">Assets & Documentation</p>
+                                    </div>
                                     <FileExplorer projectId={project._id} />
                                 </div>
                             )}
 
-                            {/* Details Tab */}
                             {activeTab === 'details' && (
-                                <div className="flex flex-col gap-6 mt-4">
-                                    <h2 className="text-xl font-bold" style={{ color: '#1d1d1f' }}>
-                                        Project Details
-                                    </h2>
-                                    <div className="flex flex-col gap-6">
-                                        <div>
-                                            <p className="text-sm font-semibold mb-2" style={{ color: '#86868b' }}>
-                                                Project Name
-                                            </p>
-                                            <p style={{ color: '#1d1d1f' }}>
-                                                {project.name}
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <p className="text-sm font-semibold mb-2" style={{ color: '#86868b' }}>
-                                                Description
-                                            </p>
-                                            <p style={{ color: '#1d1d1f' }}>
-                                                {project.description}
-                                            </p>
-                                        </div>
-
-                                        <div>
-                                            <p className="text-sm font-semibold mb-2" style={{ color: '#86868b' }}>
-                                                Status
-                                            </p>
-                                            <StatusBadge status={project.status} />
-                                        </div>
-
-                                        {project.budget && (
+                                <div className="space-y-8">
+                                    <div className="flex justify-between items-center">
+                                        <h3 className="text-xl font-bold text-[#1d1d1f]">Technical Summary</h3>
+                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                        <div className="space-y-6">
                                             <div>
-                                                <p className="text-sm font-semibold mb-2" style={{ color: '#86868b' }}>
-                                                    Budget
-                                                </p>
-                                                <p className="text-base font-bold" style={{ color: '#1d1d1f' }}>
-                                                    ${project.budget.toLocaleString()}
+                                                <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1.5 focus:outline-none">Identifier</p>
+                                                <p className="text-sm font-bold text-[#1d1d1f] flex items-center gap-2">
+                                                    <span className="w-2 h-2 rounded-full bg-gray-200" />
+                                                    {project._id}
                                                 </p>
                                             </div>
-                                        )}
+                                            <div>
+                                                <p className="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1.5">Project Scope</p>
+                                                <p className="text-sm font-medium text-gray-600 leading-relaxed">
+                                                    {project.description || 'Global objectives for this engagement.'}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-4">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-xs font-bold text-gray-500">Project Status</span>
+                                                <StatusBadge status={project.status} size="sm" />
+                                            </div>
+                                            <div className="h-px bg-gray-200" />
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-xs font-bold text-gray-500">Kickoff Date</span>
+                                                <span className="text-xs font-bold text-[#1d1d1f]">{new Date(project.startDate).toLocaleDateString()}</span>
+                                            </div>
+                                            {project.budget && (
+                                                <>
+                                                    <div className="h-px bg-gray-200" />
+                                                    <div className="flex justify-between items-center">
+                                                        <span className="text-xs font-bold text-gray-500">Budget Allocated</span>
+                                                        <span className="text-xs font-bold text-[#1d1d1f]">${project.budget.toLocaleString()}</span>
+                                                    </div>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -240,24 +227,23 @@ export default function ProjectDetailPage() {
 
                     {/* Completion Message */}
                     {project.status === 'completed' && (
-                        <GlassCard p={10} className="text-center bg-green-50">
-                            <div className="flex flex-col items-center gap-6">
-                                <div className="bg-green-100 p-4 rounded-full inline-block">
-                                    <svg viewBox="0 0 24 24" className="w-16 h-16 text-green-600" fill="currentColor">
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                                    </svg>
+                        <div className="animate-in zoom-in duration-1000">
+                            <GlassCard p={10} className="text-center bg-green-50/50 border-green-100">
+                                <div className="flex flex-col items-center gap-6">
+                                    <div className="bg-green-100/50 p-4 rounded-full inline-block">
+                                        <svg viewBox="0 0 24 24" className="w-16 h-16 text-green-600" fill="currentColor">
+                                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                        </svg>
+                                    </div>
+                                    <h2 className="text-2xl font-black text-green-700 tracking-tight">
+                                        Mission Accomplished 🎉
+                                    </h2>
+                                    <p className="text-lg text-green-600 font-medium max-w-xl">
+                                        This project has been successfully finalized. All assets and documentation are archived in the Deliverables tab.
+                                    </p>
                                 </div>
-                                <h2 className="text-2xl font-bold text-green-700">
-                                    Project Completed! 🎉
-                                </h2>
-                                <p className="text-lg text-green-600">
-                                    Thank you for working with DREAMdvpr. We hope you love the results!
-                                </p>
-                                <p className="text-sm" style={{ color: '#86868b' }}>
-                                    All project files and deliverables are available in the Files tab.
-                                </p>
-                            </div>
-                        </GlassCard>
+                            </GlassCard>
+                        </div>
                     )}
                 </div>
             </div>

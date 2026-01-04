@@ -33,6 +33,10 @@ export default function ClientsPage() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [clientToDelete, setClientToDelete] = useState(null);
 
+    const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+    const [projectClient, setProjectClient] = useState(null);
+    const [quickProject, setQuickProject] = useState({ name: '', description: '' });
+
     const [newClient, setNewClient] = useState({
         name: '',
         email: '',
@@ -135,6 +139,36 @@ export default function ClientsPage() {
         } catch (error) {
             console.error('Error deleting client:', error);
             showToast('Error', 'An error occurred while deleting the client', 'error');
+        } finally {
+            setCreating(false);
+        }
+    };
+
+    const handleQuickProject = async () => {
+        if (!quickProject.name || !projectClient) return;
+
+        setCreating(true);
+        try {
+            const res = await fetch('/api/projects', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...quickProject,
+                    clientId: projectClient._id
+                }),
+            });
+
+            if (res.ok) {
+                showToast('Project created successfully');
+                setIsProjectModalOpen(false);
+                setQuickProject({ name: '', description: '' });
+                setProjectClient(null);
+            } else {
+                showToast('Failed to create project', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('An error occurred', 'error');
         } finally {
             setCreating(false);
         }
@@ -267,6 +301,12 @@ export default function ClientsPage() {
                                                         </svg>
                                                     </button>
                                                     <button
+                                                        onClick={() => { setProjectClient(client); setIsProjectModalOpen(true); }}
+                                                        className="px-4 py-1.5 border border-[#00abad] text-[#00abad] rounded-lg hover:bg-[#00abad]/10 transition-all text-xs font-bold"
+                                                    >
+                                                        Quick Project
+                                                    </button>
+                                                    <button
                                                         onClick={() => router.push(`/admin/clients/${client._id}`)}
                                                         className="px-4 py-1.5 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-all text-xs font-bold"
                                                     >
@@ -378,6 +418,51 @@ export default function ClientsPage() {
                                         {creating ? 'Deleting...' : 'Delete Client'}
                                     </button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {/* Quick Project Modal */}
+            {isProjectModalOpen && (
+                <>
+                    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[2000]" onClick={() => setIsProjectModalOpen(false)} />
+                    <div className="fixed inset-0 flex items-center justify-center z-[2001] p-4 pointer-events-none">
+                        <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-lg w-full flex flex-col pointer-events-auto scale-in">
+                            <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+                                <div>
+                                    <h2 className="text-xl font-bold" style={{ color: '#1d1d1f' }}>Quick Project Launch</h2>
+                                    <p className="text-xs text-gray-400">For {projectClient?.name}</p>
+                                </div>
+                                <button onClick={() => setIsProjectModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
+                                </button>
+                            </div>
+                            <div className="p-6 space-y-4">
+                                <ThemedInput
+                                    label="Project Name"
+                                    value={quickProject.name}
+                                    onChange={(e) => setQuickProject({ ...quickProject, name: e.target.value })}
+                                    required
+                                />
+                                <ThemedInput
+                                    label="Description"
+                                    type="textarea"
+                                    rows={3}
+                                    value={quickProject.description}
+                                    onChange={(e) => setQuickProject({ ...quickProject, description: e.target.value })}
+                                />
+                            </div>
+                            <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
+                                <button onClick={() => setIsProjectModalOpen(false)} className="px-6 py-2 rounded-xl font-semibold text-gray-500 hover:bg-gray-100 transition-all">Cancel</button>
+                                <button
+                                    onClick={handleQuickProject}
+                                    disabled={creating}
+                                    className="px-8 py-2 bg-[#00abad] text-white rounded-xl font-bold hover:bg-[#008c8e] transition-all disabled:opacity-50"
+                                >
+                                    {creating ? 'Starting...' : 'Launch Project'}
+                                </button>
                             </div>
                         </div>
                     </div>
