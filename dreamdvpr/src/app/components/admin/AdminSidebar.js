@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -8,20 +8,48 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { data: session } = useSession();
+  const [expandedItems, setExpandedItems] = useState(['Doc Generator']);
+
+  const isActive = (path, exact = false) => {
+    if (!path) return false;
+    if (exact) return pathname === path;
+    return path === '/admin' ? pathname === path : pathname.startsWith(path);
+  };
 
   const menuItems = [
     { label: 'Dashboard', path: '/admin', icon: 'M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z' },
-    { label: 'Clients', path: '/admin/clients', icon: 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' },
-    { label: 'Projects', path: '/admin/projects', icon: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z' },
+    { label: 'Clients', path: '/admin/clients', icon: 'M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z' },
+    { label: 'Projects', path: '/admin/projects', icon: 'M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z' },
+    { label: 'Invoices', path: '/admin/invoices', exact: true, icon: 'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z' },
+    {
+      label: 'Doc Generator',
+      icon: 'M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13z',
+      subItems: [
+        { label: 'Proposal Gen', path: '/admin/proposals' },
+        { label: 'Invoice Gen', path: '/admin/invoices/generate' },
+        { label: 'NDA Gen', path: '/admin/nda' },
+        { label: 'Contract Gen', path: '/admin/contracts' },
+      ]
+    },
     { label: 'Content Management', path: '/admin/content', icon: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 14H7v-2h10v2zm0-4H7v-2h10v2zm0-4H7V7h10v2z' },
     { label: 'Blog Management', path: '/admin/blogs', icon: 'M19 3H5c-1.1 0-2 .9-2 2v14h14V5c0-1.1-.9-2-2-2zM14 17H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z' },
-    { label: 'Generate Invoice', path: '/admin/invoices', icon: 'M14 2H6c-1.1 0-1.99.9-1.99 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM12 9V3.5L18.5 10H13c-.55 0-1-.45-1-1z' },
-    { label: 'Generate Proposal', path: '/admin/proposals', icon: 'M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1z' },
-    { label: 'NDA / Contracts', path: '/admin/nda', icon: 'M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z' },
   ];
 
-  const isActive = (path) =>
-    path === '/admin' ? pathname === path : pathname.startsWith(path);
+  // Initialize expanded state based on current path
+  useEffect(() => {
+    const activeSubParent = menuItems.find(item =>
+      item.subItems?.some(sub => pathname.startsWith(sub.path))
+    );
+    if (activeSubParent && !expandedItems.includes(activeSubParent.label)) {
+      setExpandedItems(prev => [...prev, activeSubParent.label]);
+    }
+  }, [pathname]);
+
+  const toggleExpand = (label) => {
+    setExpandedItems(prev =>
+      prev.includes(label) ? prev.filter(i => i !== label) : [...prev, label]
+    );
+  };
 
   const handleNavigation = (path, badge) => {
     if (badge === 'Soon') return alert('Coming soon!');
@@ -61,27 +89,65 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
         )}
       </div>
 
-      {/* Nav */}
-      <div className="flex flex-col p-4 gap-1 flex-1">
+      <div className="flex flex-col p-4 gap-1 flex-1 overflow-y-auto">
         {menuItems.map((item) => {
-          const active = isActive(item.path);
+          const isExpanded = expandedItems.includes(item.label);
+          const active = item.path ? isActive(item.path, item.exact) : item.subItems?.some(si => isActive(si.path));
+
           return (
-            <div
-              key={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${active
-                ? 'bg-[#00abad]/12 text-[#00abad] font-semibold'
-                : 'text-[#86868b] font-medium hover:bg-[#00abad]/18'
-                }`}
-              onClick={() => handleNavigation(item.path, item.badge)}
-            >
-              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                <path d={item.icon} />
-              </svg>
-              <span className="flex-1">{item.label}</span>
-              {item.badge && (
-                <span className="px-2 py-0.5 rounded-full bg-white/30 text-xs">
-                  {item.badge}
-                </span>
+            <div key={item.label} className="flex flex-col gap-1">
+              <div
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${active
+                  ? 'bg-[#00abad]/12 text-[#00abad] font-semibold'
+                  : 'text-[#86868b] font-medium hover:bg-[#00abad]/18'
+                  }`}
+                onClick={() => {
+                  if (item.subItems) {
+                    toggleExpand(item.label);
+                  } else {
+                    handleNavigation(item.path, item.badge);
+                  }
+                }}
+              >
+                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                  <path d={item.icon} />
+                </svg>
+                <span className="flex-1">{item.label}</span>
+                {item.subItems && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    className={`w-4 h-4 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+                    fill="currentColor"
+                  >
+                    <path d="M7 10l5 5 5-5z" />
+                  </svg>
+                )}
+                {item.badge && (
+                  <span className="px-2 py-0.5 rounded-full bg-white/30 text-xs">
+                    {item.badge}
+                  </span>
+                )}
+              </div>
+
+              {/* Sub Items */}
+              {item.subItems && isExpanded && (
+                <div className="flex flex-col gap-1 ml-9 border-l border-gray-100 pl-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                  {item.subItems.map((sub) => {
+                    const subActive = isActive(sub.path);
+                    return (
+                      <div
+                        key={sub.path}
+                        className={`px-4 py-2 text-sm rounded-lg cursor-pointer transition-colors ${subActive
+                          ? 'text-[#00abad] font-bold bg-[#00abad]/5'
+                          : 'text-[#86868b] hover:text-[#00abad] hover:bg-gray-50'
+                          }`}
+                        onClick={() => handleNavigation(sub.path)}
+                      >
+                        {sub.label}
+                      </div>
+                    );
+                  })}
+                </div>
               )}
             </div>
           );

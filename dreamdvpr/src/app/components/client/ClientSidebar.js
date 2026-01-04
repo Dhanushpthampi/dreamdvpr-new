@@ -11,11 +11,10 @@ const ClientSidebar = ({ isMobile = false, onClose }) => {
 
   const menuItems = [
     { label: 'Dashboard', path: '/client', icon: 'M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z' },
-    { label: 'My Projects', path: '/client/projects', icon: 'M19 3H5c-1.1 0-2 .9-2 2v14z' },
-    { label: 'Start New Project', path: '/client/new-project', icon: 'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z' },
-    { label: 'My Profile', path: '/client/profile', icon: 'M12 2C6.48 2 2 6.48 2 12z' },
-    { label: 'Invoices', path: '/client/invoices', badge: 'Soon', icon: 'M14 2H6c-1.1 0-1.99.9-1.99 2z' },
-    { label: 'Proposals', path: '/client/proposals', badge: 'Soon', icon: 'M19 3h-4.18C14.4 1.84 13.3 1 12 1z' },
+    { label: 'My Projects', path: '/client/projects', icon: 'M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z' },
+    { label: 'Start New Project', path: '/client/new-project', icon: 'M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z' },
+    { label: 'My Invoices', path: '/client/invoices', icon: 'M11.5 2C6.81 2 3 5.81 3 10.5S6.81 19 11.5 19h.5v3c4.86-2.36 8-5.29 8-9.5C20 5.81 16.19 2 11.5 2zm1 14.5h-2v-2h2v2zm0-3.5h-2c0-2.25 2.5-2.75 2.5-4.5 0-1.1-.9-2-2-2s-2 .9-2 2h-2c0-2.21 1.79-4 4-4s4 1.79 4 4c0 2.5-3 3.12-3 5z' },
+    { label: 'My Profile', path: '/client/profile', icon: 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z' },
   ];
 
   const isActive = (path) =>
@@ -66,11 +65,10 @@ const ClientSidebar = ({ isMobile = false, onClose }) => {
           return (
             <div
               key={item.path}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${
-                active
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${active
                   ? 'bg-[#00abad]/12 text-[#00abad] font-semibold'
                   : 'text-[#86868b] font-medium hover:bg-[#00abad]/18'
-              }`}
+                }`}
               onClick={() => handleNavigation(item.path, item.badge)}
             >
               <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">

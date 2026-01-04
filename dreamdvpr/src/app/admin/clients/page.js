@@ -29,6 +29,10 @@ export default function ClientsPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [toast, setToast] = useState(null);
 
+    const [editingClient, setEditingClient] = useState(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [clientToDelete, setClientToDelete] = useState(null);
+
     const [newClient, setNewClient] = useState({
         name: '',
         email: '',
@@ -68,47 +72,99 @@ export default function ClientsPage() {
         }
     };
 
-    const handleCreateClient = async () => {
-        if (!newClient.name || !newClient.email || !newClient.password) {
+    const handleCreateOrUpdateClient = async () => {
+        const isEdit = !!editingClient;
+        if (!newClient.name || !newClient.email || (!isEdit && !newClient.password)) {
             showToast('Missing required fields', 'Name, email, and password are required', 'error');
             return;
         }
 
         setCreating(true);
         try {
-            const res = await fetch('/api/clients', {
-                method: 'POST',
+            const url = isEdit ? `/api/clients/${editingClient._id}` : '/api/clients';
+            const method = isEdit ? 'PUT' : 'POST';
+
+            const payload = { ...newClient };
+            if (!isEdit) {
+                payload.role = 'client';
+                payload.onboardingCompleted = true;
+            } else if (!payload.password) {
+                delete payload.password; // Don't update password if not provided in edit mode
+            }
+
+            const res = await fetch(url, {
+                method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...newClient,
-                    role: 'client',
-                    onboardingCompleted: true,
-                }),
+                body: JSON.stringify(payload),
             });
 
             if (res.ok) {
-                showToast('Client created successfully', '', 'success');
-                setNewClient({
-                    name: '',
-                    email: '',
-                    password: '',
-                    company: '',
-                    industry: '',
-                    phone: '',
-                    website: '',
-                });
+                showToast(isEdit ? 'Client updated successfully' : 'Client created successfully', '', 'success');
+                resetForm();
                 setIsModalOpen(false);
                 fetchClients();
             } else {
                 const data = await res.json();
-                showToast('Failed to create client', data.error || 'An error occurred', 'error');
+                showToast(isEdit ? 'Failed to update client' : 'Failed to create client', data.error || 'An error occurred', 'error');
             }
         } catch (error) {
-            console.error('Error creating client:', error);
-            showToast('Error', 'An error occurred while creating the client', 'error');
+            console.error('Error saving client:', error);
+            showToast('Error', 'An error occurred while saving the client', 'error');
         } finally {
             setCreating(false);
         }
+    };
+
+    const handleDeleteClient = async () => {
+        if (!clientToDelete) return;
+        setCreating(true);
+        try {
+            const res = await fetch(`/api/clients/${clientToDelete._id}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                showToast('Client deleted successfully', '', 'success');
+                setIsDeleteModalOpen(false);
+                setClientToDelete(null);
+                fetchClients();
+            } else {
+                const data = await res.json();
+                showToast('Failed to delete client', data.error || 'An error occurred', 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting client:', error);
+            showToast('Error', 'An error occurred while deleting the client', 'error');
+        } finally {
+            setCreating(false);
+        }
+    };
+
+    const resetForm = () => {
+        setNewClient({
+            name: '',
+            email: '',
+            password: '',
+            company: '',
+            industry: '',
+            phone: '',
+            website: '',
+        });
+        setEditingClient(null);
+    };
+
+    const openEditModal = (client) => {
+        setEditingClient(client);
+        setNewClient({
+            name: client.name || '',
+            email: client.email || '',
+            password: '', // Password stays empty unless changing
+            company: client.company || '',
+            industry: client.industry || '',
+            phone: client.phone || '',
+            website: client.website || '',
+        });
+        setIsModalOpen(true);
     };
 
     const filteredClients = clients.filter(client =>
@@ -137,7 +193,7 @@ export default function ClientsPage() {
                             <p style={{ color: '#86868b' }}>Manage your client base and onboarding status</p>
                         </div>
                         <button
-                            onClick={() => setIsModalOpen(true)}
+                            onClick={() => { resetForm(); setIsModalOpen(true); }}
                             className="px-6 py-2 bg-[#00abad] text-white rounded-xl hover:bg-[#008c8e] transition-all flex items-center gap-2 font-semibold shadow-lg shadow-[#00abad]/20"
                         >
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
@@ -190,12 +246,33 @@ export default function ClientsPage() {
                                                 ) : '-'}
                                             </td>
                                             <td className="py-4 px-6 text-right">
-                                                <button
-                                                    onClick={() => router.push(`/admin/clients/${client._id}`)}
-                                                    className="px-4 py-1.5 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-all text-xs font-bold"
-                                                >
-                                                    Manage
-                                                </button>
+                                                <div className="flex justify-end gap-2">
+                                                    <button
+                                                        onClick={() => openEditModal(client)}
+                                                        className="p-2 text-[#00abad] hover:bg-[#00abad]/10 rounded-lg transition-all"
+                                                        title="Edit Client"
+                                                    >
+                                                        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                                                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                                                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+                                                        </svg>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => { setClientToDelete(client); setIsDeleteModalOpen(true); }}
+                                                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                                        title="Delete Client"
+                                                    >
+                                                        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
+                                                            <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => router.push(`/admin/clients/${client._id}`)}
+                                                        className="px-4 py-1.5 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-all text-xs font-bold"
+                                                    >
+                                                        Manage
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -224,22 +301,28 @@ export default function ClientsPage() {
                 </div>
             )}
 
-            {/* Add Client Modal */}
+            {/* Add/Edit Client Modal */}
             {isModalOpen && (
                 <>
-                    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[2000]" onClick={() => setIsModalOpen(false)} />
+                    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[2000]" onClick={() => { setIsModalOpen(false); resetForm(); }} />
                     <div className="fixed inset-0 flex items-center justify-center z-[2001] p-4 pointer-events-none">
                         <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-hidden flex flex-col pointer-events-auto scale-in">
                             <div className="p-6 border-b border-gray-100 flex justify-between items-center">
-                                <h2 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>Add New Client</h2>
-                                <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-lg">
+                                <h2 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>{editingClient ? 'Edit Client' : 'Add New Client'}</h2>
+                                <button onClick={() => { setIsModalOpen(false); resetForm(); }} className="p-2 hover:bg-gray-100 rounded-lg">
                                     <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
                                 </button>
                             </div>
                             <div className="p-6 overflow-y-auto space-y-4">
                                 <ThemedInput label="Full Name" value={newClient.name} onChange={(e) => setNewClient({ ...newClient, name: e.target.value })} required />
                                 <ThemedInput label="Email" type="email" value={newClient.email} onChange={(e) => setNewClient({ ...newClient, email: e.target.value })} required />
-                                <ThemedInput label="Password" type="password" value={newClient.password} onChange={(e) => setNewClient({ ...newClient, password: e.target.value })} required />
+                                <ThemedInput
+                                    label={editingClient ? "New Password (leave blank to keep current)" : "Password"}
+                                    type="password"
+                                    value={newClient.password}
+                                    onChange={(e) => setNewClient({ ...newClient, password: e.target.value })}
+                                    required={!editingClient}
+                                />
                                 <div className="grid grid-cols-2 gap-4">
                                     <ThemedInput label="Company" value={newClient.company} onChange={(e) => setNewClient({ ...newClient, company: e.target.value })} />
                                     <ThemedSelect label="Industry" value={newClient.industry} onChange={(e) => setNewClient({ ...newClient, industry: e.target.value })} options={INDUSTRIES} />
@@ -250,14 +333,51 @@ export default function ClientsPage() {
                                 </div>
                             </div>
                             <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
-                                <button onClick={() => setIsModalOpen(false)} className="px-6 py-2 rounded-xl font-semibold text-gray-500 hover:bg-gray-100 transition-all">Cancel</button>
+                                <button onClick={() => { setIsModalOpen(false); resetForm(); }} className="px-6 py-2 rounded-xl font-semibold text-gray-500 hover:bg-gray-100 transition-all">Cancel</button>
                                 <button
-                                    onClick={handleCreateClient}
+                                    onClick={handleCreateOrUpdateClient}
                                     disabled={creating}
                                     className="px-8 py-2 bg-[#00abad] text-white rounded-xl font-bold hover:bg-[#008c8e] transition-all disabled:opacity-50"
                                 >
-                                    {creating ? 'Creating...' : 'Register Client'}
+                                    {creating ? 'Saving...' : editingClient ? 'Update Client' : 'Register Client'}
                                 </button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {/* Delete Confirmation Modal */}
+            {isDeleteModalOpen && (
+                <>
+                    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[2000]" onClick={() => setIsDeleteModalOpen(false)} />
+                    <div className="fixed inset-0 flex items-center justify-center z-[2001] p-4 pointer-events-none">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 pointer-events-auto scale-in">
+                            <div className="text-center">
+                                <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                    </svg>
+                                </div>
+                                <h3 className="text-xl font-bold text-gray-900 mb-2">Delete Client?</h3>
+                                <p className="text-gray-500 mb-8">
+                                    Are you sure you want to delete <strong>{clientToDelete?.name}</strong>? This action cannot be undone and will remove all associated data.
+                                </p>
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => setIsDeleteModalOpen(false)}
+                                        className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onClick={handleDeleteClient}
+                                        disabled={creating}
+                                        className="flex-1 px-4 py-2 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-all disabled:opacity-50"
+                                    >
+                                        {creating ? 'Deleting...' : 'Delete Client'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -266,3 +386,4 @@ export default function ClientsPage() {
         </AdminSidebarWrapper>
     );
 }
+

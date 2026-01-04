@@ -3,6 +3,7 @@ import { authOptions } from "@/app/lib/auth";
 import clientPromise from "@/app/lib/db";
 import { NextResponse } from "next/server";
 import { ObjectId } from "mongodb";
+import { createMeeting } from "@/app/lib/calendar";
 
 // GET - List meetings
 export async function GET(request) {
@@ -67,14 +68,33 @@ export async function POST(request) {
         const db = client.db("dreamdvpr");
 
         let clientId;
+        let userData;
 
         // If admin is scheduling, they provide clientId
         // If client is scheduling, use their own ID
         if (session.user.role === 'admin' && providedClientId) {
             clientId = new ObjectId(providedClientId);
+            userData = await db.collection("users").findOne({ _id: clientId });
         } else {
-            const user = await db.collection("users").findOne({ email: session.user.email });
-            clientId = user._id;
+            userData = await db.collection("users").findOne({ email: session.user.email });
+            clientId = userData._id;
+        }
+
+        const startTime = new Date(`${scheduledDate}T${scheduledTime}:00`);
+        let meetLink = null;
+
+        try {
+            const meetingRes = await createMeeting({
+                summary: `DREAMdvpr Strategy - ${type === 'strategy' ? 'Initial Session' : 'Project Update'}`,
+                description: notes || `Meeting for project: ${projectId || 'General'}`,
+                startTime,
+                duration: duration || 60,
+                userEmail: userData.email,
+            });
+            meetLink = meetingRes.meetLink;
+        } catch (calError) {
+            console.error('Failed to create google meet link:', calError);
+            // Continue without meet link if it fails
         }
 
         const meeting = {
@@ -86,6 +106,7 @@ export async function POST(request) {
             duration: duration || 60,
             status: 'scheduled',
             notes: notes || '',
+            meetLink,
             createdAt: new Date(),
             updatedAt: new Date(),
         };
@@ -95,6 +116,7 @@ export async function POST(request) {
         return NextResponse.json({
             success: true,
             meetingId: result.insertedId.toString(),
+            meetLink,
             message: 'Meeting scheduled successfully'
         });
 
