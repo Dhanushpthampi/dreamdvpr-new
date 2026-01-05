@@ -2,16 +2,14 @@
 
 import Link from 'next/link';
 import ParticleBackground from './components/homepage/ParticleBackground';
-import { useThemeColor, useBackgroundColor } from './lib/hooks';
+
 
 export default function NotFound() {
-  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
-  const bgColor = useBackgroundColor('primary');
+  const brandColor = 'var(--color-brand-500, #e53e3e)';
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
-      style={{ backgroundColor: bgColor }}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-app"
     >
       {/* Particle Background */}
       <ParticleBackground />
@@ -24,8 +22,7 @@ export default function NotFound() {
             {/* Background 404 */}
             <h1
               className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bold select-none pointer-events-none
-                         text-[8rem] md:text-[12rem] opacity-10"
-              style={{ color: brandColor }}
+                         text-[8rem] md:text-[12rem] opacity-10 text-brand-500"
             >
               404
             </h1>
@@ -44,10 +41,10 @@ export default function NotFound() {
 
           {/* Message */}
           <div className="flex flex-col gap-4">
-            <h2 className="text-4xl font-bold text-[var(--color-text-main)]">
+            <h2 className="text-4xl font-bold text-text-main">
               Page Not Found
             </h2>
-            <p className="text-lg max-w-md mx-auto text-[var(--color-text-secondary)]">
+            <p className="text-lg max-w-md mx-auto text-text-secondary">
               Oops! The page you're looking for seems to have drifted off into the
               digital void. Let&apos;s get you back on track.
             </p>
@@ -58,33 +55,21 @@ export default function NotFound() {
             <Link
               href="/"
               className="px-6 py-3 text-lg font-semibold rounded-lg text-white
-                         transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
-              style={{ backgroundColor: brandColor }}
+                         transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg bg-brand-500"
             >
               Go Home
             </Link>
 
             <Link
               href="/blog"
-              className="px-6 py-3 text-lg font-semibold rounded-lg border
-                         transition-all duration-300 hover:text-white"
-              style={{
-                borderColor: brandColor,
-                color: brandColor,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = brandColor;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
+              className="px-6 py-3 text-lg font-semibold rounded-lg border border-brand-500 text-brand-500 transition-all duration-300 hover:text-white hover:bg-brand-500"
             >
               Browse Blog
             </Link>
           </div>
 
           {/* Footer note */}
-          <p className="text-sm opacity-70 text-[var(--color-text-secondary)] mt-8">
+          <p className="text-sm opacity-70 text-text-secondary mt-8">
             Error Code: 404 | Lost in Space
           </p>
         </div>

@@ -1,20 +1,8 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { useTheme } from '@/app/lib/hooks';
-
 /**
- * ThemeProvider - Conditionally applies theme only to homepage and blog pages
- * Other pages (login, client, admin) use static themes
+ * ThemeProvider - Passthrough since we now use Tailwind tokens
  */
-export function ThemeProvider({ children, initialTheme = null }) {
-  const pathname = usePathname();
-  
-  // Only apply dynamic theme to homepage and blog pages
-  const shouldApplyTheme = pathname === '/' || 
-                          pathname?.startsWith('/blog');
-  
-  useTheme(initialTheme, shouldApplyTheme);
-
+export function ThemeProvider({ children }) {
   return <>{children}</>;
 }

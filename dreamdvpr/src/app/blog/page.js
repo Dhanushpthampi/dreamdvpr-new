@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Header from '../components/homepage/Header';
 import Footer from '../components/homepage/Footer';
 import { hexToRgba } from '../lib/utils/colors';
-import { useThemeColor } from '../lib/hooks';
+
 
 const colorMap = {
   Design: 'purple',
@@ -20,21 +20,12 @@ const colorMap = {
 ======================= */
 const BlogCard = ({ blog }) => {
   const color = colorMap[blog.category] || 'gray';
-  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
+  const brandColor = '#e53e3e';
 
   return (
     <Link href={`/blog/${blog._id}`} className="block no-underline">
       <div
-        className="group cursor-pointer bg-white/40 backdrop-blur-[20px] backdrop-saturate-[180%] rounded-2xl overflow-hidden border border-white/30 transition-all duration-300 ease-in-out hover:-translate-y-1.5"
-        style={{
-          boxShadow: `0 0 18px ${hexToRgba(brandColor, 0.12)}`,
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.boxShadow = `0 0 28px ${hexToRgba(brandColor, 0.22)}`;
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.boxShadow = `0 0 18px ${hexToRgba(brandColor, 0.12)}`;
-        }}
+        className="group cursor-pointer bg-white/40 backdrop-blur-[20px] backdrop-saturate-[180%] rounded-2xl overflow-hidden border border-white/30 transition-all duration-300 ease-in-out hover:-translate-y-1.5 shadow-[0_0_18px_rgba(229,62,62,0.12)] hover:shadow-[0_0_28px_rgba(229,62,62,0.22)]"
       >
         {/* Image */}
         <div
@@ -57,12 +48,11 @@ const BlogCard = ({ blog }) => {
             >
               {blog.category}
             </span>
-            <span className="text-xs font-bold" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
+            <span className="text-xs font-bold text-text-secondary">
               •
             </span>
             <span
-              className="text-xs font-bold uppercase"
-              style={{ color: 'var(--color-text-secondary, #86868b)' }}
+              className="text-xs font-bold uppercase text-text-secondary"
             >
               {new Date(blog.createdAt).toLocaleDateString('en-US', {
                 month: 'short',
@@ -73,15 +63,13 @@ const BlogCard = ({ blog }) => {
           </div>
 
           <h3
-            className="text-lg font-semibold leading-relaxed transition-colors duration-200 group-hover:text-[var(--color-brand-500)]"
-            style={{ color: 'var(--color-text-main, #1d1d1f)' }}
+            className="text-lg font-semibold leading-relaxed transition-colors duration-200 group-hover:text-brand-500 text-text-main"
           >
             {blog.title}
           </h3>
 
           <p
-            className="text-sm line-clamp-2"
-            style={{ color: 'var(--color-text-secondary, #86868b)' }}
+            className="text-sm line-clamp-2 text-text-secondary"
           >
             {blog.excerpt}
           </p>
@@ -97,7 +85,7 @@ const BlogCard = ({ blog }) => {
 export default function BlogPage() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
+  const brandColor = '#e53e3e';
 
   useEffect(() => {
     fetchBlogs();
@@ -116,26 +104,22 @@ export default function BlogPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--color-bg-app, #f5f5f7)' }}>
+    <div className="min-h-screen bg-bg-app">
       <Header />
 
       <div className="pt-24 pb-16 relative">
-        {/* background glow */}
         <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: `radial-gradient(circle at 50% 0%, ${hexToRgba(brandColor, 0.12)}, transparent 60%)`,
-          }}
+          className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50_0%,rgba(229,62,62,0.12),transparent_60%)]"
         />
 
         <div className="container mx-auto max-w-7xl px-4 relative">
           <div className="flex flex-col gap-12">
             {/* Header */}
             <div className="text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-text-main">
                 Blog
               </h1>
-              <p className="text-lg" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
+              <p className="text-lg text-text-secondary">
                 Latest insights, tips, and updates from REDgravity
               </p>
             </div>
@@ -143,11 +127,11 @@ export default function BlogPage() {
             {/* Content */}
             {loading ? (
               <div className="text-center py-20">
-                <div className="inline-block w-12 h-12 border-4 border-t-[var(--color-brand-500)] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                <div className="inline-block w-12 h-12 border-4 border-t-brand-500 border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
               </div>
             ) : blogs.length === 0 ? (
               <div className="text-center py-20">
-                <p className="text-lg" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
+                <p className="text-lg text-text-secondary">
                   No blog posts available yet. Check back soon!
                 </p>
               </div>

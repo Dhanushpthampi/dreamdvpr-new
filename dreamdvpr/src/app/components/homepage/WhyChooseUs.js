@@ -2,24 +2,22 @@
 
 import React from 'react';
 import AnimatedCounter from '../ui/AnimatedCounter';
-import { useContent, useThemeColor, useBackgroundColor } from '../../lib/hooks';
-import { hexToRgba } from '../../lib/utils/colors';
+import { useContent } from '../../lib/hooks';
 
 /* =======================
    Stat Card (Theme-aware)
 ======================= */
 const StatCard = ({ end, suffix, label, delay = 0 }) => {
-  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
   const [hovered, setHovered] = React.useState(false);
 
   return (
     <div
-      className="flex flex-col items-center gap-2 bg-white/40 backdrop-blur-[24px] backdrop-saturate-[180%] p-8 rounded-xl border border-white/30 transition-all duration-300 ease-in-out"
+      className={`flex flex-col items-center gap-2 bg-white/40 backdrop-blur-[24px] backdrop-saturate-[180%] p-8 rounded-xl border border-white/30 transition-all duration-300 ease-in-out ${hovered
+          ? 'shadow-[0_0_30px_rgba(229,62,62,0.22)]'
+          : 'shadow-[0_0_20px_rgba(229,62,62,0.12)]'
+        }`}
       style={{
         transform: `translateY(${delay}px)`,
-        boxShadow: hovered
-          ? `0 0 30px ${hexToRgba(brandColor, 0.22)}`
-          : `0 0 20px ${hexToRgba(brandColor, 0.12)}`,
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -28,7 +26,7 @@ const StatCard = ({ end, suffix, label, delay = 0 }) => {
       }}
     >
       <AnimatedCounter end={end} suffix={suffix} />
-      <p className="font-semibold" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
+      <p className="font-semibold text-text-secondary">
         {label}
       </p>
     </div>
@@ -40,22 +38,15 @@ const StatCard = ({ end, suffix, label, delay = 0 }) => {
 ======================= */
 const WhyChooseUs = () => {
   const { content } = useContent('whyChooseUs');
-  const bgColor = useBackgroundColor('secondary');
-  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
 
   const titleParts = content?.title?.split(content?.titleHighlight || 'REDgravity') || [];
 
   return (
     <div
-      className="py-24 relative overflow-hidden"
-      style={{ backgroundColor: bgColor }}
+      className="py-24 relative overflow-hidden bg-bg-secondary"
     >
-      {/* subtle glow */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(circle at 20% 20%, ${hexToRgba(brandColor, 0.12)}, transparent 60%)`,
-        }}
+        className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_20%,rgba(229,62,62,0.12),transparent_60%)]"
       />
 
       <div className="container mx-auto max-w-7xl px-4 relative z-[1]">
@@ -63,13 +54,12 @@ const WhyChooseUs = () => {
           {/* LEFT CONTENT */}
           <div className="flex-1">
             <h2
-              className="text-4xl md:text-5xl font-bold mb-6 leading-tight"
-              style={{ color: 'var(--color-text-main, #1d1d1f)' }}
+              className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-text-main"
             >
               {titleParts.map((part, i, arr) =>
                 i === arr.length - 1 ? (
                   <React.Fragment key={i}>
-                    <span style={{ color: 'var(--color-brand-500, #e53e3e)' }}>
+                    <span className="text-brand-500">
                       {content?.titleHighlight || 'REDgravity'}
                     </span>
                     {part}
@@ -81,8 +71,7 @@ const WhyChooseUs = () => {
             </h2>
 
             <p
-              className="text-lg mb-8 font-medium"
-              style={{ color: 'var(--color-text-secondary, #86868b)' }}
+              className="text-lg mb-8 font-medium text-text-secondary"
             >
               {content?.subtitle}
             </p>
@@ -91,13 +80,11 @@ const WhyChooseUs = () => {
               {content?.points?.map((item, i) => (
                 <div key={i} className="flex items-center gap-3">
                   <div
-                    className="p-1.5 rounded-full"
-                    style={{ backgroundColor: hexToRgba(brandColor, 0.15) }}
+                    className="p-1.5 rounded-full bg-brand-500/15"
                   >
                     <svg
                       viewBox="0 0 20 20"
-                      className="w-4 h-4"
-                      style={{ color: 'var(--color-brand-500, #e53e3e)' }}
+                      className="w-4 h-4 text-brand-500"
                       fill="currentColor"
                     >
                       <path
@@ -107,7 +94,7 @@ const WhyChooseUs = () => {
                       />
                     </svg>
                   </div>
-                  <p className="font-medium" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
+                  <p className="font-medium text-text-main">
                     {item}
                   </p>
                 </div>

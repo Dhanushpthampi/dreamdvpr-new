@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useBlogs, useBackgroundColor } from '../../lib/hooks';
+import { useBlogs } from '../../lib/hooks';
 
 const colorMap = {
     'Design': 'purple',
@@ -23,23 +23,17 @@ const BlogCard = ({ blog, category, title, date, color, imageUrl }) => {
                 onMouseLeave={() => setHovered(false)}
             >
                 <div
-                    className="h-60 rounded-2xl mb-6 relative overflow-hidden transition-all duration-300"
+                    className="h-60 rounded-2xl mb-6 relative overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-md"
                     style={{
                         backgroundColor: imageUrl ? 'transparent' : undefined,
                         backgroundImage: imageUrl ? `url(${imageUrl})` : 'none',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
-                        transform: hovered ? 'translateY(-4px)' : 'none',
-                        boxShadow: hovered ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
                     }}
                 />
                 <div className="flex items-center gap-3 mb-2">
                     <span
-                        className="px-2 py-1 text-xs font-bold uppercase rounded"
-                        style={{
-                            backgroundColor: `var(--color-${color}-100, rgba(0, 0, 0, 0.1))`,
-                            color: `var(--color-${color}-700, #1d1d1f)`,
-                        }}
+                        className={`px-2 py-1 text-xs font-bold uppercase rounded bg-${color}-100 text-${color}-700`}
                     >
                         {category}
                     </span>
@@ -49,10 +43,7 @@ const BlogCard = ({ blog, category, title, date, color, imageUrl }) => {
                     </span>
                 </div>
                 <h3
-                    className="text-lg font-semibold leading-relaxed transition-colors duration-200"
-                    style={{
-                        color: hovered ? 'var(--color-brand-500, #e53e3e)' : 'var(--color-text-main, #1d1d1f)',
-                    }}
+                    className="text-lg font-semibold leading-relaxed transition-colors duration-200 group-hover:text-brand-500 text-text-main"
                 >
                     {title}
                 </h3>
@@ -85,20 +76,18 @@ const defaultBlogs = [
 
 const BlogSection = () => {
     const { blogs } = useBlogs({ published: true, limit: 3 });
-    const bgColor = useBackgroundColor('secondary');
     const displayBlogs = blogs.length > 0 ? blogs : defaultBlogs;
 
     return (
-        <div className="py-24" id="blog" style={{ backgroundColor: bgColor }}>
+        <div className="py-24 bg-bg-secondary" id="blog">
             <div className="container mx-auto max-w-7xl px-4">
                 <div className="flex justify-between items-end mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
+                    <h2 className="text-3xl md:text-4xl font-bold text-text-main">
                         Latest Insights
                     </h2>
                     <Link
                         href="/blog"
-                        className="hidden md:block font-bold transition-colors hover:text-[var(--color-brand-600)]"
-                        style={{ color: 'var(--color-brand-500, #e53e3e)' }}
+                        className="hidden md:block font-bold transition-colors hover:text-brand-600 text-brand-500"
                     >
                         View all articles →
                     </Link>
@@ -121,8 +110,7 @@ const BlogSection = () => {
                 <div className="mt-8 text-center md:hidden">
                     <Link
                         href="/blog"
-                        className="font-bold transition-colors hover:text-[var(--color-brand-600)]"
-                        style={{ color: 'var(--color-brand-500, #e53e3e)' }}
+                        className="font-bold transition-colors hover:text-brand-600 text-brand-500"
                     >
                         View all articles →
                     </Link>

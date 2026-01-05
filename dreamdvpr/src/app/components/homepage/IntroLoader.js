@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Text } from '@chakra-ui/react';
-import { useThemeColor } from '@/app/lib/hooks';
+
 
 /**
  * IntroLoader - Simple intro loader with progress bar
@@ -11,7 +11,7 @@ export default function IntroLoader({ onComplete }) {
   const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(0);
 
-  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
+  const brandColor = 'var(--color-brand-500, #e53e3e)';
 
   useEffect(() => {
     const hasLoaded = sessionStorage.getItem('introLoaderShown');

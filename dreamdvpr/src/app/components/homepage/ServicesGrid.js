@@ -1,13 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import ParticleBackground from './ParticleBackground';
-import { useContent, useBackgroundColor } from '../../lib/hooks';
+import { useContent } from '../../lib/hooks';
 import ServiceCard from './ServiceCard';
 
 const ServicesGrid = () => {
   const { content } = useContent('services');
-  const bgColor = useBackgroundColor('primary');
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
 
@@ -22,17 +20,16 @@ const ServicesGrid = () => {
   return (
     <section
       id="services"
-      className="py-24 relative overflow-hidden"
-      style={{ backgroundColor: bgColor }}
+      className="py-24 relative overflow-hidden bg-bg-app"
     >
       {/* <ParticleBackground /> */}
 
       <div className="container mx-auto max-w-7xl px-4">
         <div className="text-center mb-16 max-w-2xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-[var(--color-text-main,#1d1d1f)]">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-text-main">
             {content?.title || 'Services'}
           </h2>
-          <p className="text-lg text-[var(--color-text-secondary,#86868b)]">
+          <p className="text-lg text-text-secondary">
             {content?.subtitle || ''}
           </p>
         </div>
@@ -50,7 +47,7 @@ const ServicesGrid = () => {
               opacity: hovered ? 1 : 0,
               background: `radial-gradient(
                 600px circle at ${mousePos.x}px ${mousePos.y}px,
-                rgba(0, 171, 173, 0.15),
+                rgba(229, 62, 62, 0.15),
                 transparent 60%
               )`,
             }}

@@ -129,7 +129,6 @@ export const DEFAULT_CONTENT = {
             "Scalable Solutions"
         ],
     },
-    theme: DEFAULT_THEME_FALLBACK,
 };
 
 export function normalizeContent(contentData) {
@@ -172,7 +171,7 @@ export function normalizeContent(contentData) {
             buttonText: contentData.cta?.buttonText || DEFAULT_CONTENT.cta.buttonText,
             points: contentData.cta?.points || DEFAULT_CONTENT.cta.points,
         },
-        theme: contentData.theme || DEFAULT_CONTENT.theme,
+        theme: DEFAULT_THEME_FALLBACK,
     };
 }
 

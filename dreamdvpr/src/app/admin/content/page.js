@@ -10,7 +10,6 @@ import { WhyChooseUsSectionEditor } from './components/WhyChooseUsSectionEditor'
 import { ComparisonSectionEditor } from './components/ComparisonSectionEditor';
 import { FAQSectionEditor } from './components/FAQSectionEditor';
 import { CTASectionEditor } from './components/CTASectionEditor';
-import { ThemeSectionEditor } from './components/ThemeSectionEditor';
 
 /**
  * Content Management Page - Admin interface for editing homepage content
@@ -65,7 +64,6 @@ export default function ContentManagementPage() {
     { id: 'comparison', label: 'Comparison', icon: '⚖️' },
     { id: 'faq', label: 'FAQ', icon: '❓' },
     { id: 'cta', label: 'CTA Section', icon: '📢' },
-    { id: 'theme', label: 'Theme', icon: '🎨' },
   ];
 
   return (
@@ -177,12 +175,6 @@ export default function ContentManagementPage() {
                 />
               )}
 
-              {activeTab === 'theme' && (
-                <ThemeSectionEditor
-                  section={content.theme}
-                  onChange={(section) => handleSectionChange('theme', section)}
-                />
-              )}
             </div>
           </GlassCard>
         </div>

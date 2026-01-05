@@ -21,10 +21,9 @@ const Header = () => {
       <header
         className={`
           z-[1000]
-          ${
-            isHome
-              ? 'absolute top-2 left-0 right-0 bg-transparent py-5'
-              : 'fixed top-0 left-0 right-0 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.08)] py-3'
+          ${isHome
+            ? 'absolute top-2 left-0 right-0 bg-transparent py-5'
+            : 'fixed top-0 left-0 right-0 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.08)] py-3'
           }
         `}
       >
@@ -33,14 +32,10 @@ const Header = () => {
             {/* LOGO */}
             <Link href="/">
               <h2
-                className="text-2xl font-bold tracking-tight"
-                style={{
-                  color: 'var(--color-brand-500, #e53e3e)'
-                }}
+                className="text-2xl font-bold tracking-tight text-brand-500"
               >
                 RED
-                <span style={{ color: isHome ? 'white' : 'var(--color-text-main, #1d1d1f)'
-                   }}>
+                <span className={isHome ? 'text-white' : 'text-text-main'}>
                   gravity
                 </span>
               </h2>
@@ -53,12 +48,8 @@ const Header = () => {
                   <a
                     key={link.href}
                     href={link.href}
-                    className="font-medium transition-colors hover:text-[var(--color-brand-500)]"
-                    style={{
-                      color: isHome
-                        ? 'white'
-                        : 'var(--color-text-secondary, #86868b)',
-                    }}
+                    className={`font-bold transition-colors hover:text-brand-500 ${isHome ? 'text-white' : 'text-text-secondary'
+                      }`}
                   >
                     {link.label}
                   </a>
@@ -66,12 +57,8 @@ const Header = () => {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="font-medium transition-colors hover:text-[var(--color-brand-500)]"
-                    style={{
-                      color: isHome
-                        ? 'white'
-                        : 'var(--color-text-secondary, #86868b)',
-                    }}
+                    className={`font-bold transition-colors hover:text-brand-500 ${isHome ? 'text-white' : 'text-text-secondary'
+                      }`}
                   >
                     {link.label}
                   </Link>
@@ -83,24 +70,15 @@ const Header = () => {
             <div className="flex items-center gap-4">
               <a
                 href="#contact"
-                className="hidden md:flex px-4 py-2 text-sm font-medium rounded-xl hover:opacity-90"
-                style={{
-                  backgroundColor: 'var(--color-brand-500, #e53e3e)',
-                  color: 'white',
-                }}
+                className="hidden md:flex px-8 py-3 text-base font-bold rounded-xl hover:opacity-90 transition-all hover:scale-105 bg-brand-500 text-white"
               >
                 Book a Call
               </a>
 
               <button
                 onClick={() => setIsOpen(true)}
-                className="md:hidden p-2"
                 aria-label="Open menu"
-                style={{
-                  color: isHome
-                    ? 'white'
-                    : 'var(--color-text-main, #1d1d1f)',
-                }}
+                className={`md:hidden p-2 ${isHome ? 'text-white' : 'text-text-main'}`}
               >
                 <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor">
                   <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
@@ -130,7 +108,7 @@ const Header = () => {
                   <a
                     key={link.href}
                     href={link.href}
-                    className="text-lg font-medium"
+                    className="text-lg font-bold"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.label}
@@ -139,7 +117,7 @@ const Header = () => {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className="text-lg font-medium"
+                    className="text-lg font-bold"
                     onClick={() => setIsOpen(false)}
                   >
                     {link.label}

@@ -9,7 +9,7 @@ import {
   Float,
 } from '@react-three/drei';
 import { motion } from 'framer-motion';
-import { useContent, useBackgroundColor } from '../../lib/hooks';
+import { useContent } from '../../lib/hooks';
 import ParticleBackground from './ParticleBackground';
 
 /* ===============================
@@ -38,7 +38,6 @@ function SpaceshipModel({ scale = 0.2 }) {
 ================================ */
 const Hero = () => {
   const { content } = useContent('hero'); // dynamic content
-  const bgColor = useBackgroundColor('primary');
   const [modelPosition, setModelPosition] = useState([2, 0, 0]); // Desktop default
   const [modelScale, setModelScale] = useState(0.2);
   const [textTranslateY, setTextTranslateY] = useState(0);
@@ -69,7 +68,7 @@ const Hero = () => {
   const titleParts = content?.title?.split(content?.titleHighlight || '') || [];
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden" style={{ backgroundColor: bgColor }}>
+    <div className="relative h-screen w-screen overflow-hidden bg-bg-app">
       {/* Particle Background */}
       <div className="absolute inset-0 z-0">
         <ParticleBackground />
@@ -109,8 +108,7 @@ const Hero = () => {
         >
           <div className="flex flex-col items-center md:items-start gap-6 max-w-xl text-center md:text-left pointer-events-auto">
             <motion.h1
-              className="text-5xl md:text-7xl font-bold"
-              style={{ color: '#ffffff' }} // Hardcoded white
+              className="text-5xl md:text-7xl font-bold text-white"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
@@ -118,7 +116,7 @@ const Hero = () => {
               {titleParts.map((part, i, arr) =>
                 i === arr.length - 1 ? (
                   <React.Fragment key={i}>
-                    <span style={{ color: 'var(--color-brand-500, #e53e3e)' }}>
+                    <span className="text-brand-500">
                       {content?.titleHighlight || ''}
                     </span>
                     {part}
@@ -130,8 +128,7 @@ const Hero = () => {
             </motion.h1>
 
             <motion.p
-              className="text-xl"
-              style={{ color: '#d1d5db' }} // gray subtitle
+              className="text-xl text-gray-300"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -146,8 +143,7 @@ const Hero = () => {
             >
               <a
                 href="#contact"
-                className="px-6 py-3 text-lg font-medium text-white rounded-xl transition-all hover:opacity-90 hover:-translate-y-0.5"
-                style={{ backgroundColor: 'var(--color-brand-500, #e53e3e)' }}
+                className="px-6 py-3 text-lg font-medium text-white rounded-xl transition-all hover:opacity-90 hover:-translate-y-0.5 bg-brand-500"
               >
                 {content?.ctaText}
               </a>

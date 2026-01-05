@@ -2,25 +2,24 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useContent, useThemeColor } from '../../lib/hooks';
+import { useContent } from '../../lib/hooks';
 
 const MotionDiv = motion.div;
 
 const CTASection = () => {
   const { content } = useContent('cta');
-  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
 
   return (
     <div
-      className="py-20 relative overflow-hidden"
+      className="py-20 relative overflow-hidden bg-brand-500"
       id="contact"
-      style={{ backgroundColor: brandColor }}
     >
+       
       <div className="container mx-auto max-w-7xl px-4 relative z-[10]">
         <div className="flex flex-col md:flex-row items-end justify-between gap-12 min-h-[600px] md:min-h-[400px]">
           {/* Left Column - Text Content */}
           <MotionDiv
-              className="
+            className="
     w-full md:flex-1
     order-1
     flex justify-center
@@ -65,8 +64,7 @@ const CTASection = () => {
               )}
 
               <button
-                className="px-10 h-14 text-base font-bold rounded-full bg-white transition-all hover:bg-gray-100 hover:-translate-y-0.5"
-                style={{ color: brandColor }}
+                className="px-10 h-14 text-base font-bold rounded-full bg-white transition-all hover:bg-gray-100 hover:-translate-y-0.5 text-brand-500"
               >
                 {content?.buttonText}
               </button>

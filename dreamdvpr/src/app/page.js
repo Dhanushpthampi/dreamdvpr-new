@@ -11,15 +11,14 @@ import FAQSection from './components/homepage/FAQSection';
 import CTASection from './components/homepage/CTASection';
 import Footer from './components/homepage/Footer';
 import IntroLoader from './components/homepage/IntroLoader';
-import WaveSeparator from './components/homepage/WaveSeparator';                                      
-import { useBackgroundColor } from './lib/hooks';
-import "./styles/globals.css";      
+import WaveSeparator from './components/homepage/WaveSeparator';
+
+import "./styles/globals.css";
 
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
-  const bgColor = useBackgroundColor('primary');
 
   useEffect(() => {
     setMounted(true);
@@ -37,15 +36,14 @@ export default function Home() {
     <>
       {showLoader && <IntroLoader onComplete={handleLoaderComplete} />}
       <main
-        className="min-h-screen overflow-x-hidden"
+        className="min-h-screen overflow-x-hidden bg-bg-app"
         style={{
-          backgroundColor: bgColor,
           opacity: showLoader ? 0 : 1,
           transition: 'opacity 0.5s ease-in'
         }}
       >
- 
-        <Header /> 
+
+        <Header />
         <Hero /><WaveSeparator />
         <ServicesGrid />
         <WhyChooseUs />

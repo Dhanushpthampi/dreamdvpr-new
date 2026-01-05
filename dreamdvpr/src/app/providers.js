@@ -2,9 +2,9 @@
 
 import { ThemeProvider } from './components/providers/ThemeProvider';
 
-export function Providers({ children, initialTheme = null }) {
+export function Providers({ children }) {
     return (
-        <ThemeProvider initialTheme={initialTheme}>
+        <ThemeProvider>
             {children}
         </ThemeProvider>
     );

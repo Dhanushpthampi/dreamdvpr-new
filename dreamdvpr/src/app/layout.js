@@ -10,22 +10,11 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  // Fetch content server-side and pass theme to client
-  const content = await getContent();
-  const theme = content?.theme || null;
-
   return (
     <html lang="en">
       <body className="antialiased min-h-screen flex flex-col">
-        {theme && (
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `window.__THEME_DATA__ = ${JSON.stringify(theme)};`,
-            }}
-          />
-        )}
         <AuthProvider>
-          <Providers initialTheme={theme}>{children}</Providers>
+          <Providers>{children}</Providers>
         </AuthProvider>
 
         <Analytics />
