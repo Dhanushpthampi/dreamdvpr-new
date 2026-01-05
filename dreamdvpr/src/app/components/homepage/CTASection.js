@@ -11,7 +11,7 @@ const CTASection = () => {
 
   return (
     <div
-      className="py-20 relative overflow-hidden bg-brand-500"
+      className="py-20 relative overflow-hidden bg-red-600"
       id="contact"
     >
        

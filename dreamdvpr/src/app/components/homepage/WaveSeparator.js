@@ -15,7 +15,7 @@ export default function WaveSeparator() {
         layer.style.transform = `
           translateY(${scrollY * speed}px)
           rotateX(180deg)
-        `;
+        `;  
       });
     };
 
@@ -28,7 +28,7 @@ export default function WaveSeparator() {
       ref={ref}
       className="relative w-full h-[720px] overflow-hidden"
       style={{
-        background: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 1) 80%)'
+        background: 'linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(255, 255, 255, 0) 80%)'
       }}
     >
       {/* WAVE 1 — VERY DARK, HIGHER FREQUENCY */}
