@@ -2,15 +2,17 @@
 
 import React from 'react';
 import { useContent } from '../../lib/hooks';
+import ParticleBackground from './ParticleBackground';
 
 const ComparisonSection = () => {
   const { content } = useContent('comparison');
 
   return (
     <div
-      className="py-24 relative overflow-hidden bg-bg-app"
+      className="py-24 relative overflow-hidden bg-bg-app min-h-[700px]"
       id="comparison"
     >
+      <ParticleBackground />
 
       {/* <ParticleBackground /> */}
 

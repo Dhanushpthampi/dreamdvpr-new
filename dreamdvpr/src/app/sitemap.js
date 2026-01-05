@@ -17,12 +17,6 @@ export default async function sitemap() {
             changeFrequency: 'daily',
             priority: 0.8,
         },
-        {
-            url: `${baseUrl}/login`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.5,
-        },
     ];
 
     // Fetch dynamic blog posts
