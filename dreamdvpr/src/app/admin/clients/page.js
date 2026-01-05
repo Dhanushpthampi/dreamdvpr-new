@@ -211,7 +211,7 @@ export default function ClientsPage() {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </AdminSidebarWrapper>
         );
@@ -228,9 +228,9 @@ export default function ClientsPage() {
                         </div>
                         <button
                             onClick={() => { resetForm(); setIsModalOpen(true); }}
-                            className="px-6 py-2 bg-[#00abad] text-white rounded-xl hover:bg-[#008c8e] transition-all flex items-center gap-2 font-semibold shadow-lg shadow-[#00abad]/20"
+                            className="px-6 py-2 bg-[#1d1d1f] text-white rounded-xl hover:bg-black transition-all flex items-center gap-2 font-semibold shadow-lg shadow-[#1d1d1f]/20 group"
                         >
-                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                            <svg viewBox="0 0 24 24" className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="currentColor">
                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                             </svg>
                             Add Client
@@ -250,7 +250,7 @@ export default function ClientsPage() {
                                     placeholder="Search clients..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full pl-10 pr-4 py-2.5 bg-white/60 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] transition-all"
+                                    className="w-full pl-10 pr-4 py-2.5 bg-white/60 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1d1d1f] focus:border-[#1d1d1f] transition-all"
                                 />
                             </div>
                         </div>
@@ -274,7 +274,7 @@ export default function ClientsPage() {
                                             <td className="py-4 px-6 text-sm font-semibold text-[#1d1d1f]">{client.company || '-'}</td>
                                             <td className="py-4 px-6">
                                                 {client.industry ? (
-                                                    <span className="px-2 py-1 bg-[#00abad]/10 text-[#00abad] rounded text-[10px] uppercase font-bold tracking-wider">
+                                                    <span className="px-2 py-1 bg-[#1d1d1f]/10 text-[#1d1d1f] rounded text-[10px] uppercase font-bold tracking-wider">
                                                         {client.industry}
                                                     </span>
                                                 ) : '-'}
@@ -283,7 +283,7 @@ export default function ClientsPage() {
                                                 <div className="flex justify-end gap-2">
                                                     <button
                                                         onClick={() => openEditModal(client)}
-                                                        className="p-2 text-[#00abad] hover:bg-[#00abad]/10 rounded-lg transition-all"
+                                                        className="p-2 text-[#1d1d1f] hover:bg-[#1d1d1f]/10 rounded-lg transition-all"
                                                         title="Edit Client"
                                                     >
                                                         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2">
@@ -302,13 +302,13 @@ export default function ClientsPage() {
                                                     </button>
                                                     <button
                                                         onClick={() => { setProjectClient(client); setIsProjectModalOpen(true); }}
-                                                        className="px-4 py-1.5 border border-[#00abad] text-[#00abad] rounded-lg hover:bg-[#00abad]/10 transition-all text-xs font-bold"
+                                                        className="px-4 py-1.5 border border-gray-300 text-gray-600 rounded-lg hover:bg-gray-50 transition-all text-xs font-bold"
                                                     >
                                                         Quick Project
                                                     </button>
                                                     <button
                                                         onClick={() => router.push(`/admin/clients/${client._id}`)}
-                                                        className="px-4 py-1.5 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-all text-xs font-bold"
+                                                        className="px-4 py-1.5 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-all text-xs font-bold"
                                                     >
                                                         Manage
                                                     </button>
@@ -377,7 +377,7 @@ export default function ClientsPage() {
                                 <button
                                     onClick={handleCreateOrUpdateClient}
                                     disabled={creating}
-                                    className="px-8 py-2 bg-[#00abad] text-white rounded-xl font-bold hover:bg-[#008c8e] transition-all disabled:opacity-50"
+                                    className="px-8 py-2 bg-[#1d1d1f] text-white rounded-xl font-bold hover:bg-black transition-all disabled:opacity-50"
                                 >
                                     {creating ? 'Saving...' : editingClient ? 'Update Client' : 'Register Client'}
                                 </button>
@@ -459,7 +459,7 @@ export default function ClientsPage() {
                                 <button
                                     onClick={handleQuickProject}
                                     disabled={creating}
-                                    className="px-8 py-2 bg-[#00abad] text-white rounded-xl font-bold hover:bg-[#008c8e] transition-all disabled:opacity-50"
+                                    className="px-8 py-2 bg-[#1d1d1f] text-white rounded-xl font-bold hover:bg-black transition-all disabled:opacity-50"
                                 >
                                     {creating ? 'Starting...' : 'Launch Project'}
                                 </button>

@@ -110,7 +110,7 @@ export default function EditBlogPage() {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </AdminSidebarWrapper>
         );
@@ -196,7 +196,7 @@ export default function EditBlogPage() {
                                     type="checkbox"
                                     checked={blogData.published}
                                     onChange={(e) => setBlogData({ ...blogData, published: e.target.checked })}
-                                    className="w-5 h-5 rounded border-gray-300 text-[#00abad] focus:ring-[#00abad]"
+                                    className="w-5 h-5 rounded border-gray-300 text-[#1d1d1f] focus:ring-[#1d1d1f]"
                                 />
                             </div>
                         </div>

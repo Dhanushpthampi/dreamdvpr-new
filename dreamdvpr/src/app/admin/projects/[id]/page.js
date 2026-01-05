@@ -188,7 +188,7 @@ export default function AdminProjectDetail() {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </AdminSidebarWrapper>
         );
@@ -202,7 +202,7 @@ export default function AdminProjectDetail() {
                     <p style={{ color: '#86868b' }}>You do not have permission to view this page.</p>
                     <button
                         onClick={() => router.push('/login')}
-                        className="px-6 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors"
+                        className="px-6 py-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors"
                     >
                         Go to Login
                     </button>
@@ -223,7 +223,7 @@ export default function AdminProjectDetail() {
                     </p>
                     <button
                         onClick={() => router.push('/admin')}
-                        className="px-6 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors"
+                        className="px-6 py-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors"
                     >
                         Back to Dashboard
                     </button>
@@ -247,7 +247,7 @@ export default function AdminProjectDetail() {
                             <div className="flex items-center gap-4 mb-4">
                                 <button
                                     onClick={() => router.push('/admin')}
-                                    className="flex items-center gap-2 text-gray-600 hover:text-[#00abad] transition-colors"
+                                    className="flex items-center gap-2 text-gray-600 hover:text-[#1d1d1f] transition-colors"
                                 >
                                     <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
                                         <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
@@ -267,7 +267,7 @@ export default function AdminProjectDetail() {
                             <select
                                 value={project.status}
                                 onChange={(e) => handleUpdateStatus(e.target.value)}
-                                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] text-sm"
+                                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f] text-sm"
                             >
                                 <option value="onboarding">Onboarding</option>
                                 <option value="in-progress">In Progress</option>
@@ -315,8 +315,8 @@ export default function AdminProjectDetail() {
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
                                         className={`px-4 py-2 font-semibold transition-colors capitalize ${activeTab === tab
-                                            ? 'text-[#00abad] border-b-2 border-[#00abad]'
-                                            : 'text-gray-600 hover:text-[#00abad]'
+                                            ? 'text-[#1d1d1f] border-b-2 border-[#1d1d1f]'
+                                            : 'text-gray-600 hover:text-[#1d1d1f]'
                                             }`}
                                     >
                                         {tab === 'timeline' ? 'Timeline' : tab === 'files' ? 'Files' : tab === 'invoices' ? 'Invoice' : tab === 'proposals' ? 'Proposal' : tab === 'nda' ? 'NDA' : tab === 'contracts' ? 'Contract' : 'Settings'}
@@ -336,7 +336,7 @@ export default function AdminProjectDetail() {
                                         </h2>
                                         <button
                                             onClick={() => setIsModalOpen(true)}
-                                            className="px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors text-sm flex items-center gap-2"
+                                            className="px-4 py-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors text-sm flex items-center gap-2"
                                         >
                                             <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
@@ -427,7 +427,7 @@ export default function AdminProjectDetail() {
                                                 type="text"
                                                 value={project.name}
                                                 onChange={(e) => setProject({ ...project, name: e.target.value })}
-                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                             />
                                         </div>
                                         <div>
@@ -436,7 +436,7 @@ export default function AdminProjectDetail() {
                                                 type="number"
                                                 value={project.budget || ''}
                                                 onChange={(e) => setProject({ ...project, budget: parseFloat(e.target.value) })}
-                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                                 placeholder="e.g., 5000"
                                             />
                                         </div>
@@ -446,7 +446,7 @@ export default function AdminProjectDetail() {
                                                 type="date"
                                                 value={project.estimatedEndDate ? project.estimatedEndDate.split('T')[0] : ''}
                                                 onChange={(e) => setProject({ ...project, estimatedEndDate: e.target.value })}
-                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                             />
                                         </div>
                                         <div>
@@ -454,7 +454,7 @@ export default function AdminProjectDetail() {
                                             <select
                                                 value={project.status}
                                                 onChange={(e) => handleUpdateStatus(e.target.value)}
-                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                                className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                             >
                                                 <option value="onboarding">Onboarding</option>
                                                 <option value="in-progress">In Progress</option>
@@ -469,7 +469,7 @@ export default function AdminProjectDetail() {
                                             value={project.description || ''}
                                             onChange={(e) => setProject({ ...project, description: e.target.value })}
                                             rows={4}
-                                            className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         />
                                     </div>
                                     <div className="flex justify-between items-center pt-4 border-t border-gray-100">
@@ -511,7 +511,7 @@ export default function AdminProjectDetail() {
                                                     console.error('Error updating project:', error);
                                                 }
                                             }}
-                                            className="px-6 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors font-semibold"
+                                            className="px-6 py-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors font-semibold"
                                         >
                                             Save Changes
                                         </button>
@@ -574,7 +574,7 @@ export default function AdminProjectDetail() {
                                             placeholder="e.g., Design Phase Complete"
                                             value={newEvent.title}
                                             onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         />
                                     </div>
                                     <div>
@@ -584,7 +584,7 @@ export default function AdminProjectDetail() {
                                             value={newEvent.description}
                                             onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
                                             rows={3}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         />
                                     </div>
                                     <div>
@@ -592,7 +592,7 @@ export default function AdminProjectDetail() {
                                         <select
                                             value={newEvent.status}
                                             onChange={(e) => setNewEvent({ ...newEvent, status: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         >
                                             <option value="pending">Pending</option>
                                             <option value="in-progress">In Progress</option>
@@ -607,7 +607,7 @@ export default function AdminProjectDetail() {
                                             type="date"
                                             value={newEvent.dueDate}
                                             onChange={(e) => setNewEvent({ ...newEvent, dueDate: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         />
                                     </div>
                                 </div>
@@ -621,7 +621,7 @@ export default function AdminProjectDetail() {
                                 </button>
                                 <button
                                     onClick={handleAddTimelineEvent}
-                                    className="px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors"
+                                    className="px-4 py-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors"
                                 >
                                     Add Event
                                 </button>
@@ -666,7 +666,7 @@ export default function AdminProjectDetail() {
                                             placeholder="e.g., Design Phase Complete"
                                             value={editingEvent.title}
                                             onChange={(e) => setEditingEvent({ ...editingEvent, title: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         />
                                     </div>
                                     <div>
@@ -676,7 +676,7 @@ export default function AdminProjectDetail() {
                                             value={editingEvent.description || ''}
                                             onChange={(e) => setEditingEvent({ ...editingEvent, description: e.target.value })}
                                             rows={3}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         />
                                     </div>
                                     <div>
@@ -684,7 +684,7 @@ export default function AdminProjectDetail() {
                                         <select
                                             value={editingEvent.status}
                                             onChange={(e) => setEditingEvent({ ...editingEvent, status: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         >
                                             <option value="pending">Pending</option>
                                             <option value="in-progress">In Progress</option>
@@ -699,7 +699,7 @@ export default function AdminProjectDetail() {
                                             type="date"
                                             value={editingEvent.dueDate ? editingEvent.dueDate.split('T')[0] : ''}
                                             onChange={(e) => setEditingEvent({ ...editingEvent, dueDate: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad]"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         />
                                     </div>
                                 </div>
@@ -723,7 +723,7 @@ export default function AdminProjectDetail() {
                                     </button>
                                     <button
                                         onClick={handleUpdateTimelineEvent}
-                                        className="px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors"
+                                        className="px-4 py-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors"
                                     >
                                         Save Changes
                                     </button>

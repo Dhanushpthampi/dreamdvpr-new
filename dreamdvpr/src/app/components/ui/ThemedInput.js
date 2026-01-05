@@ -33,8 +33,8 @@ const ThemedInput = ({
     const { helperText: _, ...domProps } = rest;
 
     const baseClasses = `w-full px-4 py-3 bg-white/60 border rounded-lg focus:outline-none focus:ring-2 focus:bg-white transition-all font-medium ${error
-            ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
-            : 'border-gray-300 hover:border-[#00abad]/50 focus:border-[#00abad] focus:ring-[#00abad]'
+        ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
+        : 'border-gray-200 hover:border-[#e53e3e]/30 focus:border-[#e53e3e]/50 focus:ring-[#e53e3e]/20'
         } ${className}`;
 
     const content = icon ? (

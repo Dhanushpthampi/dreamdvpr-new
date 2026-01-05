@@ -5,7 +5,7 @@ import ParticleBackground from './components/homepage/ParticleBackground';
 import { useThemeColor, useBackgroundColor } from './lib/hooks';
 
 export default function NotFound() {
-  const brandColor = useThemeColor('--color-brand-500', '#00abad');
+  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
   const bgColor = useBackgroundColor('primary');
 
   return (

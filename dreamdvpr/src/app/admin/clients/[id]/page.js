@@ -16,6 +16,10 @@ export default function AdminClientDetail() {
     const [client, setClient] = useState(null);
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+    const [quickProject, setQuickProject] = useState({ name: '', description: '' });
+    const [creating, setCreating] = useState(false);
+    const [toast, setToast] = useState(null);
 
     useEffect(() => {
         if (clientId) {
@@ -51,11 +55,46 @@ export default function AdminClientDetail() {
         }
     };
 
+    const showToast = (title, description, type = 'success') => {
+        setToast({ title, description, type });
+        setTimeout(() => setToast(null), 3000);
+    };
+
+    const handleQuickProject = async () => {
+        if (!quickProject.name || !clientId) return;
+
+        setCreating(true);
+        try {
+            const res = await fetch('/api/projects', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    ...quickProject,
+                    clientId: clientId
+                }),
+            });
+
+            if (res.ok) {
+                showToast('Project created successfully');
+                setIsProjectModalOpen(false);
+                setQuickProject({ name: '', description: '' });
+                fetchProjects();
+            } else {
+                showToast('Failed to create project', '', 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showToast('An error occurred', '', 'error');
+        } finally {
+            setCreating(false);
+        }
+    };
+
     if (loading) {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </AdminSidebarWrapper>
         );
@@ -71,7 +110,7 @@ export default function AdminClientDetail() {
                     <div>
                         <button
                             onClick={() => router.push('/admin')}
-                            className="flex items-center gap-2 text-gray-600 hover:text-[#00abad] transition-colors mb-4"
+                            className="flex items-center gap-2 text-gray-600 hover:text-[#1d1d1f] transition-colors mb-4"
                         >
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
                                 <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
@@ -136,8 +175,8 @@ export default function AdminClientDetail() {
                                 Projects ({projects.length})
                             </h2>
                             <button
-                                onClick={() => alert('Create project for client - coming soon')}
-                                className="px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors text-sm flex items-center gap-2"
+                                onClick={() => setIsProjectModalOpen(true)}
+                                className="px-4 py-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors text-sm flex items-center gap-2"
                             >
                                 <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
                                     <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
@@ -191,6 +230,68 @@ export default function AdminClientDetail() {
                     </div>
                 </div>
             </div>
+
+            {/* Quick Project Modal */}
+            {isProjectModalOpen && (
+                <>
+                    <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[2000]" onClick={() => setIsProjectModalOpen(false)} />
+                    <div className="fixed inset-0 flex items-center justify-center z-[2001] p-4 pointer-events-none">
+                        <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl max-w-lg w-full flex flex-col pointer-events-auto scale-in">
+                            <div className="p-6 border-b border-gray-100 flex justify-between items-center">
+                                <div>
+                                    <h2 className="text-xl font-bold" style={{ color: '#1d1d1f' }}>Quick Project Launch</h2>
+                                    <p className="text-xs text-gray-400">For {client.name}</p>
+                                </div>
+                                <button onClick={() => setIsProjectModalOpen(false)} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                                    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
+                                </button>
+                            </div>
+                            <div className="p-6 space-y-4 text-left">
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Project Name</label>
+                                    <input
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#1d1d1f]/10 focus:border-[#1d1d1f] outline-none transition-all font-medium"
+                                        placeholder="E.g. Brand Refresh 2024"
+                                        value={quickProject.name}
+                                        onChange={(e) => setQuickProject({ ...quickProject, name: e.target.value })}
+                                        required
+                                    />
+                                </div>
+                                <div className="space-y-1">
+                                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Description</label>
+                                    <textarea
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#1d1d1f]/10 focus:border-[#1d1d1f] outline-none transition-all font-medium resize-none"
+                                        rows={3}
+                                        placeholder="Detailed scope of work..."
+                                        value={quickProject.description}
+                                        onChange={(e) => setQuickProject({ ...quickProject, description: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+                            <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
+                                <button onClick={() => setIsProjectModalOpen(false)} className="px-6 py-2 rounded-xl font-semibold text-gray-500 hover:bg-gray-100 transition-all">Cancel</button>
+                                <button
+                                    onClick={handleQuickProject}
+                                    disabled={creating}
+                                    className="px-8 py-2 bg-[#1d1d1f] text-white rounded-xl font-bold hover:bg-black transition-all disabled:opacity-50"
+                                >
+                                    {creating ? 'Starting...' : 'Launch Project'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
+            {/* Toast Notification */}
+            {toast && (
+                <div className={`fixed bottom-8 right-8 px-6 py-4 rounded-2xl shadow-2xl z-[3000] animate-in slide-in-from-bottom-4 ${toast.type === 'error' ? 'bg-red-500 text-white' : 'bg-[#1d1d1f] text-white'
+                    }`}>
+                    <div className="flex items-center gap-3">
+                        <p className="font-bold">{toast.title}</p>
+                    </div>
+                </div>
+            )}
         </AdminSidebarWrapper>
     );
 }

@@ -26,9 +26,9 @@ const ThemedButton = ({
     };
 
     const variantClasses = {
-        primary: 'bg-[#00abad] text-white hover:bg-[#008c8e] active:bg-[#007a7c]',
+        primary: 'bg-[#e53e3e] text-white hover:bg-[#c53030] active:bg-[#9b2c2c]',
         secondary: 'bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300',
-        outline: 'bg-transparent text-[#00abad] border-2 border-[#00abad] hover:bg-[#00abad]/10 active:bg-[#00abad]/20',
+        outline: 'bg-transparent text-[#e53e3e] border-2 border-[#e53e3e] hover:bg-[#e53e3e]/5 active:bg-[#e53e3e]/10',
         ghost: 'bg-transparent text-gray-700 hover:bg-gray-100 active:bg-gray-200',
     };
 

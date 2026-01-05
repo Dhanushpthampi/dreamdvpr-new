@@ -173,7 +173,7 @@ export default function ContractGenerator({
                 ))}
                 <button
                     onClick={addScopeItem}
-                    className="self-start px-4 py-2 text-[#00abad] font-medium hover:bg-[#00abad]/10 rounded-lg transition-colors flex items-center gap-2"
+                    className="self-start px-4 py-2 text-[#e53e3e] font-medium hover:bg-[#e53e3e]/10 rounded-lg transition-colors flex items-center gap-2"
                 >
                     + Add Deliverable
                 </button>
@@ -214,7 +214,7 @@ export default function ContractGenerator({
                         href={generatedPdfUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-6 py-3 border border-[#00abad] text-[#00abad] font-semibold rounded-lg hover:bg-[#00abad]/10 transition-colors flex items-center gap-2"
+                        className="px-6 py-3 border border-[#e53e3e] text-[#e53e3e] font-semibold rounded-lg hover:bg-[#e53e3e]/10 transition-colors flex items-center gap-2"
                     >
                         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
                             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
@@ -226,7 +226,7 @@ export default function ContractGenerator({
                 <button
                     onClick={handleGenerate}
                     disabled={generating}
-                    className="px-6 py-3 bg-[#00abad] text-white font-semibold rounded-lg hover:bg-[#008c8e] transition-colors shadow-lg shadow-[#00abad]/30 flex items-center gap-2"
+                    className="px-6 py-3 bg-[#1d1d1f] text-white font-semibold rounded-lg hover:bg-black transition-colors shadow-lg shadow-black/10 flex items-center gap-2 group"
                 >
                     {generating ? (
                         <>
@@ -235,7 +235,7 @@ export default function ContractGenerator({
                         </>
                     ) : (
                         <>
-                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                            <svg viewBox="0 0 24 24" className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="currentColor">
                                 <path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 12v2H8v-2h8zm2-2v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z" />
                                 <circle cx="18" cy="11.5" r="1" />
                             </svg>

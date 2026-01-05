@@ -8,7 +8,7 @@ const MotionDiv = motion.div;
 
 const CTASection = () => {
   const { content } = useContent('cta');
-  const brandColor = useThemeColor('--color-brand-500', '#00abad');
+  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
 
   return (
     <div

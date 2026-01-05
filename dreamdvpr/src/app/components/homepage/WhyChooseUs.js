@@ -9,7 +9,7 @@ import { hexToRgba } from '../../lib/utils/colors';
    Stat Card (Theme-aware)
 ======================= */
 const StatCard = ({ end, suffix, label, delay = 0 }) => {
-  const brandColor = useThemeColor('--color-brand-500', '#00abad');
+  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
   const [hovered, setHovered] = React.useState(false);
 
   return (
@@ -41,9 +41,9 @@ const StatCard = ({ end, suffix, label, delay = 0 }) => {
 const WhyChooseUs = () => {
   const { content } = useContent('whyChooseUs');
   const bgColor = useBackgroundColor('secondary');
-  const brandColor = useThemeColor('--color-brand-500', '#00abad');
+  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
 
-  const titleParts = content?.title?.split(content?.titleHighlight || 'DREAMdvpr') || [];
+  const titleParts = content?.title?.split(content?.titleHighlight || 'REDgravity') || [];
 
   return (
     <div
@@ -69,8 +69,8 @@ const WhyChooseUs = () => {
               {titleParts.map((part, i, arr) =>
                 i === arr.length - 1 ? (
                   <React.Fragment key={i}>
-                    <span style={{ color: 'var(--color-brand-500, #00abad)' }}>
-                      {content?.titleHighlight || 'DREAMdvpr'}
+                    <span style={{ color: 'var(--color-brand-500, #e53e3e)' }}>
+                      {content?.titleHighlight || 'REDgravity'}
                     </span>
                     {part}
                   </React.Fragment>
@@ -97,7 +97,7 @@ const WhyChooseUs = () => {
                     <svg
                       viewBox="0 0 20 20"
                       className="w-4 h-4"
-                      style={{ color: 'var(--color-brand-500, #00abad)' }}
+                      style={{ color: 'var(--color-brand-500, #e53e3e)' }}
                       fill="currentColor"
                     >
                       <path

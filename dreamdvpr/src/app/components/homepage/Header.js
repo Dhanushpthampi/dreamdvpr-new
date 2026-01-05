@@ -35,12 +35,13 @@ const Header = () => {
               <h2
                 className="text-2xl font-bold tracking-tight"
                 style={{
-                  color: isHome ? 'white' : 'var(--color-text-main, #1d1d1f)',
+                  color: 'var(--color-brand-500, #e53e3e)'
                 }}
               >
-                DREAM
-                <span style={{ color: 'var(--color-brand-500, #00abad)' }}>
-                  dvpr
+                RED
+                <span style={{ color: isHome ? 'white' : 'var(--color-text-main, #1d1d1f)'
+                   }}>
+                  gravity
                 </span>
               </h2>
             </Link>
@@ -84,7 +85,7 @@ const Header = () => {
                 href="#contact"
                 className="hidden md:flex px-4 py-2 text-sm font-medium rounded-xl hover:opacity-90"
                 style={{
-                  backgroundColor: 'var(--color-brand-500, #00abad)',
+                  backgroundColor: 'var(--color-brand-500, #e53e3e)',
                   color: 'white',
                 }}
               >

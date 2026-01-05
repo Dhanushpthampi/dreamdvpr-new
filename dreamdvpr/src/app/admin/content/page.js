@@ -28,10 +28,10 @@ export default function ContentManagementPage() {
 
   const handleSave = async () => {
     const result = await saveContent(content);
-    
+
     if (result.success) {
       showToast('Content saved', 'Homepage content has been updated successfully', 'success');
-      
+
       // Reload after save to get fresh server-rendered content
       setTimeout(() => {
         window.location.reload();
@@ -52,7 +52,7 @@ export default function ContentManagementPage() {
     return (
       <AdminSidebarWrapper>
         <div className="min-h-screen flex items-center justify-center">
-          <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+          <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
         </div>
       </AdminSidebarWrapper>
     );
@@ -76,8 +76,8 @@ export default function ContentManagementPage() {
           <div className="flex justify-between items-start flex-wrap gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
-                <div className="bg-[#00abad] p-3 rounded-xl">
-                  <svg viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="currentColor">
+                <div className="bg-[#e53e3e]/10 p-3 rounded-xl">
+                  <svg viewBox="0 0 24 24" className="w-6 h-6 text-[#e53e3e]" fill="currentColor">
                     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
                   </svg>
                 </div>
@@ -94,7 +94,7 @@ export default function ContentManagementPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-6 py-3 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg hover:shadow-xl font-semibold"
+              className="px-6 py-3 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-[#1d1d1f]/10 font-semibold group"
             >
               {saving ? (
                 <>
@@ -103,8 +103,8 @@ export default function ContentManagementPage() {
                 </>
               ) : (
                 <>
-                  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="currentColor">
+                    <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3-1.34 3-3-1.34-3-3-3zm3-10H5V5h10v4z" />
                   </svg>
                   Save Changes
                 </>
@@ -121,11 +121,10 @@ export default function ContentManagementPage() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`px-5 py-3 font-semibold transition-all duration-200 whitespace-nowrap rounded-t-lg flex items-center gap-2 ${
-                      activeTab === tab.id
-                        ? 'text-[#00abad] border-b-2 border-[#00abad] bg-[#00abad]/5'
-                        : 'text-gray-600 hover:text-[#00abad] hover:bg-gray-50'
-                    }`}
+                    className={`px-5 py-3 font-semibold transition-all duration-200 whitespace-nowrap rounded-t-lg flex items-center gap-2 ${activeTab === tab.id
+                      ? 'text-[#1d1d1f] border-b-2 border-[#1d1d1f] bg-[#1d1d1f]/5'
+                      : 'text-gray-600 hover:text-[#1d1d1f] hover:bg-gray-50'
+                      }`}
                   >
                     <span className="text-lg">{tab.icon}</span>
                     <span>{tab.label}</span>
@@ -191,9 +190,8 @@ export default function ContentManagementPage() {
 
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed top-4 right-4 px-6 py-4 rounded-lg shadow-2xl z-[3000] animate-slide-in ${
-          toast.type === 'error' ? 'bg-red-50 border-2 border-red-200 text-red-700' : 'bg-green-50 border-2 border-green-200 text-green-700'
-        }`}>
+        <div className={`fixed top-4 right-4 px-6 py-4 rounded-lg shadow-2xl z-[3000] animate-slide-in ${toast.type === 'error' ? 'bg-red-50 border-2 border-red-200 text-red-700' : 'bg-green-50 border-2 border-green-200 text-green-700'
+          }`}>
           <div className="flex items-center gap-3">
             {toast.type === 'error' ? (
               <svg className="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">

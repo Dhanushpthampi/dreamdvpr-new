@@ -96,7 +96,7 @@ export function ThemeSectionEditor({ section, onChange }) {
               value={section?.fonts?.heading || ''}
               onChange={(e) => handleFontChange('heading', e.target.value)}
               placeholder="e.g., -apple-system, BlinkMacSystemFont, 'Segoe UI'"
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] transition-all"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f] focus:border-[#1d1d1f] transition-all"
             />
           </div>
           <div className="flex flex-col gap-2">
@@ -108,7 +108,7 @@ export function ThemeSectionEditor({ section, onChange }) {
               value={section?.fonts?.body || ''}
               onChange={(e) => handleFontChange('body', e.target.value)}
               placeholder="e.g., -apple-system, BlinkMacSystemFont, 'Segoe UI'"
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] transition-all"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f] focus:border-[#1d1d1f] transition-all"
             />
           </div>
         </div>
@@ -129,7 +129,7 @@ export function ThemeSectionEditor({ section, onChange }) {
             <select
               value={section?.borderRadius || 'xl'}
               onChange={(e) => handleOtherChange('borderRadius', e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] transition-all bg-white"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f] focus:border-[#1d1d1f] transition-all bg-white"
             >
               <option value="none">None</option>
               <option value="sm">Small</option>
@@ -149,7 +149,7 @@ export function ThemeSectionEditor({ section, onChange }) {
               value={section?.logo || ''}
               onChange={(e) => handleOtherChange('logo', e.target.value)}
               placeholder="https://example.com/logo.png"
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] transition-all"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f] focus:border-[#1d1d1f] transition-all"
             />
           </div>
         </div>

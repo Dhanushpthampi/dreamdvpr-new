@@ -7,7 +7,7 @@ import { hexToRgba } from '../../lib/utils/colors';
 
 const ComparisonSection = () => {
   const { content } = useContent('comparison');
-  const brandColor = useThemeColor('--color-brand-500', '#00abad');
+  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
   const bgColor = useBackgroundColor('primary');
 
   return (
@@ -51,7 +51,7 @@ const ComparisonSection = () => {
             </div>
           </div>
 
-          {/* ✅ DREAMdvpr */}
+          {/* ✅ REDgravity */}
           <div
             className="p-8 rounded-2xl bg-transparent backdrop-saturate-[180%] backdrop-blur-[20px] border-2 relative"
             style={{
@@ -61,7 +61,7 @@ const ComparisonSection = () => {
           >
             <span
               className="absolute top-0 right-0 px-4 py-1 text-white text-xs font-bold rounded-tr-2xl rounded-bl-xl"
-              style={{ backgroundColor: 'var(--color-brand-500, #00abad)' }}
+              style={{ backgroundColor: 'var(--color-brand-500, #e53e3e)' }}
             >
               RECOMMENDED
             </span>
@@ -69,7 +69,7 @@ const ComparisonSection = () => {
             <div className="flex items-center gap-4 mb-6">
               <span className="text-3xl">🤩</span>
               <h3 className="text-lg font-semibold" style={{ color: 'var(--color-text-main, #1d1d1f)' }}>
-                DREAMdvpr
+                REDgravity
               </h3>
             </div>
 
@@ -80,7 +80,7 @@ const ComparisonSection = () => {
                     viewBox="0 0 20 20"
                     className="w-5 h-5"
                     fill="currentColor"
-                    style={{ color: 'var(--color-brand-500, #00abad)' }}
+                    style={{ color: 'var(--color-brand-500, #e53e3e)' }}
                   >
                     <path
                       fillRule="evenodd"

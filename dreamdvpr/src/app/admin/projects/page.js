@@ -101,7 +101,7 @@ export default function ProjectsPage() {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </AdminSidebarWrapper>
         );
@@ -118,9 +118,9 @@ export default function ProjectsPage() {
                         </div>
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="px-6 py-2 bg-[#00abad] text-white rounded-xl hover:bg-[#008c8e] transition-all flex items-center gap-2 font-semibold shadow-lg shadow-[#00abad]/20"
+                            className="px-6 py-2 bg-[#1d1d1f] text-white rounded-xl hover:bg-black transition-all flex items-center gap-2 font-semibold shadow-lg shadow-[#1d1d1f]/20 group"
                         >
-                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                            <svg viewBox="0 0 24 24" className="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="currentColor">
                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                             </svg>
                             Create Project
@@ -138,7 +138,7 @@ export default function ProjectsPage() {
                             placeholder="Search projects by name or client..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 bg-white/60 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#00abad] transition-all"
+                            className="w-full pl-10 pr-4 py-3 bg-white/60 border border-gray-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1d1d1f] transition-all"
                         />
                     </div>
 
@@ -154,20 +154,20 @@ export default function ProjectsPage() {
                                 <GlassCard
                                     key={project._id}
                                     p={0}
-                                    className="overflow-hidden hover:shadow-xl transition-all cursor-pointer group border border-gray-100 hover:border-[#00abad]/30 shadow-sm"
+                                    className="overflow-hidden hover:shadow-xl transition-all cursor-pointer group border border-gray-100 hover:border-[#1d1d1f]/30 shadow-sm"
                                     onClick={() => router.push(`/admin/projects/${project._id}`)}
                                 >
                                     <div className="p-5 flex flex-col h-full">
                                         <div className="flex justify-between items-start mb-3">
-                                            <div className="bg-[#00abad]/10 p-2 rounded-lg group-hover:bg-[#00abad] transition-colors">
-                                                <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#00abad] group-hover:text-white" fill="currentColor">
+                                            <div className="bg-[#e53e3e]/10 p-2 rounded-lg group-hover:bg-[#e53e3e] transition-colors">
+                                                <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#e53e3e] group-hover:text-white" fill="currentColor">
                                                     <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
                                                 </svg>
                                             </div>
                                             <StatusBadge status={project.status} size="sm" />
                                         </div>
 
-                                        <h3 className="text-lg font-bold mb-0.5 group-hover:text-[#00abad] transition-colors line-clamp-1" style={{ color: '#1d1d1f' }}>
+                                        <h3 className="text-lg font-bold mb-0.5 group-hover:text-[#1d1d1f] transition-colors line-clamp-1" style={{ color: '#1d1d1f' }}>
                                             {project.name}
                                         </h3>
                                         <p className="text-xs font-semibold mb-3" style={{ color: '#86868b' }}>
@@ -182,7 +182,7 @@ export default function ProjectsPage() {
                                             <span className="text-[9px] font-bold uppercase tracking-widest text-gray-400">
                                                 {new Date(project.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                                             </span>
-                                            <div className="text-[#00abad] font-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                            <div className="text-[#1d1d1f] font-bold text-xs flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                                                 Manage
                                                 <svg viewBox="0 0 24 24" className="w-3 h-3" fill="currentColor">
                                                     <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
@@ -240,7 +240,7 @@ export default function ProjectsPage() {
                                 <button
                                     onClick={handleCreateProject}
                                     disabled={creating}
-                                    className="px-8 py-2 bg-[#00abad] text-white rounded-xl font-bold hover:bg-[#008c8e] transition-all disabled:opacity-50"
+                                    className="px-8 py-2 bg-[#1d1d1f] text-white rounded-xl font-bold hover:bg-black transition-all disabled:opacity-50"
                                 >
                                     {creating ? 'Creating...' : 'Start Project'}
                                 </button>

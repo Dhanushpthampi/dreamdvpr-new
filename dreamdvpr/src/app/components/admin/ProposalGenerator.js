@@ -263,7 +263,7 @@ export default function ProposalGenerator({
                         href={generatedPdfUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-6 py-3 border border-[#00abad] text-[#00abad] font-semibold rounded-lg hover:bg-[#00abad]/10 transition-colors flex items-center gap-2"
+                        className="px-6 py-3 border border-[#e53e3e] text-[#e53e3e] font-semibold rounded-lg hover:bg-[#e53e3e]/10 transition-colors flex items-center gap-2"
                     >
                         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
                             <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
@@ -275,7 +275,7 @@ export default function ProposalGenerator({
                 <button
                     onClick={handleGenerate}
                     disabled={generating}
-                    className="px-6 py-3 bg-[#00abad] text-white font-semibold rounded-lg hover:bg-[#008c8e] transition-colors shadow-lg shadow-[#00abad]/30 flex items-center gap-2"
+                    className="px-6 py-3 bg-[#e53e3e] text-white font-semibold rounded-lg hover:bg-[#008c8e] transition-colors shadow-lg shadow-[#e53e3e]/30 flex items-center gap-2"
                 >
                     {generating ? (
                         <>

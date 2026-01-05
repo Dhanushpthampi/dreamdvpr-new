@@ -41,7 +41,7 @@ export default function ClientProjectsPage() {
         return (
             <ClientSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </ClientSidebarWrapper>
         );
@@ -64,7 +64,7 @@ export default function ClientProjectsPage() {
         <GlassCard
             p={size === 'lg' ? 8 : 6}
             onClick={() => router.push(`/client/projects/${project._id}`)}
-            className={`cursor-pointer transition-all hover:scale-[1.01] ${size === 'lg' ? 'border-[#00abad]/20 bg-[#00abad]/5' : ''}`}
+            className={`cursor-pointer transition-all hover:scale-[1.01] ${size === 'lg' ? 'border-[#1d1d1f]/20 bg-[#1d1d1f]/5' : ''}`}
         >
             <div className="flex flex-col gap-4">
                 <div className="flex justify-between items-start">
@@ -90,7 +90,7 @@ export default function ClientProjectsPage() {
                         </svg>
                         <span>Initiated {new Date(project.startDate).toLocaleDateString()}</span>
                     </div>
-                    <button className={`font-bold transition-colors ${size === 'lg' ? 'text-[#00abad]' : 'text-sm text-gray-400 hover:text-[#00abad]'}`}>
+                    <button className={`font-bold transition-colors ${size === 'lg' ? 'text-[#1d1d1f]' : 'text-sm text-gray-400 hover:text-[#1d1d1f]'}`}>
                         {size === 'lg' ? 'Open Dashboard →' : 'View →'}
                     </button>
                 </div>
@@ -139,7 +139,7 @@ export default function ClientProjectsPage() {
                                 return (
                                     <section className="space-y-6">
                                         <div className="flex items-center gap-3 px-2">
-                                            <div className="w-2 h-2 rounded-full bg-[#00abad] animate-pulse" />
+                                            <div className="w-2 h-2 rounded-full bg-[#1d1d1f] animate-pulse" />
                                             <h2 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em]">Recent Project</h2>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

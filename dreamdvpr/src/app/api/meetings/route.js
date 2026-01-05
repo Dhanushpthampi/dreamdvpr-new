@@ -85,7 +85,7 @@ export async function POST(request) {
 
         try {
             const meetingRes = await createMeeting({
-                summary: `DREAMdvpr Strategy - ${type === 'strategy' ? 'Initial Session' : 'Project Update'}`,
+                summary: `REDgravity Strategy - ${type === 'strategy' ? 'Initial Session' : 'Project Update'}`,
                 description: notes || `Meeting for project: ${projectId || 'General'}`,
                 startTime,
                 duration: duration || 60,

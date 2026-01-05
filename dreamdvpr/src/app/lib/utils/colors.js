@@ -5,7 +5,7 @@
 
 /**
  * Converts hex color to rgba
- * @param {string} hex - Hex color (e.g., '#00abad')
+ * @param {string} hex - Hex color (e.g., '#e53e3e')
  * @param {number} alpha - Alpha value (0-1)
  * @returns {string} RGBA color string
  */

@@ -66,14 +66,17 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
       {/* Brand */}
       <div className="p-6 border-b border-white/30 bg-white/40 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="bg-[#00abad] p-2 rounded-lg">
-            <svg viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="currentColor">
+          <div className="bg-[#e53e3e]/10 p-2 rounded-lg">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 text-[#e53e3e]" fill="currentColor">
               <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7z" />
             </svg>
           </div>
-          <div className="flex flex-col items-start">
-            <p className="font-bold text-[#1d1d1f]">DREAMdvpr</p>
-            <p className="text-xs text-[#86868b]">Admin Portal</p>
+          <div className="flex flex-col items-start leading-tight">
+            <p className="font-bold text-xl tracking-tight">
+              <span className="text-[#e53e3e]">RED</span>
+              <span className="text-[#1d1d1f]">gravity</span>
+            </p>
+            <p className="text-[10px] uppercase font-black tracking-widest text-[#86868b] opacity-60">Admin Portal</p>
           </div>
         </div>
         {isMobile && (
@@ -98,8 +101,8 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
             <div key={item.label} className="flex flex-col gap-1">
               <div
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${active
-                  ? 'bg-[#00abad]/12 text-[#00abad] font-semibold'
-                  : 'text-[#86868b] font-medium hover:bg-[#00abad]/18'
+                  ? 'bg-black/5 text-black font-semibold'
+                  : 'text-[#86868b] font-medium hover:bg-black/5'
                   }`}
                 onClick={() => {
                   if (item.subItems) {
@@ -109,7 +112,7 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
                   }
                 }}
               >
-                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                <svg viewBox="0 0 24 24" className={`w-5 h-5 transition-colors ${active ? 'text-[#e53e3e]' : 'text-[#e53e3e]/50'}`} fill="currentColor">
                   <path d={item.icon} />
                 </svg>
                 <span className="flex-1">{item.label}</span>
@@ -138,8 +141,8 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
                       <div
                         key={sub.path}
                         className={`px-4 py-2 text-sm rounded-lg cursor-pointer transition-colors ${subActive
-                          ? 'text-[#00abad] font-bold bg-[#00abad]/5'
-                          : 'text-[#86868b] hover:text-[#00abad] hover:bg-gray-50'
+                          ? 'text-black font-bold bg-black/5'
+                          : 'text-[#86868b] hover:text-black hover:bg-gray-50'
                           }`}
                         onClick={() => handleNavigation(sub.path)}
                       >
@@ -159,7 +162,7 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
       {/* User & Logout */}
       <div className="p-4 space-y-2">
         <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/20">
-          <div className="w-8 h-8 rounded-full bg-[#00abad] flex items-center justify-center text-white font-semibold text-sm">
+          <div className="w-8 h-8 rounded-full bg-[#e53e3e] flex items-center justify-center text-white font-semibold text-sm">
             {session?.user?.name?.charAt(0) || 'A'}
           </div>
           <div className="flex flex-col items-start flex-1 min-w-0">
@@ -189,7 +192,7 @@ export const AdminSidebarWrapper = ({ children }) => {
     <div className="min-h-screen static-theme" style={{ backgroundColor: '#f5f5f7' }} suppressHydrationWarning>
       {/* Mobile Header */}
       <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white/80 backdrop-blur-[20px] border-b border-gray-200 sticky top-0 z-50">
-        <p className="font-bold text-[#1d1d1f]">DREAMdvpr</p>
+        <p className="font-bold text-[#1d1d1f]">REDgravity</p>
         <button
           onClick={() => setIsOpen(true)}
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

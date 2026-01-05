@@ -5,8 +5,8 @@
 
 export const DEFAULT_THEME_FALLBACK = {
     colors: {
-        brand500: '#00abad',
-        brand600: '#008c8e',
+        brand500: '#e53e3e',
+        brand600: '#c53030',
         accent500: '#ff6b6b',
         bgApp: '#f5f5f7',
         bgSecondary: '#ffffff',
@@ -25,7 +25,7 @@ export const DEFAULT_CONTENT = {
     hero: {
         title: "Explore the Future of Web",
         titleHighlight: "Future of Web",
-        subtitle: "DREAMdvpr crafts digital experiences that are out of this world. Clean, precise, and engineered for performance.",
+        subtitle: "REDgravity crafts digital experiences that are out of this world. Clean, precise, and engineered for performance.",
         ctaText: "Start Mission",
     },
     services: {
@@ -70,8 +70,8 @@ export const DEFAULT_CONTENT = {
         ],
     },
     whyChooseUs: {
-        title: "Why leading brands choose DREAMdvpr.",
-        titleHighlight: "DREAMdvpr",
+        title: "Why leading brands choose REDgravity.",
+        titleHighlight: "REDgravity",
         subtitle: "We don't just write code; we engineer experiences. Our obsessive attention to detail and performance optimization ensures your digital product stands out in a crowded market.",
         points: [
             "Apple-inspired design philosophy",
@@ -101,7 +101,7 @@ export const DEFAULT_CONTENT = {
         subtitle: "Everything you need to know about working with us.",
         items: [
             {
-                question: "What makes DREAMdvpr different?",
+                question: "What makes REDgravity different?",
                 answer: "We focus on 'Premium' in every sense. Not just how it looks, but how it feels and performs. We combine high-end aesthetic sensibilities with rigorous engineering standards."
             },
             {
@@ -119,7 +119,7 @@ export const DEFAULT_CONTENT = {
         ],
     },
     cta: {
-        title: "Ready to Transform Your Business with DREAMdvpr?",
+        title: "Ready to Transform Your Business with REDgravity?",
         subtitle: "Your Trusted Partner for Transformative Digital Solutions",
         buttonText: "Book a Call today!",
         points: [

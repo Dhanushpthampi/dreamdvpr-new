@@ -56,7 +56,7 @@ export default function ClientDashboard() {
         return (
             <ClientSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </ClientSidebarWrapper>
         );
@@ -80,8 +80,8 @@ export default function ClientDashboard() {
                                 </div>
                                 <GlassCard p={12} className="text-center">
                                     <div className="max-w-xl mx-auto space-y-6">
-                                        <div className="w-20 h-20 bg-[#00abad]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <svg viewBox="0 0 24 24" className="w-10 h-10 text-[#00abad]" fill="currentColor">
+                                        <div className="w-20 h-20 bg-black/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <svg viewBox="0 0 24 24" className="w-10 h-10 text-black" fill="currentColor">
                                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
                                             </svg>
                                         </div>
@@ -91,7 +91,7 @@ export default function ClientDashboard() {
                                         </p>
                                         <button
                                             onClick={() => router.push('/client/schedule')}
-                                            className="px-8 py-4 bg-[#1d1d1f] text-white rounded-2xl font-black hover:bg-black transition-all shadow-xl"
+                                            className="px-8 py-4 bg-[#10b981] text-white rounded-2xl font-black hover:opacity-90 transition-all shadow-xl shadow-[#10b981]/20"
                                         >
                                             Schedule Mission
                                         </button>
@@ -105,14 +105,14 @@ export default function ClientDashboard() {
                                 {/* Hero Project Overview */}
                                 <div className="overflow-hidden bg-white border border-gray-200 rounded-3xl shadow-xl">
                                     <div className="relative p-8 md:p-12">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-[#00abad]/5 to-transparent pointer-events-none" />
+                                        <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-transparent pointer-events-none" />
                                         <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
                                             <div className="flex-1 space-y-6">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00abad]/10 border border-[#00abad]/20 rounded-full text-[#00abad] text-[10px] font-black uppercase tracking-widest">
+                                                    <div className="inline-flex items-center gap-2 px-3 py-1 bg-black/5 border border-black/10 rounded-full text-black text-[10px] font-black uppercase tracking-widest">
                                                         <span className="relative flex h-2 w-2">
-                                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00abad] opacity-75"></span>
-                                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00abad]"></span>
+                                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-black opacity-40"></span>
+                                                            <span className="relative inline-flex rounded-full h-2 w-2 bg-black"></span>
                                                         </span>
                                                         Active Engagement
                                                     </div>
@@ -129,17 +129,6 @@ export default function ClientDashboard() {
                                                     </p>
                                                 </div>
 
-                                                <div className="flex flex-wrap gap-4">
-                                                    <button
-                                                        onClick={() => router.push('/client/schedule')}
-                                                        className="px-6 py-3 bg-[#1d1d1f] text-white rounded-xl font-bold text-sm hover:bg-black transition-all flex items-center gap-2"
-                                                    >
-                                                        <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
-                                                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z" />
-                                                        </svg>
-                                                        Schedule Strategy Call
-                                                    </button>
-                                                </div>
                                             </div>
 
                                             <div className="flex items-center gap-6 bg-gray-50/50 p-6 rounded-2xl border border-gray-100">
@@ -169,7 +158,7 @@ export default function ClientDashboard() {
                                                 key={tab.id}
                                                 onClick={() => setActiveTab(tab.id)}
                                                 className={`pb-4 px-2 flex items-center gap-2 border-b-2 transition-all font-bold text-sm whitespace-nowrap ${activeTab === tab.id
-                                                    ? 'border-[#00abad] text-[#00abad]'
+                                                    ? 'border-[#e53e3e] text-[#e53e3e]'
                                                     : 'border-transparent text-gray-400 hover:text-gray-600'}`}
                                             >
                                                 <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">

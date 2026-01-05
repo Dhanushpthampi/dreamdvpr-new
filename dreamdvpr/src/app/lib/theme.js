@@ -4,7 +4,7 @@
 
 export const DEFAULT_THEME = {
     colors: {
-        brand500: '#00abad',
+        brand500: '#e53e3e',
         brand600: '#008c8e',
         accent500: '#ff6b6b',
         bgApp: '#f5f5f7',

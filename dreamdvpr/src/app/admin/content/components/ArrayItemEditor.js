@@ -31,7 +31,7 @@ export function ArrayItemEditor({
         <button
           onClick={onAdd}
           aria-label="Add item"
-          className="p-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors flex items-center justify-center"
+          className="p-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors flex items-center justify-center"
         >
           <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
             <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />

@@ -65,7 +65,7 @@ export default function ProjectDetailPage() {
         return (
             <ClientSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </ClientSidebarWrapper>
         );
@@ -81,13 +81,13 @@ export default function ProjectDetailPage() {
                     <div className="animate-in fade-in slide-in-from-top-6 duration-1000">
                         <div className="overflow-hidden bg-white border border-gray-200 rounded-3xl shadow-xl">
                             <div className="relative p-8 md:p-12">
-                                <div className="absolute inset-0 bg-gradient-to-br from-[#00abad]/5 to-transparent pointer-events-none" />
+                                <div className="absolute inset-0 bg-gradient-to-br from-[#1d1d1f]/5 to-transparent pointer-events-none" />
                                 <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-10">
                                     <div className="flex-1 space-y-6">
                                         <div className="flex items-center gap-4 mb-2">
                                             <button
                                                 onClick={() => router.push('/client/projects')}
-                                                className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-[#00abad] transition-colors"
+                                                className="flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-[#1d1d1f] transition-colors"
                                             >
                                                 <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
                                                     <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
@@ -140,7 +140,7 @@ export default function ProjectDetailPage() {
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
                                     className={`pb-4 px-2 flex items-center gap-2 border-b-2 transition-all font-bold text-sm whitespace-nowrap ${activeTab === tab.id
-                                        ? 'border-[#00abad] text-[#00abad]'
+                                        ? 'border-[#1d1d1f] text-[#1d1d1f]'
                                         : 'border-transparent text-gray-400 hover:text-gray-600'}`}
                                 >
                                     <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">

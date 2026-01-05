@@ -52,7 +52,7 @@ export function ServicesSectionEditor({ section, onChange }) {
           <button
             onClick={handleAddService}
             aria-label="Add service"
-            className="p-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors flex items-center justify-center"
+            className="p-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors flex items-center justify-center"
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
               <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
@@ -64,7 +64,7 @@ export function ServicesSectionEditor({ section, onChange }) {
           {(section.items || []).map((item, index) => (
             <div
               key={index}
-              className="p-6 border-2 border-gray-200 rounded-xl bg-gray-50/50 hover:border-[#00abad]/50 transition-colors"
+              className="p-6 border-2 border-gray-200 rounded-xl bg-gray-50/50 hover:border-[#1d1d1f]/50 transition-colors"
             >
               <div className="flex flex-col gap-4">
                 <div className="flex justify-between items-center">
@@ -139,7 +139,7 @@ export function ServicesSectionEditor({ section, onChange }) {
                             parseInt(e.target.value) || 1
                           )
                         }
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] text-center"
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f] focus:border-[#1d1d1f] text-center"
                       />
                       <button
                         onClick={() => {
@@ -183,7 +183,7 @@ export function ServicesSectionEditor({ section, onChange }) {
                             parseInt(e.target.value) || 1
                           )
                         }
-                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-[#00abad] text-center"
+                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f] focus:border-[#1d1d1f] text-center"
                       />
                       <button
                         onClick={() => {

@@ -39,7 +39,7 @@ export async function GET(request, { params }) {
 
         // Create folder if it doesn't exist
         if (!folderId) {
-            // Check if we already have a root folder for "DreamDvpr Projects" or similar (optional optimization)
+            // Check if we already have a root folder for "REDgravity Projects" or similar (optional optimization)
             // For now, creating top-level folders or we could organize better later.
             // Let's create a folder named "Project: [ProjectName]"
 

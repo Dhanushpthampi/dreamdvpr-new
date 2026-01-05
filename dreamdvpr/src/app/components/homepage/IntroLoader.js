@@ -11,7 +11,7 @@ export default function IntroLoader({ onComplete }) {
   const [isVisible, setIsVisible] = useState(true);
   const [progress, setProgress] = useState(0);
 
-  const brandColor = useThemeColor('--color-brand-500', '#00abad');
+  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
 
   useEffect(() => {
     const hasLoaded = sessionStorage.getItem('introLoaderShown');
@@ -67,7 +67,7 @@ export default function IntroLoader({ onComplete }) {
           letterSpacing="wide"
           mb={2}
         >
-          DREAMdvpr
+          REDgravity
         </Text>
 
         <Text

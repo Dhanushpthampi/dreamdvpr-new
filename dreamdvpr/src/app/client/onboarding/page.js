@@ -121,7 +121,7 @@ export default function OnboardingPage() {
     if (checkingProfile || status === 'loading') {
         return (
             <div className="min-h-screen static-theme flex items-center justify-center" style={{ backgroundColor: '#f5f5f7' }}>
-                <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                <div className="w-12 h-12 border-4 border-t-black border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
             </div>
         );
     }
@@ -132,10 +132,10 @@ export default function OnboardingPage() {
             <div className="bg-white border-b border-gray-200 py-4">
                 <div className="container mx-auto max-w-7xl px-4">
                     <div className="flex justify-between items-center">
-                        <h1 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>DREAMdvpr</h1>
+                        <h1 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>REDgravity</h1>
                         <button
                             onClick={() => router.push('/client')}
-                            className="px-4 py-2 text-gray-600 hover:text-[#00abad] transition-colors"
+                            className="px-4 py-2 text-gray-600 hover:text-black transition-colors"
                         >
                             Skip for now
                         </button>
@@ -148,7 +148,7 @@ export default function OnboardingPage() {
                     {/* Header */}
                     <div className="text-center">
                         <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#1d1d1f' }}>
-                            {isEditing ? 'Edit Your Profile' : "Welcome to DREAMdvpr! 🎉"}
+                            {isEditing ? 'Edit Your Profile' : "Welcome to REDgravity! 🎉"}
                         </h1>
                         <p className="text-lg" style={{ color: '#86868b' }}>
                             {isEditing ? 'Update your profile information' : "Let's get to know you better"}
@@ -168,7 +168,7 @@ export default function OnboardingPage() {
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
                                 <div
-                                    className="bg-[#00abad] h-2 rounded-full transition-all duration-300"
+                                    className="bg-black h-2 rounded-full transition-all duration-300"
                                     style={{ width: `${progress}%` }}
                                 />
                             </div>
@@ -181,7 +181,7 @@ export default function OnboardingPage() {
                             {step === 1 && (
                                 <>
                                     <div className="text-center mb-4">
-                                        <div className="bg-[#00abad] p-4 rounded-xl inline-block mb-6">
+                                        <div className="bg-[#1d1d1f] p-4 rounded-xl inline-block mb-6">
                                             <svg viewBox="0 0 24 24" className="w-12 h-12 text-white" fill="currentColor">
                                                 <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z" />
                                             </svg>
@@ -215,7 +215,7 @@ export default function OnboardingPage() {
 
                                     <button
                                         onClick={handleNext}
-                                        className="w-full px-4 py-3 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors text-lg font-medium"
+                                        className="w-full px-4 py-3 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors text-lg font-medium"
                                     >
                                         Continue
                                     </button>
@@ -266,7 +266,7 @@ export default function OnboardingPage() {
                                         <button
                                             onClick={handleSubmit}
                                             disabled={loading}
-                                            className="flex-1 px-4 py-3 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg font-medium flex items-center justify-center gap-2"
+                                            className="flex-1 px-4 py-3 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-lg font-medium flex items-center justify-center gap-2"
                                         >
                                             {loading ? (
                                                 <>

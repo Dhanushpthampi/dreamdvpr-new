@@ -123,7 +123,7 @@ export default function FileExplorer({ projectId }) {
                         disabled={uploading}
                     />
                     <button
-                        className={`px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors flex items-center gap-2 ${uploading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        className={`px-4 py-2 bg-[#10b981] text-white rounded-lg hover:opacity-90 transition-colors flex items-center gap-2 shadow-lg shadow-[#10b981]/10 ${uploading ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
                         {uploading ? (
                             <>
@@ -185,7 +185,7 @@ export default function FileExplorer({ projectId }) {
                                 <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
                                         onClick={() => handleDownload(file.id, file.name)}
-                                        className="p-1.5 hover:bg-gray-100 rounded text-gray-600 hover:text-[#00abad]"
+                                        className="p-1.5 hover:bg-gray-100 rounded text-gray-600 hover:text-[#e53e3e]"
                                         title="Download"
                                     >
                                         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">

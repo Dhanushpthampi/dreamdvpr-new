@@ -57,14 +57,17 @@ const ClientSidebar = ({ isMobile = false, onClose }) => {
       {/* Brand */}
       <div className="p-6 border-b border-white/30 bg-white/40 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="bg-[#00abad] p-2 rounded-lg">
-            <svg viewBox="0 0 24 24" className="w-6 h-6 text-white" fill="currentColor">
+          <div className="bg-[#e53e3e]/10 p-2 rounded-lg">
+            <svg viewBox="0 0 24 24" className="w-6 h-6 text-[#e53e3e]" fill="currentColor">
               <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12z" />
             </svg>
           </div>
-          <div className="flex flex-col items-start">
-            <p className="font-bold text-[#1d1d1f]">DREAMdvpr</p>
-            <p className="text-xs text-[#86868b]">Client Portal</p>
+          <div className="flex flex-col items-start leading-tight">
+            <p className="font-bold text-xl tracking-tight">
+              <span className="text-[#e53e3e]">RED</span>
+              <span className="text-[#1d1d1f]">gravity</span>
+            </p>
+            <p className="text-[10px] uppercase font-black tracking-widest text-[#86868b] opacity-60">Client Portal</p>
           </div>
         </div>
         {isMobile && (
@@ -82,10 +85,10 @@ const ClientSidebar = ({ isMobile = false, onClose }) => {
 
       {/* Project Context */}
       {activeProject && (
-        <div className="p-4 mx-4 mt-4 bg-[#00abad]/10 rounded-xl border border-[#00abad]/20 animate-in fade-in slide-in-from-left-4 duration-500">
-          <p className="text-[10px] font-black text-[#00abad] uppercase tracking-widest mb-1.5 opacity-70">Active Engagement</p>
+        <div className="p-4 mx-4 mt-4 bg-black/5 rounded-xl border border-black/5 animate-in fade-in slide-in-from-left-4 duration-500">
+          <p className="text-[10px] font-black text-black uppercase tracking-widest mb-1.5 opacity-40">Active Engagement</p>
           <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#00abad] animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-black/40 animate-pulse" />
             <p className="text-sm font-bold text-[#1d1d1f] truncate">{activeProject.name}</p>
           </div>
         </div>
@@ -99,12 +102,12 @@ const ClientSidebar = ({ isMobile = false, onClose }) => {
             <div
               key={item.path}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition-all duration-200 ${active
-                ? 'bg-[#00abad]/12 text-[#00abad] font-semibold'
-                : 'text-[#86868b] font-medium hover:bg-[#00abad]/18'
+                ? 'bg-black/5 text-black font-semibold'
+                : 'text-[#86868b] font-medium hover:bg-black/5'
                 }`}
               onClick={() => handleNavigation(item.path, item.badge)}
             >
-              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+              <svg viewBox="0 0 24 24" className={`w-5 h-5 transition-colors ${active ? 'text-[#e53e3e]' : 'text-[#e53e3e]/50'}`} fill="currentColor">
                 <path d={item.icon} />
               </svg>
               <span className="flex-1">{item.label}</span>
@@ -123,7 +126,7 @@ const ClientSidebar = ({ isMobile = false, onClose }) => {
       {/* User & Logout */}
       <div className="p-4 space-y-2">
         <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/20">
-          <div className="w-8 h-8 rounded-full bg-[#00abad] flex items-center justify-center text-white font-semibold text-sm">
+          <div className="w-8 h-8 rounded-full bg-[#e53e3e] flex items-center justify-center text-white font-semibold text-sm">
             {session?.user?.name?.charAt(0) || 'U'}
           </div>
           <div className="flex flex-col items-start flex-1 min-w-0">
@@ -152,7 +155,7 @@ export const ClientSidebarWrapper = ({ children }) => {
     <div className="min-h-screen static-theme" style={{ backgroundColor: '#f5f5f7' }}>
       {/* Mobile Header */}
       <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white/80 backdrop-blur-[20px] border-b border-gray-200 sticky top-0 z-50">
-        <p className="font-bold text-[#1d1d1f]">DREAMdvpr</p>
+        <p className="font-bold text-[#1d1d1f]">REDgravity</p>
         <button
           onClick={() => setIsOpen(true)}
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

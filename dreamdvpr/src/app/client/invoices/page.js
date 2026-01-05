@@ -37,7 +37,7 @@ export default function ClientInvoicesPage() {
         return (
             <ClientSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-black border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </ClientSidebarWrapper>
         );
@@ -53,8 +53,8 @@ export default function ClientInvoicesPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <GlassCard p={6} className="bg-[#00abad]/5 border-[#00abad]/20">
-                            <p className="text-xs font-bold uppercase tracking-widest text-[#00abad] mb-1">Total Outstanding</p>
+                        <GlassCard p={6} className="bg-black/5 border-black/5">
+                            <p className="text-xs font-bold uppercase tracking-widest text-[#1d1d1f] opacity-40 mb-1">Total Outstanding</p>
                             <h2 className="text-4xl font-black text-gray-900">
                                 ${invoices.filter(i => i.status === 'pending').reduce((acc, curr) => acc + curr.amount, 0).toLocaleString()}
                             </h2>
@@ -91,7 +91,7 @@ export default function ClientInvoicesPage() {
                                         <tr key={invoice._id} className="border-b border-gray-100/30 hover:bg-white/30 transition-colors">
                                             <td className="py-4 px-6 font-bold">{invoice.invoiceNumber}</td>
                                             <td className="py-4 px-6 font-medium">{invoice.project?.name || 'General Services'}</td>
-                                            <td className="py-4 px-6 font-black text-[#00abad]">${invoice.amount.toLocaleString()}</td>
+                                            <td className="py-4 px-6 font-black text-[#10b981]">${invoice.amount.toLocaleString()}</td>
                                             <td className="py-4 px-6 text-sm">{new Date(invoice.dueDate).toLocaleDateString()}</td>
                                             <td className="py-4 px-6">
                                                 <StatusBadge status={invoice.status} size="sm" />

@@ -144,7 +144,7 @@ export default function AdminInvoicesPage() {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-black border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </AdminSidebarWrapper>
         );
@@ -161,7 +161,7 @@ export default function AdminInvoicesPage() {
                         </div>
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="px-6 py-2 bg-[#00abad] text-white rounded-xl hover:bg-[#008c8e] transition-all flex items-center gap-2 font-semibold shadow-lg shadow-[#00abad]/20"
+                            className="px-6 py-2 bg-[#10b981] text-white rounded-xl hover:opacity-90 transition-all flex items-center gap-2 font-semibold shadow-lg shadow-[#10b981]/10"
                         >
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
@@ -193,13 +193,13 @@ export default function AdminInvoicesPage() {
                                                     <span className="text-xs text-gray-400">{invoice.project?.name || 'General Project'}</span>
                                                 </div>
                                             </td>
-                                            <td className="py-4 px-6 font-black text-[#00abad]">${invoice.amount.toLocaleString()}</td>
+                                            <td className="py-4 px-6 font-black text-[#10b981]">${invoice.amount.toLocaleString()}</td>
                                             <td className="py-4 px-6 text-sm">{new Date(invoice.dueDate).toLocaleDateString()}</td>
                                             <td className="py-4 px-6">
                                                 <select
                                                     value={invoice.status}
                                                     onChange={(e) => handleUpdateStatus(invoice._id, e.target.value)}
-                                                    className="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded-lg focus:ring-[#00abad] focus:border-[#00abad] block w-full p-2"
+                                                    className="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded-lg focus:ring-black focus:border-black block w-full p-2"
                                                 >
                                                     <option value="pending">Pending</option>
                                                     <option value="paid">Paid</option>
@@ -290,7 +290,7 @@ export default function AdminInvoicesPage() {
                                 <button
                                     onClick={handleCreateInvoice}
                                     disabled={creating}
-                                    className="px-8 py-2 bg-[#00abad] text-white rounded-xl font-bold hover:bg-[#008c8e] transition-all disabled:opacity-50"
+                                    className="px-8 py-2 bg-[#10b981] text-white rounded-xl font-bold hover:opacity-90 transition-all disabled:opacity-50"
                                 >
                                     {creating ? 'Generating...' : 'Issue Invoice'}
                                 </button>

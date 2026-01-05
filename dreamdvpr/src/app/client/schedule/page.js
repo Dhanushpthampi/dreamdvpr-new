@@ -38,15 +38,15 @@ export default function SchedulePage() {
 
                     <div className="flex justify-center gap-6 text-xs font-bold text-gray-400 uppercase tracking-widest mt-8">
                         <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#00abad]" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]" />
                             Automated Invites
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#00abad]" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]" />
                             Calendar Sync
                         </div>
                         <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-[#00abad]" />
+                            <div className="w-1.5 h-1.5 rounded-full bg-[#1d1d1f]" />
                             Zoom/Meet Links
                         </div>
                     </div>

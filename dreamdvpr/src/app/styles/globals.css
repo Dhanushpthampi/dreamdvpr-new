@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #00abad;
+  --color-primary: #e53e3e;
   --color-secondary: #f2ff00;
   --color-background-app: #f5f5f7;
   --color-surface: rgba(255, 255, 255, 0.6);
@@ -17,8 +17,8 @@
   --background-rgb: 245, 245, 247;
   
   /* Dynamic theme variables - updated by ThemeProvider */
-  --color-brand-500: #00abad;
-  --color-brand-600: #008c8e;
+  --color-brand-500: #e53e3e;
+  --color-brand-600: #c53030;
   --color-accent-500: #ff0000ff;
   --color-bg-app: #f5f5f7;
   --color-bg-secondary: #ffffff;
@@ -93,15 +93,15 @@ body {
 
 @keyframes pulse-glow {
   0% {
-    box-shadow: 0 0 0 0 rgba(0, 171, 173, 0.7);
+    box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7);
   }
 
   70% {
-    box-shadow: 0 0 0 10px rgba(0, 171, 173, 0);
+    box-shadow: 0 0 0 10px rgba(229, 62, 62, 0);
   }
 
   100% {
-    box-shadow: 0 0 0 0 rgba(0, 171, 173, 0);
+    box-shadow: 0 0 0 0 rgba(229, 62, 62, 0);
   }
 }
 
@@ -194,8 +194,8 @@ body {
 
 /* Static theme for non-dynamic pages (login, client, admin) */
 .static-theme {
-  --static-brand-500: #00abad;
-  --static-brand-600: #008c8e;
+  --static-brand-500: #e53e3e;
+  --static-brand-600: #c53030;
   --static-bg-app: #f5f5f7;
   --static-bg-secondary: #ffffff;
   --static-text-main: #1d1d1f;
@@ -220,11 +220,11 @@ body {
 }
 
 .static-brand {
-  color: var(--static-brand-500, #00abad);
+  color: var(--static-brand-500, #e53e3e);
 }
 
 .static-bg-brand {
-  background-color: var(--static-brand-500, #00abad);
+  background-color: var(--static-brand-500, #e53e3e);
 }
 
 

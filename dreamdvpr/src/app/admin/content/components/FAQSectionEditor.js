@@ -47,7 +47,7 @@ export function FAQSectionEditor({ section, onChange }) {
           <button
             onClick={handleAddFAQ}
             aria-label="Add FAQ"
-            className="p-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors flex items-center justify-center"
+            className="p-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors flex items-center justify-center"
           >
             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
               <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
@@ -58,7 +58,7 @@ export function FAQSectionEditor({ section, onChange }) {
           {(section.items || []).map((item, index) => (
             <div
               key={index}
-              className="p-6 border-2 border-gray-200 rounded-xl bg-gray-50/50 hover:border-[#00abad]/50 transition-colors"
+              className="p-6 border-2 border-gray-200 rounded-xl bg-gray-50/50 hover:border-[#1d1d1f]/50 transition-colors"
             >
               <div className="flex flex-col gap-4">
                 <div className="flex justify-between items-center">

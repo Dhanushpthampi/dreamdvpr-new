@@ -20,7 +20,7 @@ const colorMap = {
 ======================= */
 const BlogCard = ({ blog }) => {
   const color = colorMap[blog.category] || 'gray';
-  const brandColor = useThemeColor('--color-brand-500', '#00abad');
+  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
 
   return (
     <Link href={`/blog/${blog._id}`} className="block no-underline">
@@ -97,7 +97,7 @@ const BlogCard = ({ blog }) => {
 export default function BlogPage() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const brandColor = useThemeColor('--color-brand-500', '#00abad');
+  const brandColor = useThemeColor('--color-brand-500', '#e53e3e');
 
   useEffect(() => {
     fetchBlogs();
@@ -136,7 +136,7 @@ export default function BlogPage() {
                 Blog
               </h1>
               <p className="text-lg" style={{ color: 'var(--color-text-secondary, #86868b)' }}>
-                Latest insights, tips, and updates from DREAMdvpr
+                Latest insights, tips, and updates from REDgravity
               </p>
             </div>
 

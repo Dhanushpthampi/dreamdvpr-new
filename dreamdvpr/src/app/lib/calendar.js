@@ -27,7 +27,7 @@ export async function createMeeting({ summary, description, startTime, duration 
         const endTime = new Date(startTime.getTime() + duration * 60000);
 
         const event = {
-            summary: summary || 'DREAMdvpr Strategy Meeting',
+            summary: summary || 'REDgravity Strategy Meeting',
             description: description || 'Project strategy discussion',
             start: {
                 dateTime: startTime.toISOString(),

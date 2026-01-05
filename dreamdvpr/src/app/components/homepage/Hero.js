@@ -109,7 +109,7 @@ const Hero = () => {
         >
           <div className="flex flex-col items-center md:items-start gap-6 max-w-xl text-center md:text-left pointer-events-auto">
             <motion.h1
-              className="text-5xl md:text-6xl font-bold"
+              className="text-5xl md:text-7xl font-bold"
               style={{ color: '#ffffff' }} // Hardcoded white
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -118,7 +118,7 @@ const Hero = () => {
               {titleParts.map((part, i, arr) =>
                 i === arr.length - 1 ? (
                   <React.Fragment key={i}>
-                    <span style={{ color: 'var(--color-brand-500, #00abad)' }}>
+                    <span style={{ color: 'var(--color-brand-500, #e53e3e)' }}>
                       {content?.titleHighlight || ''}
                     </span>
                     {part}
@@ -147,7 +147,7 @@ const Hero = () => {
               <a
                 href="#contact"
                 className="px-6 py-3 text-lg font-medium text-white rounded-xl transition-all hover:opacity-90 hover:-translate-y-0.5"
-                style={{ backgroundColor: 'var(--color-brand-500, #00abad)' }}
+                style={{ backgroundColor: 'var(--color-brand-500, #e53e3e)' }}
               >
                 {content?.ctaText}
               </a>

@@ -40,7 +40,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
             Link.configure({
                 openOnClick: false,
                 HTMLAttributes: {
-                    class: 'text-[#00abad] underline',
+                    class: 'text-[#e53e3e] underline',
                 },
             }),
         ],
@@ -113,7 +113,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
             onClick={onClick}
             disabled={disabled}
             aria-label={ariaLabel}
-            className={`p-2 rounded hover:bg-gray-100 transition-colors ${isActive ? 'bg-[#00abad]/10 text-[#00abad]' : 'text-gray-600'
+            className={`p-2 rounded hover:bg-gray-100 transition-colors ${isActive ? 'bg-[#e53e3e]/10 text-[#e53e3e]' : 'text-gray-600'
                 } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
             {children}
@@ -199,7 +199,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     display: list-item;
                 }
                 .tiptap blockquote {
-                    border-left: 4px solid #00abad;
+                    border-left: 4px solid #e53e3e;
                     padding-left: 1rem;
                     padding-top: 0.5rem;
                     padding-bottom: 0.5rem;
@@ -234,7 +234,7 @@ const RichTextEditor = ({ value, onChange, placeholder = 'Write your content her
                     margin: 1rem 0;
                 }
                 .tiptap a {
-                    color: #00abad;
+                    color: #e53e3e;
                     text-decoration: underline;
                 }
                 .tiptap a:hover {

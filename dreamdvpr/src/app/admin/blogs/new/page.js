@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { AdminSidebarWrapper } from '@/app/components/admin/AdminSidebar';
 import GlassCard from '@/app/components/ui/GlassCard';
 import ThemedInput from '@/app/components/ui/ThemedInput';
-import ThemedSelect from '@/app/components/ui/ThemedSelect'; 
+import ThemedSelect from '@/app/components/ui/ThemedSelect';
 import RichTextEditor from '@/app/components/admin/RichTextEditor';
 
 const CATEGORIES = [
@@ -80,7 +80,7 @@ export default function NewBlogPage() {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </AdminSidebarWrapper>
         );
@@ -101,18 +101,25 @@ export default function NewBlogPage() {
                             </p>
                         </div>
                         <div className="flex gap-4">
-                            <button     
-                                variant="outline"
+                            <button
                                 onClick={() => router.push('/admin/blogs')}
+                                className="px-6 py-2 border border-gray-300 text-gray-600 rounded-xl font-semibold hover:bg-gray-50 transition-all"
                             >
                                 Cancel
                             </button>
                             <button
-                                variant="primary"
                                 onClick={handleSave}
-                                isLoading={saving}
+                                disabled={saving}
+                                className="px-8 py-2 bg-[#1d1d1f] text-white rounded-xl font-bold hover:bg-black transition-all disabled:opacity-50 flex items-center gap-2"
                             >
-                                Create Blog
+                                {saving ? (
+                                    <>
+                                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                        Creating...
+                                    </>
+                                ) : (
+                                    'Create Blog'
+                                )}
                             </button>
                         </div>
                     </div>
@@ -166,7 +173,7 @@ export default function NewBlogPage() {
                                     type="checkbox"
                                     checked={blogData.published}
                                     onChange={(e) => setBlogData({ ...blogData, published: e.target.checked })}
-                                    className="w-5 h-5 rounded border-gray-300 text-[#00abad] focus:ring-[#00abad]"
+                                    className="w-5 h-5 rounded border-gray-300 text-[#1d1d1f] focus:ring-[#1d1d1f]"
                                 />
                             </div>
                         </div>

@@ -47,13 +47,13 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen flex items-center justify-center py-12 px-4 static-theme" style={{ backgroundColor: '#f5f5f7' }}>
             {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#00abad]/5 via-transparent to-[#00abad]/10" />
-            
+            <div className="absolute inset-0 bg-gradient-to-br from-[#1d1d1f]/5 via-transparent to-[#1d1d1f]/10" />
+
             <div className="container max-w-md relative z-10">
                 <div className="flex flex-col gap-8">
                     {/* Back to Home Link */}
                     <div className="self-start -mb-4">
-                        <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-[#00abad] transition-colors duration-200 no-underline">
+                        <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-[#1d1d1f] transition-colors duration-200 no-underline">
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
                                 <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
                             </svg>
@@ -61,17 +61,19 @@ export default function LoginPage() {
                         </Link>
                     </div>
 
-                    {/* Logo/Brand */}
                     <div className="flex flex-col items-center gap-4 text-center">
-                        <div className="bg-[#00abad] p-4 rounded-xl inline-block">
-                            <svg viewBox="0 0 24 24" className="w-12 h-12 text-white" fill="currentColor">
+                        <div className="bg-[#e53e3e]/10 p-4 rounded-xl inline-block">
+                            <svg viewBox="0 0 24 24" className="w-12 h-12 text-[#e53e3e]" fill="currentColor">
                                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
                             </svg>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <h1 className="text-4xl font-bold" style={{ color: '#1d1d1f' }}>Welcome Back</h1>
+                            <h1 className="text-4xl font-bold tracking-tight">
+                                <span className="text-[#e53e3e]">RED</span>
+                                <span className="text-[#1d1d1f]">gravity</span>
+                            </h1>
                             <p className="text-lg" style={{ color: '#86868b' }}>
-                                Sign in to your DREAMdvpr account
+                                Sign in to your account
                             </p>
                         </div>
                     </div>
@@ -90,32 +92,32 @@ export default function LoginPage() {
                                 )}
 
                                 <div>
-                                    <label className="block font-semibold mb-2" style={{ color: '#1d1d1f' }}>Email</label>
+                                    <label className="block font-semibold mb-2 text-[#374151]">Email Address</label>
                                     <input
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Enter your email"
-                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-transparent transition-all"
+                                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e53e3e]/20 focus:border-[#e53e3e]/50 transition-all font-medium text-[#1d1d1f]"
                                         required
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block font-semibold mb-2" style={{ color: '#1d1d1f' }}>Password</label>
+                                    <label className="block font-semibold mb-2 text-[#374151]">Password</label>
                                     <input
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Enter your password"
-                                        className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00abad] focus:border-transparent transition-all"
+                                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e53e3e]/20 focus:border-[#e53e3e]/50 transition-all font-medium text-[#1d1d1f]"
                                         required
                                     />
                                 </div>
 
                                 <button
                                     type="submit"
-                                    className="w-full px-4 py-3 bg-[#00abad] text-white rounded-lg font-medium hover:bg-[#008c8e] active:bg-[#007a7c] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="w-full px-4 py-3 bg-[#1d1d1f] text-white rounded-lg font-medium hover:bg-black active:bg-black transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                     disabled={loading}
                                 >
                                     {loading ? (
@@ -143,12 +145,12 @@ export default function LoginPage() {
                             <div className="flex flex-col items-start gap-2 text-sm text-blue-700 w-full">
                                 <div>
                                     <p className="font-medium">Admin Account:</p>
-                                    <p>Email: admin@dreamdvpr.com</p>
+                                    <p>Email: admin@REDgravity.com</p>
                                     <p>Password: admin123</p>
                                 </div>
                                 <div>
                                     <p className="font-medium">Client Account:</p>
-                                    <p>Email: client@dreamdvpr.com</p>
+                                    <p>Email: client@REDgravity.com</p>
                                     <p>Password: client123</p>
                                 </div>
                             </div>

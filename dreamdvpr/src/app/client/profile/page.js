@@ -58,7 +58,7 @@ export default function ProfilePage() {
         return (
             <ClientSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </ClientSidebarWrapper>
         );
@@ -122,7 +122,7 @@ export default function ProfilePage() {
                                     </div>
                                     <div className="flex justify-between items-center py-2 border-b border-gray-100">
                                         <p className="font-semibold" style={{ color: '#86868b' }}>Industry</p>
-                                        <span className="px-3 py-1 bg-[#00abad]/10 text-[#00abad] rounded-full text-sm font-semibold">
+                                        <span className="px-3 py-1 bg-[#1d1d1f]/10 text-[#1d1d1f] rounded-full text-sm font-semibold">
                                             {INDUSTRIES[profile.industry] || profile.industry || 'Not provided'}
                                         </span>
                                     </div>
@@ -137,7 +137,7 @@ export default function ProfilePage() {
                                                 href={profile.website}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-[#00abad] hover:underline flex items-center gap-1"
+                                                className="text-[#1d1d1f] hover:underline flex items-center gap-1"
                                             >
                                                 {profile.website}
                                                 <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">

@@ -6,14 +6,14 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '', label }) => {
     const [count, setCount] = useState(0);
     const countRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
-    const [brandColors, setBrandColors] = useState({ primary: '#00abad', secondary: '#008c8e' });
+    const [brandColors, setBrandColors] = useState({ primary: '#e53e3e', secondary: '#008c8e' });
 
     useEffect(() => {
         const updateColors = () => {
             if (typeof window !== 'undefined') {
                 const primary = getComputedStyle(document.documentElement)
                     .getPropertyValue('--color-brand-500')
-                    .trim() || '#00abad';
+                    .trim() || '#e53e3e';
                 const secondary = getComputedStyle(document.documentElement)
                     .getPropertyValue('--color-brand-600')
                     .trim() || '#008c8e';

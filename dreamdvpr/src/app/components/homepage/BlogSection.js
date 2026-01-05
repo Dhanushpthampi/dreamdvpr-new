@@ -51,7 +51,7 @@ const BlogCard = ({ blog, category, title, date, color, imageUrl }) => {
                 <h3
                     className="text-lg font-semibold leading-relaxed transition-colors duration-200"
                     style={{
-                        color: hovered ? 'var(--color-brand-500, #00abad)' : 'var(--color-text-main, #1d1d1f)',
+                        color: hovered ? 'var(--color-brand-500, #e53e3e)' : 'var(--color-text-main, #1d1d1f)',
                     }}
                 >
                     {title}
@@ -98,7 +98,7 @@ const BlogSection = () => {
                     <Link
                         href="/blog"
                         className="hidden md:block font-bold transition-colors hover:text-[var(--color-brand-600)]"
-                        style={{ color: 'var(--color-brand-500, #00abad)' }}
+                        style={{ color: 'var(--color-brand-500, #e53e3e)' }}
                     >
                         View all articles →
                     </Link>
@@ -122,7 +122,7 @@ const BlogSection = () => {
                     <Link
                         href="/blog"
                         className="font-bold transition-colors hover:text-[var(--color-brand-600)]"
-                        style={{ color: 'var(--color-brand-500, #00abad)' }}
+                        style={{ color: 'var(--color-brand-500, #e53e3e)' }}
                     >
                         View all articles →
                     </Link>

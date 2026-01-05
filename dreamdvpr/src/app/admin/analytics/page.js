@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </AdminSidebarWrapper>
         );
@@ -82,7 +82,7 @@ export default function AnalyticsPage() {
                     {/* Stats Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {[
-                            { label: 'Total Clients', value: stats.clients, color: '#00abad' },
+                            { label: 'Total Clients', value: stats.clients, color: '#1d1d1f' },
                             { label: 'Total Projects', value: stats.projects, color: '#1d1d1f' },
                             { label: 'Active Tasks', value: stats.active, color: '#3b82f6' },
                             { label: 'Success Rate', value: `${stats.projects > 0 ? Math.round((stats.completed / stats.projects) * 100) : 0}%`, color: '#10b981' }
@@ -117,7 +117,7 @@ export default function AnalyticsPage() {
                                         {/* Simple CSS Donut Visualization */}
                                         <svg viewBox="0 0 36 36" className="absolute inset-0 w-full h-full -rotate-90">
                                             <path
-                                                className="text-[#00abad] fill-none stroke-current"
+                                                className="text-[#1d1d1f] fill-none stroke-current"
                                                 strokeWidth="2"
                                                 strokeDasharray={`${(stats.active / (stats.projects || 1)) * 100}, 100`}
                                                 d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
@@ -126,7 +126,7 @@ export default function AnalyticsPage() {
                                     </div>
                                     <div className="flex-1 grid grid-cols-1 gap-4">
                                         {[
-                                            { label: 'In Progress', count: stats.active, color: '#00abad' },
+                                            { label: 'In Progress', count: stats.active, color: '#1d1d1f' },
                                             { label: 'Completed', count: stats.completed, color: '#10b981' },
                                             { label: 'Pending', count: stats.projects - stats.active - stats.completed, color: '#f59e0b' }
                                         ].map(item => (
@@ -147,8 +147,8 @@ export default function AnalyticsPage() {
                                 <div className="h-48 flex items-end gap-2 px-2">
                                     {/* Mock Bar Chart for Visual Polish */}
                                     {[40, 70, 45, 90, 65, 85, 100, 60, 75, 55, 80, 95].map((h, i) => (
-                                        <div key={i} className="flex-1 bg-[#00abad]/10 rounded-t-lg group relative cursor-help" style={{ height: `${h}%` }}>
-                                            <div className="absolute inset-0 bg-[#00abad] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg" />
+                                        <div key={i} className="flex-1 bg-[#10b981]/10 rounded-t-lg group relative cursor-help" style={{ height: `${h}%` }}>
+                                            <div className="absolute inset-0 bg-[#10b981] opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg" />
                                         </div>
                                     ))}
                                 </div>
@@ -182,7 +182,7 @@ export default function AnalyticsPage() {
                                                 <div className="flex flex-col items-center">
                                                     <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm shadow-sm transition-transform group-hover:scale-110 ${log.type === 'error' ? 'bg-red-500 text-white' :
                                                         log.type === 'success' ? 'bg-green-500 text-white' :
-                                                            'bg-[#00abad] text-white'
+                                                            'bg-[#1d1d1f] text-white'
                                                         }`}>
                                                         {log.userName?.charAt(0) || 'S'}
                                                     </div>
@@ -204,7 +204,7 @@ export default function AnalyticsPage() {
                                     )}
                                 </div>
                                 <div className="p-4 bg-gray-50 border-t border-gray-100 text-center">
-                                    <button className="text-xs font-bold text-[#00abad] hover:underline">View Historical Archives →</button>
+                                    <button className="text-xs font-bold text-[#1d1d1f] hover:underline">View Historical Archives →</button>
                                 </div>
                             </GlassCard>
                         </div>

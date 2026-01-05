@@ -73,7 +73,7 @@ export default function BlogManagementPage() {
         return (
             <AdminSidebarWrapper>
                 <div className="min-h-screen flex items-center justify-center">
-                    <div className="w-12 h-12 border-4 border-t-[#00abad] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-t-[#1d1d1f] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
                 </div>
             </AdminSidebarWrapper>
         );
@@ -94,7 +94,7 @@ export default function BlogManagementPage() {
                         </div>
                         <button
                             onClick={handleCreate}
-                            className="px-4 py-2 bg-[#00abad] text-white rounded-lg hover:bg-[#008c8e] transition-colors flex items-center gap-2"
+                            className="px-4 py-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors flex items-center gap-2"
                         >
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
