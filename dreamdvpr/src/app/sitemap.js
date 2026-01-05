@@ -1,7 +1,7 @@
 import clientPromise from '@/app/lib/db';
 
 export default async function sitemap() {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://redgravity.com';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://redgravity.in';
 
     // Static pages
     const staticPages = [
