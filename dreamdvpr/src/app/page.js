@@ -9,6 +9,7 @@ import ComparisonSection from './components/homepage/ComparisonSection';
 import BlogSection from './components/homepage/BlogSection';
 import FAQSection from './components/homepage/FAQSection';
 import CTASection from './components/homepage/CTASection';
+import ContactSection from './components/homepage/ContactSection';
 import Footer from './components/homepage/Footer';
 import IntroLoader from './components/homepage/IntroLoader';
 import WaveSeparator from './components/homepage/WaveSeparator';
@@ -52,7 +53,8 @@ export default function Home() {
         <ComparisonSection />
         <BlogSection />
         <FAQSection />
-        <CTASection />
+        
+        <ContactSection /><CTASection />
         <Footer />
         <WhatsAppButton />
       </main>

@@ -10,8 +10,8 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { href: '#services', label: 'Services', isAnchor: true },
-    { href: '#comparison', label: 'Why Us', isAnchor: true },
+    { href: '/#services', label: 'Services', isAnchor: false },
+    { href: '/#comparison', label: 'Why Us', isAnchor: false },
     { href: '/blog', label: 'Blog', isAnchor: false },
     { href: '/login', label: 'Login', isAnchor: false },
   ];
@@ -44,35 +44,32 @@ const Header = () => {
             {/* DESKTOP NAV */}
             <nav className="hidden md:flex items-center gap-8">
               {navLinks.map((link) =>
-                link.isAnchor ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className={`font-bold transition-colors hover:text-brand-500 ${isHome ? 'text-white/70' : 'text-text-secondary'
-                      }`}
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`font-bold transition-colors hover:text-brand-500 ${isHome ? 'text-white/70' : 'text-text-secondary'
-                      }`}
-                  >
-                    {link.label}
-                  </Link>
-                )
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`font-bold transition-colors hover:text-brand-500 ${isHome ? 'text-white/70' : 'text-text-secondary'
+                    }`}
+                >
+                  {link.label}
+                </Link>
               )}
             </nav>
 
             {/* CTA + MOBILE */}
             <div className="flex items-center gap-4">
               <a
-                href="#contact"
-                className="hidden md:flex px-6 py-2 text-sm font-bold rounded-xl hover:bg-black/90 transition-all hover:scale-105 bg-[#1d1d1f] text-white border border-white/10"
+                href="tel:7337816195"
+                className="hidden md:flex items-center gap-2 px-6 py-2 text-sm font-bold rounded-xl hover:bg-black/90 transition-all hover:scale-105 bg-[#1d1d1f] text-white border border-white/10"
               >
-                Book a Call
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path fillRule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clipRule="evenodd" />
+                </svg>
+                Call Now
               </a>
 
               <button
@@ -104,25 +101,14 @@ const Header = () => {
             </div>
             <div className="pt-12 px-6 flex flex-col gap-6">
               {navLinks.map((link) =>
-                link.isAnchor ? (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="text-lg font-bold"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-lg font-bold"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                )
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-lg font-bold"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label}
+                </Link>
               )}
             </div>
           </div>
