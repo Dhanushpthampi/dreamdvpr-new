@@ -37,23 +37,25 @@ export default function Home() {
     <>
       <GoogleAnalytics />
       {showLoader && <IntroLoader onComplete={handleLoaderComplete} />}
-      {!showLoader && (
-        <main
-          suppressHydrationWarning
-          className="min-h-screen overflow-x-hidden bg-bg-app animate-in fade-in duration-500"
-        >
-          <Header />
-          <Hero /><WaveSeparator />
-          <ServicesGrid />
-          <WhyChooseUs />
-          <ComparisonSection />
-          <BlogSection />
-          <FAQSection />
-          <CTASection />
-          <Footer />
-          <WhatsAppButton />
-        </main>
-      )}
+      <main
+        suppressHydrationWarning
+        className="min-h-screen overflow-x-hidden bg-bg-app"
+        style={{
+          opacity: showLoader ? 0 : 1,
+          transition: 'opacity 0.5s ease-in'
+        }}
+      >
+        <Header />
+        <Hero /><WaveSeparator />
+        <ServicesGrid />
+        <WhyChooseUs />
+        <ComparisonSection />
+        <BlogSection />
+        <FAQSection />
+        <CTASection />
+        <Footer />
+        <WhatsAppButton />
+      </main>
     </>
   );
 }
