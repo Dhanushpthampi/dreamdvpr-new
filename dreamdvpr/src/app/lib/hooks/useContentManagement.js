@@ -33,12 +33,7 @@ export function useContentManagement() {
                 body: JSON.stringify(contentToSave),
             });
             if (!res.ok) throw new Error('Failed to save content');
-            if (contentToSave.theme) {
-                if (typeof window !== 'undefined' && window.localStorage) {
-                    localStorage.setItem('theme-updated', JSON.stringify(contentToSave.theme));
-                }
-                window.dispatchEvent(new CustomEvent('theme-updated', { detail: contentToSave.theme }));
-            }
+
             return { success: true };
         } catch (error) {
             console.error('Error saving content:', error);

@@ -2,8 +2,6 @@
 
 import React from 'react';
 import { useContent } from '../../lib/hooks';
-import ParticleBackground from './ParticleBackground';
-
 const ComparisonSection = () => {
   const { content } = useContent('comparison');
 
@@ -12,17 +10,13 @@ const ComparisonSection = () => {
       className="py-24 relative overflow-hidden bg-bg-app min-h-[700px]"
       id="comparison"
     >
-      <ParticleBackground />
-
-      {/* <ParticleBackground /> */}
-
       <div className="container mx-auto max-w-7xl px-4 relative z-[10]">
         {/* SECTION HEADER */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-text-main">
             {content?.title}
           </h2>
-          <p className="font-medium text-[#d1d1d6]">
+          <p className="font-medium text-text-secondary">
             {content?.subtitle}
           </p>
         </div>
@@ -30,11 +24,11 @@ const ComparisonSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* ❌ TRADITIONAL AGENCIES */}
           <div
-            className="p-8 rounded-2xl bg-transparent backdrop-saturate-[160%] backdrop-blur-[20px] border opacity-60 grayscale"
+            className="p-8 rounded-2xl bg-white/50 backdrop-saturate-[160%] backdrop-blur-[20px] border border-gray-200"
           >
             <div className="flex items-center gap-4 mb-6">
               <span className="text-3xl">😑</span>
-              <h3 className="text-lg font-semibold text-[#d1d1d6]">
+              <h3 className="text-lg font-semibold text-text-secondary">
                 Traditional Agencies
               </h3>
             </div>
@@ -42,8 +36,8 @@ const ComparisonSection = () => {
             <div className="flex flex-col items-start gap-4">
               {content?.traditionalPoints?.map((point, i) => (
                 <div key={i} className="flex items-center gap-3">
-                  <span className="text-[#a1a1a6]">✕</span>
-                  <p className="text-[#a1a1a6]">{point}</p>
+                  <span className="text-gray-400">✕</span>
+                  <p className="text-text-secondary">{point}</p>
                 </div>
               ))}
             </div>
@@ -51,10 +45,10 @@ const ComparisonSection = () => {
 
           {/* ✅ REDgravity */}
           <div
-            className="p-8 rounded-2xl bg-transparent backdrop-saturate-[180%] backdrop-blur-[20px] border-2 relative border-brand-500/50 shadow-[0_0_30_rgba(229,62,62,0.15)]"
+            className="p-8 rounded-2xl bg-white backdrop-saturate-[180%] backdrop-blur-[20px] border-2 relative border-brand-500/50 shadow-[0_0_30px_rgba(229,62,62,0.15)]"
           >
             <span
-              className="absolute top-0 right-0 px-4 py-1 text-white text-xs font-bold rounded-tr-2xl rounded-bl-xl"
+              className="absolute top-0 right-0 px-4 py-1 text-white text-xs font-bold rounded-tr-2xl rounded-bl-xl z-20"
               style={{ backgroundColor: 'var(--color-brand-500, #e53e3e)' }}
             >
               RECOMMENDED
@@ -62,7 +56,7 @@ const ComparisonSection = () => {
 
             <div className="flex items-center gap-4 mb-6">
               <span className="text-3xl">🤩</span>
-              <h3 className="text-lg font-bold text-white">
+              <h3 className="text-lg font-bold text-text-main">
                 REDgravity
               </h3>
             </div>
@@ -81,7 +75,7 @@ const ComparisonSection = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <p className="text-white">{point}</p>
+                  <p className="text-text-main">{point}</p>
                 </div>
               ))}
             </div>

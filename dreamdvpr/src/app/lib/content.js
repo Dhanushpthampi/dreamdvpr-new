@@ -3,23 +3,7 @@
  */
 
 
-export const DEFAULT_THEME_FALLBACK = {
-    colors: {
-        brand500: '#e53e3e',
-        brand600: '#c53030',
-        accent500: '#ff6b6b',
-        bgApp: '#f5f5f7',
-        bgSecondary: '#ffffff',
-        textMain: '#1d1d1f',
-        textSecondary: '#86868b',
-    },
-    fonts: {
-        heading: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
-        body: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
-    },
-    borderRadius: 'xl',
-    logo: '',
-};
+
 
 export const DEFAULT_CONTENT = {
     hero: {
@@ -171,7 +155,6 @@ export function normalizeContent(contentData) {
             buttonText: contentData.cta?.buttonText || DEFAULT_CONTENT.cta.buttonText,
             points: contentData.cta?.points || DEFAULT_CONTENT.cta.points,
         },
-        theme: DEFAULT_THEME_FALLBACK,
     };
 }
 

@@ -13,7 +13,7 @@ import Footer from './components/homepage/Footer';
 import IntroLoader from './components/homepage/IntroLoader';
 import WaveSeparator from './components/homepage/WaveSeparator';
 import GoogleAnalytics from './components/analytics/GoogleAnalytics';
-
+import WhatsAppButton from './components/homepage/WhatsAppButton'; 
 import "./styles/globals.css";
 
 
@@ -44,16 +44,17 @@ export default function Home() {
           transition: 'opacity 0.5s ease-in'
         }}
       >
-
+        <IntroLoader />
         <Header />
         <Hero /><WaveSeparator />
         <ServicesGrid />
         <WhyChooseUs />
         <ComparisonSection />
         <BlogSection />
-        <FAQSection />
+        <FAQSection /> 
         <CTASection />
         <Footer />
+        <WhatsAppButton />
       </main>
     </>
   );

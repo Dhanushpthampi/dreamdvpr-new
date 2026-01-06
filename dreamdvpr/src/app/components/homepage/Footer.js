@@ -40,13 +40,17 @@ const Footer = () => {
 
                     <div className="flex flex-row gap-4">
                         <a
-                            href="#"
+                            href="https://www.instagram.com/redgravity.in/"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-brand-500 hover:text-white bg-black/5"
                         >
-                            <span className="text-xs font-bold">TW</span>
+                            <span className="text-xs font-bold">IG</span>
                         </a>
                         <a
-                            href="#"
+                            href="https://www.linkedin.com/company/redgravity/"
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:bg-brand-500 hover:text-white bg-black/5"
                         >
                             <span className="text-xs font-bold">LI</span>

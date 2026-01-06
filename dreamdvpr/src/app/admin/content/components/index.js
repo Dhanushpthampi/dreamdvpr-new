@@ -3,7 +3,7 @@
  * @module admin/content/components
  */
 
-export { ColorPicker } from './ColorPicker';
+
 export { ArrayItemEditor } from './ArrayItemEditor';
 export { SectionEditor } from './SectionEditor';
 export { HeroSectionEditor } from './HeroSectionEditor';
@@ -12,4 +12,4 @@ export { WhyChooseUsSectionEditor } from './WhyChooseUsSectionEditor';
 export { ComparisonSectionEditor } from './ComparisonSectionEditor';
 export { FAQSectionEditor } from './FAQSectionEditor';
 export { CTASectionEditor } from './CTASectionEditor';
-export { ThemeSectionEditor } from './ThemeSectionEditor';
+export { CTASectionEditor } from './CTASectionEditor';
