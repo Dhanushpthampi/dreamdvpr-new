@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import ParticleBackground from './components/homepage/ParticleBackground';
 // import ParticleBackground from './components/homepage/ParticleBackground';
 
 
@@ -12,7 +13,7 @@ export default function NotFound() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-app"
     >
       {/* Particle Background */}
-      {/* <ParticleBackground /> */}
+       <ParticleBackground />  
 
       {/* Content */}
       <div className="relative z-10 max-w-3xl w-full px-6 text-center">
@@ -29,7 +30,7 @@ export default function NotFound() {
 
             {/* Foreground 404 */}
             <h1
-              className="relative z-10 font-extrabold bg-clip-text text-transparent
+              className="relative z-10 font-extrabold bg-clip-text  text-brand-500 opacity-50
                          text-[6rem] md:text-[8rem]"
               style={{
                 backgroundImage: `linear-gradient(to right, ${brandColor}, ${brandColor}dd)`,
@@ -41,10 +42,10 @@ export default function NotFound() {
 
           {/* Message */}
           <div className="flex flex-col gap-4">
-            <h2 className="text-4xl font-bold text-text-main">
+            <h2 className="text-4xl font-bold text-red-100">
               Page Not Found
             </h2>
-            <p className="text-lg max-w-md mx-auto text-text-secondary">
+            <p className="text-lg max-w-md mx-auto text-text-secondary text-white-50">
               Oops! The page you're looking for seems to have drifted off into the
               digital void. Let&apos;s get you back on track.
             </p>

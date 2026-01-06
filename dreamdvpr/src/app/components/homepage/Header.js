@@ -36,7 +36,7 @@ const Header = () => {
               >
                 RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>
                 <span className={isHome ? 'text-white' : 'text-text-main'}>
-                  gravity
+                  GRAVITY
                 </span>
               </h2>
             </Link>

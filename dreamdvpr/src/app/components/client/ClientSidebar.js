@@ -56,12 +56,7 @@ const ClientSidebar = ({ isMobile = false, onClose }) => {
     <div className="flex flex-col h-full bg-white/60 backdrop-blur-[24px] backdrop-saturate-[180%] border-r border-white/30">
       {/* Brand */}
       <div className="p-6 border-b border-white/30 bg-white/40 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="bg-[#e53e3e]/10 p-2 rounded-lg">
-            <svg viewBox="0 0 24 24" className="w-6 h-6 text-[#e53e3e]" fill="currentColor">
-              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12z" />
-            </svg>
-          </div>
+        <div className="flex items-center">
           <div className="flex flex-col items-start leading-tight">
             <p className="font-bold text-xl tracking-tight">
               <span className="text-[#e53e3e]">RED</span>
@@ -107,7 +102,7 @@ const ClientSidebar = ({ isMobile = false, onClose }) => {
                 }`}
               onClick={() => handleNavigation(item.path, item.badge)}
             >
-              <svg viewBox="0 0 24 24" className={`w-5 h-5 transition-colors ${active ? 'text-[#e53e3e]' : 'text-[#e53e3e]/50'}`} fill="currentColor">
+              <svg viewBox="0 0 24 24" className={`w-5 h-5 transition-colors ${active ? 'text-black' : 'text-[#86868b]'}`} fill="currentColor">
                 <path d={item.icon} />
               </svg>
               <span className="flex-1">{item.label}</span>
@@ -123,26 +118,28 @@ const ClientSidebar = ({ isMobile = false, onClose }) => {
 
       <div className="border-t border-white/30" />
 
-      {/* User & Logout */}
-      <div className="p-4 space-y-2">
-        <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/20">
-          <div className="w-8 h-8 rounded-full bg-[#e53e3e] flex items-center justify-center text-white font-semibold text-sm">
-            {session?.user?.name?.charAt(0) || 'U'}
-          </div>
-          <div className="flex flex-col items-start flex-1 min-w-0">
-            <p className="text-sm font-medium text-[#1d1d1f] truncate w-full">{session?.user?.name}</p>
-            <p className="text-xs text-[#86868b] truncate w-full">{session?.user?.email}</p>
+      {/* User & Logout Combined */}
+      <div className="p-4 mt-auto">
+        <div className="bg-white/40 border border-white/30 rounded-xl overflow-hidden shadow-sm p-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+              {session?.user?.name?.charAt(0) || 'U'}
+            </div>
+            <div className="flex flex-col items-start flex-1 min-w-0">
+              <p className="text-sm font-bold text-[#1d1d1f] truncate w-full">{session?.user?.name}</p>
+              <p className="text-[10px] text-[#86868b] truncate w-full">{session?.user?.email}</p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="p-2 text-[#86868b] hover:text-[#e53e3e] hover:bg-[#e53e3e]/5 rounded-lg transition-all duration-200 group"
+              title="Logout"
+            >
+              <svg viewBox="0 0 24 24" className="w-5 h-5 transition-transform group-hover:scale-110" fill="currentColor">
+                <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+              </svg>
+            </button>
           </div>
         </div>
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 transition-colors font-medium"
-        >
-          <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-            <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
-          </svg>
-          <span>Logout</span>
-        </button>
       </div>
     </div>
   );
