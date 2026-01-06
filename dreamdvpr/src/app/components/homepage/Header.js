@@ -34,7 +34,7 @@ const Header = () => {
               <h2
                 className="text-2xl font-bold tracking-tight text-brand-500"
               >
-                RED
+                RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>
                 <span className={isHome ? 'text-white' : 'text-text-main'}>
                   gravity
                 </span>

@@ -43,7 +43,14 @@ const FAQSection = () => {
                                     }`}
                             >
                                 <span className="flex-1 text-left font-bold text-lg">
-                                    {faq.question}
+                                    {faq.question?.split('REDgravity').map((part, i, arr) => (
+                                        <React.Fragment key={i}>
+                                            {part}
+                                            {i < arr.length - 1 && (
+                                                <>RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity</>
+                                            )}
+                                        </React.Fragment>
+                                    ))}
                                 </span>
                                 <svg
                                     className={`w-5 h-5 transition-transform ${openIndex === i ? 'rotate-180' : ''}`}

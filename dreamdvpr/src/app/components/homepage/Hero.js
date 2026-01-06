@@ -152,7 +152,14 @@ const Hero = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              {content?.subtitle}
+              {content?.subtitle?.split('REDgravity').map((part, i, arr) => (
+                <React.Fragment key={i}>
+                  {part}
+                  {i < arr.length - 1 && (
+                    <>RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity</>
+                  )}
+                </React.Fragment>
+              ))}
             </motion.p>
 
             <motion.div

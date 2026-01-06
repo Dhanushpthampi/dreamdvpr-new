@@ -120,7 +120,7 @@ export default function BlogPage() {
                 Blog
               </h1>
               <p className="text-lg text-text-secondary">
-                Latest insights, tips, and updates from REDgravity
+                Latest insights, tips, and updates from RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity
               </p>
             </div>
 

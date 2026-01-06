@@ -57,7 +57,7 @@ const ComparisonSection = () => {
             <div className="flex items-center gap-4 mb-6">
               <span className="text-3xl">🤩</span>
               <h3 className="text-lg font-bold text-text-main">
-                REDgravity
+                RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity
               </h3>
             </div>
 

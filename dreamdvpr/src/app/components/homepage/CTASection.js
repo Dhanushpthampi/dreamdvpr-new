@@ -21,7 +21,7 @@ const CTASection = () => {
           <MotionDiv
             className="
     w-full md:flex-1
-    order-1
+    order-1 md:mr-[24rem]
     flex justify-center
   "
             initial={{ opacity: 0, x: -50 }}
@@ -33,7 +33,14 @@ const CTASection = () => {
               className="flex flex-col gap-6 items-center md:items-start text-center md:text-left"
             >
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white max-w-lg">
-                {content?.title}
+                {content?.title?.split('REDgravity').map((part, i, arr) => (
+                  <React.Fragment key={i}>
+                    {part}
+                    {i < arr.length - 1 && (
+                      <>RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity</>
+                    )}
+                  </React.Fragment>
+                ))}
               </h2>
               <p className="text-lg text-white opacity-90">
                 {content?.subtitle}

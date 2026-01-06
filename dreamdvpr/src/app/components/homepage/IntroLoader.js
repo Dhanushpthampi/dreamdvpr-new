@@ -1,103 +1,73 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 
-
-/**
- * IntroLoader - Simple intro loader with progress bar
- */
 export default function IntroLoader({ onComplete }) {
-  const [isVisible, setIsVisible] = useState(true);
-  const [progress, setProgress] = useState(0);
-
-  const brandColor = 'var(--color-brand-500, #e53e3e)';
+  const [startAnimation, setStartAnimation] = useState(false);
+  const brandColor = '#e53e3e';
 
   useEffect(() => {
-    const hasLoaded = sessionStorage.getItem('introLoaderShown');
-    if (hasLoaded) {
-      setIsVisible(false);
+    // Lock scroll
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
+
+    // Start animation sequence
+    setStartAnimation(true);
+
+    const totalDuration = 1500; // Reduced duration
+
+    const timer = setTimeout(() => {
       onComplete?.();
-      return;
-    }
+    }, totalDuration);
 
-    const duration = 2500;
-    const startTime = Date.now();
-
-    const updateProgress = () => {
-      const elapsed = Date.now() - startTime;
-      const newProgress = Math.min((elapsed / duration) * 100, 100);
-      setProgress(newProgress);
-
-      if (newProgress < 100) {
-        requestAnimationFrame(updateProgress);
-      } else {
-        sessionStorage.setItem('introLoaderShown', 'true');
-
-        setTimeout(() => {
-          setIsVisible(false);
-          setTimeout(() => {
-            onComplete?.();
-          }, 500);
-        }, 300);
-      }
+    return () => {
+      clearTimeout(timer);
+      document.body.style.overflow = originalStyle;
     };
-
-    requestAnimationFrame(updateProgress);
   }, [onComplete]);
 
-  if (!isVisible) return null;
-
   return (
-    <Box
-      position="fixed"
-      inset={0}
-      zIndex={9999}
-      bg="white"
-      display="flex"
-      alignItems="center"
-      justifyContent="center"
-      transition="opacity 0.5s ease-out"
-    >
-      <Box textAlign="center">
-        <Text
-          fontSize={{ base: '3xl', md: '4xl' }}
-          fontWeight="bold"
-          color={brandColor}
-          letterSpacing="wide"
-          mb={2}
-        >
-          REDgravity
-        </Text>
+    <div className="fixed inset-0 z-[9999] bg-white flex items-center justify-center overflow-hidden">
 
-        <Text
-          fontSize="sm"
-          color="gray.600"
-          opacity={0.7}
-          fontWeight="medium"
-        >
-          Loading...
-        </Text>
+      {/* Container - Gravity is the anchor */}
+      <div className="relative flex flex-col items-center justify-center">
 
-        {/* Progress Bar */}
-        <Box
-          mt={6}
-          w="200px"
-          h="2px"
-          bg="gray.200"
-          borderRadius="full"
-          overflow="hidden"
-          mx="auto"
+        {/* RED Text - Absolute above Gravity */}
+        <div
+          className="absolute bottom-full left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none"
+          style={{ marginBottom: '-10rem' }} // Tighten spacing to gravity
         >
-          <Box
-            h="100%"
-            bg={brandColor}
-            borderRadius="full"
-            transition="width 0.3s ease"
-            style={{ width: `${progress}%` }}
-          />
-        </Box>
-      </Box>
-    </Box>
+          <motion.h1
+            className="text-[400px] font-black tracking-tighter text-center whitespace-nowrap leading-none antialiased"
+            style={{
+              color: brandColor,
+              backfaceVisibility: 'hidden',
+              WebkitFontSmoothing: 'antialiased',
+              transformOrigin: 'center center'
+            }}
+            initial={{ scale: 0.25 }}
+            animate={startAnimation ? {
+              scale: [0.25, 0.25, 0.3, 0.2, 40]
+            } : { scale: 0.25 }}
+            transition={{
+              duration: 1.2,
+              times: [0, 0.4, 0.5, 0.6, 1],
+              ease: "easeInOut"
+            }}
+          >
+            RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>
+          </motion.h1>
+        </div>
+
+        {/* gravity Text - Center of Page (No animation, just static) */}
+        <p
+          className="text-4xl md:text-5xl font-bold tracking-widest relative z-20 text-black"
+        >
+          gravity
+        </p>
+
+      </div>
+    </div>
   );
 }

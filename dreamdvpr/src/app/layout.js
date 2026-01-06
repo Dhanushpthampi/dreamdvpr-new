@@ -5,7 +5,7 @@ import { getContent } from "./lib/content.server";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 export const metadata = {
-  title: "REDgravity | Premium Digital Solutions",
+  title: "REᗡgravity | Premium Digital Solutions",
   description: "We build premium, high-performance digital experiences.",
 };
 

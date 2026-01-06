@@ -155,7 +155,7 @@ export const ClientSidebarWrapper = ({ children }) => {
     <div className="min-h-screen static-theme" style={{ backgroundColor: '#f5f5f7' }}>
       {/* Mobile Header */}
       <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white/80 backdrop-blur-[20px] border-b border-gray-200 sticky top-0 z-50">
-        <p className="font-bold text-[#1d1d1f]">REDgravity</p>
+        <p className="font-bold text-[#1d1d1f]">RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity</p>
         <button
           onClick={() => setIsOpen(true)}
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

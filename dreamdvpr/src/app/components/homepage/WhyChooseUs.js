@@ -13,8 +13,8 @@ const StatCard = ({ end, suffix, label, delay = 0 }) => {
   return (
     <div
       className={`flex flex-col items-center gap-2 bg-white/40 backdrop-blur-[24px] backdrop-saturate-[180%] p-8 rounded-xl border border-white/30 transition-all duration-300 ease-in-out ${hovered
-          ? 'shadow-[0_0_30px_rgba(229,62,62,0.22)]'
-          : 'shadow-[0_0_20px_rgba(229,62,62,0.12)]'
+        ? 'shadow-[0_0_30px_rgba(229,62,62,0.22)]'
+        : 'shadow-[0_0_20px_rgba(229,62,62,0.12)]'
         }`}
       style={{
         transform: `translateY(${delay}px)`,
@@ -60,7 +60,11 @@ const WhyChooseUs = () => {
                 i === arr.length - 1 ? (
                   <React.Fragment key={i}>
                     <span className="text-brand-500">
-                      {content?.titleHighlight || 'REDgravity'}
+                      {content?.titleHighlight === 'REDgravity' ? (
+                        <>RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity</>
+                      ) : (
+                        content?.titleHighlight || 'REDgravity'
+                      )}
                     </span>
                     {part}
                   </React.Fragment>

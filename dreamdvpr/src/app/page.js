@@ -43,8 +43,7 @@ export default function Home() {
           opacity: showLoader ? 0 : 1,
           transition: 'opacity 0.5s ease-in'
         }}
-      >
-        <IntroLoader />
+      > 
         <Header />
         <Hero /><WaveSeparator />
         <ServicesGrid />

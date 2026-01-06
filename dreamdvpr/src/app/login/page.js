@@ -69,7 +69,7 @@ export default function LoginPage() {
                         </div>
                         <div className="flex flex-col gap-2">
                             <h1 className="text-4xl font-bold tracking-tight">
-                                <span className="text-[#e53e3e]">RED</span>
+                                <span className="text-[#e53e3e]">RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span></span>
                                 <span className="text-[#1d1d1f]">gravity</span>
                             </h1>
                             <p className="text-lg" style={{ color: '#86868b' }}>

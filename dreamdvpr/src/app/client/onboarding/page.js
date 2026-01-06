@@ -132,7 +132,7 @@ export default function OnboardingPage() {
             <div className="bg-white border-b border-gray-200 py-4">
                 <div className="container mx-auto max-w-7xl px-4">
                     <div className="flex justify-between items-center">
-                        <h1 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>REDgravity</h1>
+                        <h1 className="text-2xl font-bold" style={{ color: '#1d1d1f' }}>RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity</h1>
                         <button
                             onClick={() => router.push('/client')}
                             className="px-4 py-2 text-gray-600 hover:text-black transition-colors"
@@ -148,7 +148,7 @@ export default function OnboardingPage() {
                     {/* Header */}
                     <div className="text-center">
                         <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#1d1d1f' }}>
-                            {isEditing ? 'Edit Your Profile' : "Welcome to REDgravity! 🎉"}
+                            {isEditing ? 'Edit Your Profile' : <>Welcome to RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity! 🎉</>}
                         </h1>
                         <p className="text-lg" style={{ color: '#86868b' }}>
                             {isEditing ? 'Update your profile information' : "Let's get to know you better"}
