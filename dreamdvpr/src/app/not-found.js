@@ -6,7 +6,7 @@ import ParticleBackground from './components/homepage/ParticleBackground';
 
 
 export default function NotFound() {
-  const brandColor = 'var(--color-brand-500, #e53e3e)';
+  const brandColor = 'var(--color-brand-500, #c53030)';
 
   return (
     <div

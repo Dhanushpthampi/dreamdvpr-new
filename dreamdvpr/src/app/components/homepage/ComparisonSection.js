@@ -49,7 +49,7 @@ const ComparisonSection = () => {
           >
             <span
               className="absolute top-0 right-0 px-4 py-1 text-white text-xs font-bold rounded-tr-2xl rounded-bl-xl z-20"
-              style={{ backgroundColor: 'var(--color-brand-500, #e53e3e)' }}
+              style={{ backgroundColor: 'var(--color-brand-500, #c53030)' }}
             >
               RECOMMENDED
             </span>
@@ -57,7 +57,7 @@ const ComparisonSection = () => {
             <div className="flex items-center gap-4 mb-6">
               <span className="text-3xl">🤩</span>
               <h3 className="text-lg font-bold text-text-main">
-                RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity
+                REDgravity
               </h3>
             </div>
 

@@ -21,7 +21,7 @@ const CalendlyScheduler = ({ url }) => {
         <div className="w-full h-[1400px] min-h-[1400px] flex flex-col items-center justify-center bg-white/40 rounded-2xl border border-white/30 backdrop-blur-sm overflow-hidden">
             {loading && (
                 <div className="flex flex-col items-center gap-4">
-                    <div className="w-10 h-10 border-4 border-t-[#e53e3e] border-transparent rounded-full animate-spin" />
+                    <div className="w-10 h-10 border-4 border-t-[#c53030] border-transparent rounded-full animate-spin" />
                     <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Loading Scheduler...</p>
                 </div>
             )}

@@ -69,7 +69,7 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
         <div className="flex items-center">
           <div className="flex flex-col items-start leading-tight">
             <p className="font-bold text-xl tracking-tight">
-              <span className="text-[#e53e3e]">RED</span>
+              <span className="text-[#c53030]">RED</span>
               <span className="text-[#1d1d1f]">GRAVITY</span>
             </p>
             <p className="text-[10px] uppercase font-black tracking-widest text-[#86868b] opacity-60">Admin Portal</p>
@@ -168,7 +168,7 @@ const AdminSidebar = ({ isMobile = false, onClose }) => {
             </div>
             <button
               onClick={handleLogout}
-              className="p-2 text-[#86868b] hover:text-[#e53e3e] hover:bg-[#e53e3e]/5 rounded-lg transition-all duration-200 group"
+              className="p-2 text-[#86868b] hover:text-[#c53030] hover:bg-[#c53030]/5 rounded-lg transition-all duration-200 group"
               title="Logout"
             >
               <svg viewBox="0 0 24 24" className="w-5 h-5 transition-transform group-hover:scale-110" fill="currentColor">
@@ -190,7 +190,7 @@ export const AdminSidebarWrapper = ({ children }) => {
     <div className="min-h-screen static-theme" style={{ backgroundColor: '#f5f5f7' }} suppressHydrationWarning>
       {/* Mobile Header */}
       <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white/80 backdrop-blur-[20px] border-b border-gray-200 sticky top-0 z-50">
-        <p className="font-bold text-[#1d1d1f]">RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>GRAVITY</p>
+        <p className="font-bold text-[#1d1d1f]">REDGRAVITY</p>
         <button
           onClick={() => setIsOpen(true)}
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

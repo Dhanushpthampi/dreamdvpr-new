@@ -154,27 +154,28 @@ export default function ProjectsPage() {
                                 <GlassCard
                                     key={project._id}
                                     p={0}
-                                    className="overflow-hidden hover:shadow-xl transition-all cursor-pointer group border border-gray-100 hover:border-[#1d1d1f]/30 shadow-sm"
+                                    className="overflow-hidden hover:shadow-xl transition-all cursor-pointer group border border-gray-100 hover:border-[#1d1d1f]/30 shadow-sm relative pt-1"
                                     onClick={() => router.push(`/admin/projects/${project._id}`)}
                                 >
-                                    <div className="p-5 flex flex-col h-full">
-                                        <div className="flex justify-between items-start mb-3">
-                                            <div className="bg-[#e53e3e]/10 p-2 rounded-lg group-hover:bg-[#e53e3e] transition-colors">
-                                                <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#e53e3e] group-hover:text-white" fill="currentColor">
-                                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
-                                                </svg>
+                                    {/* Status Left Accent */}
+                                    <div className={`absolute left-0 top-0 bottom-0 w-1 ${project.status === 'completed' ? 'bg-emerald-500' :
+                                            project.status === 'active' ? 'bg-[#c53030]' : 'bg-amber-400'
+                                        }`} />
+
+                                    <div className="p-6 flex flex-col h-full">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div className="flex flex-col">
+                                                <h3 className="text-xl font-bold group-hover:text-[#1d1d1f] transition-colors line-clamp-1" style={{ color: '#1d1d1f' }}>
+                                                    {project.name}
+                                                </h3>
+                                                <p className="text-sm font-semibold mt-0.5" style={{ color: '#c53030' }}>
+                                                    {project.client?.name || 'Unknown Client'}
+                                                </p>
                                             </div>
                                             <StatusBadge status={project.status} size="sm" />
                                         </div>
 
-                                        <h3 className="text-lg font-bold mb-0.5 group-hover:text-[#1d1d1f] transition-colors line-clamp-1" style={{ color: '#1d1d1f' }}>
-                                            {project.name}
-                                        </h3>
-                                        <p className="text-xs font-semibold mb-3" style={{ color: '#86868b' }}>
-                                            {project.client?.name || 'Unknown Client'}
-                                        </p>
-
-                                        <p className="text-xs line-clamp-2 mb-4 flex-grow" style={{ color: '#86868b', lineHeight: '1.5' }}>
+                                        <p className="text-sm line-clamp-2 mb-4 flex-grow" style={{ color: '#86868b' }}>
                                             {project.description || 'No detailed description provided for this engagement.'}
                                         </p>
 

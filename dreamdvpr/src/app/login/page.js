@@ -62,14 +62,14 @@ export default function LoginPage() {
                     </div>
 
                     <div className="flex flex-col items-center gap-4 text-center">
-                        <div className="bg-[#e53e3e]/10 p-4 rounded-xl inline-block">
-                            <svg viewBox="0 0 24 24" className="w-12 h-12 text-[#e53e3e]" fill="currentColor">
+                        <div className="bg-[#c53030]/10 p-4 rounded-xl inline-block">
+                            <svg viewBox="0 0 24 24" className="w-12 h-12 text-[#c53030]" fill="currentColor">
                                 <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" />
                             </svg>
                         </div>
                         <div className="flex flex-col gap-2">
                             <h1 className="text-4xl font-bold tracking-tight">
-                                <span className="text-[#e53e3e]">RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span></span>
+                                <span className="text-[#c53030]">RED</span>
                                 <span className="text-[#1d1d1f]">gravity</span>
                             </h1>
                             <p className="text-lg" style={{ color: '#86868b' }}>
@@ -98,7 +98,7 @@ export default function LoginPage() {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Enter your email"
-                                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e53e3e]/20 focus:border-[#e53e3e]/50 transition-all font-medium text-[#1d1d1f]"
+                                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c53030]/20 focus:border-[#c53030]/50 transition-all font-medium text-[#1d1d1f]"
                                         required
                                     />
                                 </div>
@@ -110,7 +110,7 @@ export default function LoginPage() {
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Enter your password"
-                                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#e53e3e]/20 focus:border-[#e53e3e]/50 transition-all font-medium text-[#1d1d1f]"
+                                        className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c53030]/20 focus:border-[#c53030]/50 transition-all font-medium text-[#1d1d1f]"
                                         required
                                     />
                                 </div>

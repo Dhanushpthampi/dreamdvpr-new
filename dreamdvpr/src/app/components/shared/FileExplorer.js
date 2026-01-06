@@ -185,7 +185,7 @@ export default function FileExplorer({ projectId }) {
                                 <div className="flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                                     <button
                                         onClick={() => handleDownload(file.id, file.name)}
-                                        className="p-1.5 hover:bg-gray-100 rounded text-gray-600 hover:text-[#e53e3e]"
+                                        className="p-1.5 hover:bg-gray-100 rounded text-gray-600 hover:text-[#c53030]"
                                         title="Download"
                                     >
                                         <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">

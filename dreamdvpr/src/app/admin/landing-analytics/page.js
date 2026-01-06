@@ -71,7 +71,7 @@ export default function LandingAnalyticsPage() {
                             </p>
                             <button
                                 onClick={fetchAnalyticsData}
-                                className="mt-6 px-6 py-2 bg-[#e53e3e] text-white rounded-lg hover:bg-[#c53030] transition-colors"
+                                className="mt-6 px-6 py-2 bg-[#c53030] text-white rounded-lg hover:bg-[#c53030] transition-colors"
                             >
                                 Retry
                             </button>
@@ -111,7 +111,7 @@ export default function LandingAnalyticsPage() {
                         <select
                             value={dateRange}
                             onChange={(e) => setDateRange(e.target.value)}
-                            className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#e53e3e]"
+                            className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#c53030]"
                         >
                             <option value="7daysAgo">Last 7 days</option>
                             <option value="30daysAgo">Last 30 days</option>
@@ -122,7 +122,7 @@ export default function LandingAnalyticsPage() {
                     {/* Summary Stats */}
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                         {[
-                            { label: 'Active Users', value: formatNumber(analyticsData?.summary?.activeUsers || 0), color: '#e53e3e' },
+                            { label: 'Active Users', value: formatNumber(analyticsData?.summary?.activeUsers || 0), color: '#c53030' },
                             { label: 'Sessions', value: formatNumber(analyticsData?.summary?.sessions || 0), color: '#1d1d1f' },
                             { label: 'Page Views', value: formatNumber(analyticsData?.summary?.pageViews || 0), color: '#3b82f6' },
                             { label: 'Bounce Rate', value: `${analyticsData?.summary?.bounceRate || 0}%`, color: '#f59e0b' },
@@ -152,7 +152,7 @@ export default function LandingAnalyticsPage() {
                                     return (
                                         <div
                                             key={i}
-                                            className="flex-1 bg-[#e53e3e]/20 rounded-t-lg group relative cursor-help hover:bg-[#e53e3e]/40 transition-colors"
+                                            className="flex-1 bg-[#c53030]/20 rounded-t-lg group relative cursor-help hover:bg-[#c53030]/40 transition-colors"
                                             style={{ height: `${height}%`, minHeight: '4px' }}
                                             title={`${item.date}: ${formatNumber(item.pageViews)} views`}
                                         >
@@ -186,7 +186,7 @@ export default function LandingAnalyticsPage() {
                                                     </div>
                                                     <div className="w-full bg-gray-200 rounded-full h-2">
                                                         <div
-                                                            className="bg-[#e53e3e] h-2 rounded-full transition-all"
+                                                            className="bg-[#c53030] h-2 rounded-full transition-all"
                                                             style={{ width: `${percentage}%` }}
                                                         />
                                                     </div>
@@ -208,7 +208,7 @@ export default function LandingAnalyticsPage() {
                                     analyticsData.devices.map((device, idx) => {
                                         const totalSessions = analyticsData.devices.reduce((sum, d) => sum + d.sessions, 0);
                                         const percentage = ((device.sessions / totalSessions) * 100).toFixed(1);
-                                        const colors = ['#e53e3e', '#3b82f6', '#10b981', '#f59e0b'];
+                                        const colors = ['#c53030', '#3b82f6', '#10b981', '#f59e0b'];
                                         return (
                                             <div key={idx} className="flex items-center gap-4">
                                                 <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: `${colors[idx % colors.length]}20` }}>

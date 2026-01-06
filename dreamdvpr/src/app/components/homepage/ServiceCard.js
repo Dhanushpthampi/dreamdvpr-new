@@ -16,7 +16,7 @@ const ServiceCard = ({
 }) => {
   const [hovered, setHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isDesktop, setIsDesktop] = useState(false);
+  const [screenSize, setScreenSize] = useState('mobile');
   const [isInView, setIsInView] = useState(false);
   const cardRef = useRef(null);
 
@@ -24,7 +24,12 @@ const ServiceCard = ({
      BREAKPOINT DETECTION
   ================================ */
   useEffect(() => {
-    const update = () => setIsDesktop(window.innerWidth >= 768);
+    const update = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) setScreenSize('lg');
+      else if (width >= 768) setScreenSize('md');
+      else setScreenSize('mobile');
+    };
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
@@ -51,11 +56,13 @@ const ServiceCard = ({
   /* ===============================
      MEDIA HEIGHT LOGIC
   ================================ */
-  const baseMediaHeight = isDesktop ? 140 : 160;
-
-  const mediaHeight = isDesktop
-    ? baseMediaHeight * (rowSpan > 1 ? 5 : 2)
-    : baseMediaHeight * 2;
+  const getMediaHeight = () => {
+    if (screenSize === 'lg') return 140 * (rowSpan > 1 ? 5 : 2);
+    if (screenSize === 'md') return 80 * (rowSpan > 1 ? 4 : 1.5); // Significantly reduced for md
+    return 160 * 2; // Mobile
+  };
+  const mediaHeight = getMediaHeight();
+  const isDesktop = screenSize === 'lg' || screenSize === 'md';
 
   /* ===============================
      MOUSE TRACKING (for glow)

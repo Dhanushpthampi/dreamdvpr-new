@@ -35,7 +35,7 @@ const ThemedSelect = ({
                 onChange={onChange}
                 className={`w-full px-4 py-3 bg-white/60 border rounded-lg focus:outline-none focus:ring-2 focus:bg-white transition-all font-medium ${error
                         ? 'border-red-400 focus:border-red-500 focus:ring-red-500'
-                        : 'border-gray-300 hover:border-[#e53e3e]/50 focus:border-[#e53e3e] focus:ring-[#e53e3e]'
+                        : 'border-gray-300 hover:border-[#c53030]/50 focus:border-[#c53030] focus:ring-[#c53030]'
                     } ${className}`}
                 required={required}
                 {...rest}

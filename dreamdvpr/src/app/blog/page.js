@@ -20,7 +20,7 @@ const colorMap = {
 ======================= */
 const BlogCard = ({ blog }) => {
   const color = colorMap[blog.category] || 'gray';
-  const brandColor = '#e53e3e';
+  const brandColor = '#c53030';
 
   return (
     <Link href={`/blog/${blog._id}`} className="block no-underline">
@@ -85,7 +85,7 @@ const BlogCard = ({ blog }) => {
 export default function BlogPage() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
-  const brandColor = '#e53e3e';
+  const brandColor = '#c53030';
 
   useEffect(() => {
     fetchBlogs();
@@ -116,7 +116,7 @@ export default function BlogPage() {
                 Blog
               </h1>
               <p className="text-lg text-text-secondary">
-                Latest insights, tips, and updates from RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity
+                Latest insights, tips, and updates from REDgravity
               </p>
             </div>
 

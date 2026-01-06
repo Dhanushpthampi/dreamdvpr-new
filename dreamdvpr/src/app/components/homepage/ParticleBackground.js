@@ -8,11 +8,27 @@ export default function DreamSpaceBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
+    let nebulaGradient;
     let raf;
+    const createNebulaGradient = () => {
+      nebulaGradient = ctx.createRadialGradient(
+        canvas.width * 0.5,
+        canvas.height * 0.4,
+        100,
+        canvas.width * 0.5,
+        canvas.height * 0.4,
+        canvas.width * 0.7
+      );
+
+      nebulaGradient.addColorStop(0, 'rgba(90,120,255,0.06)');
+      nebulaGradient.addColorStop(0.5, 'rgba(160,90,255,0.04)');
+      nebulaGradient.addColorStop(1, 'rgba(0,0,30,0)');
+    };
 
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      createNebulaGradient();
     };
 
     resize();
@@ -88,20 +104,8 @@ export default function DreamSpaceBackground() {
     /* ---------------- Nebula ---------------- */
 
     const drawNebula = () => {
-      const g = ctx.createRadialGradient(
-        canvas.width * 0.5,
-        canvas.height * 0.4,
-        100,
-        canvas.width * 0.5,
-        canvas.height * 0.4,
-        canvas.width * 0.7
-      );
-
-      g.addColorStop(0, 'rgba(90,120,255,0.06)');
-      g.addColorStop(0.5, 'rgba(160,90,255,0.04)');
-      g.addColorStop(1, 'rgba(0,0,30,0)');
-
-      ctx.fillStyle = g;
+      if (!nebulaGradient) createNebulaGradient(); // Ensure gradient is created if not already
+      ctx.fillStyle = nebulaGradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
 
@@ -117,7 +121,7 @@ export default function DreamSpaceBackground() {
         star.draw();
       });
 
-      if (Math.random() < 0.003) {
+      if (Math.random() < 0.008) {
         shootingStars.push(new ShootingStar());
       }
 

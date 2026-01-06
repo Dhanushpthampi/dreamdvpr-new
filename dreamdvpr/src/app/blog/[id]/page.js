@@ -149,14 +149,14 @@ export default function BlogDetailPage() {
                     display: list-item;
                 }
                 .blog-content ul li::marker {
-                    color: var(--color-brand-500, #e53e3e);
+                    color: var(--color-brand-500, #c53030);
                 }
                 .blog-content ol li::marker {
-                    color: var(--color-brand-500, #e53e3e);
+                    color: var(--color-brand-500, #c53030);
                     font-weight: bold;
                 }
                 .blog-content blockquote {
-                    border-left: 4px solid var(--color-brand-500, #e53e3e);
+                    border-left: 4px solid var(--color-brand-500, #c53030);
                     padding-left: 1rem;
                     padding-top: 0.5rem;
                     padding-bottom: 0.5rem;
@@ -191,7 +191,7 @@ export default function BlogDetailPage() {
                     margin: 1rem 0;
                 }
                 .blog-content a {
-                    color: var(--color-brand-500, #e53e3e);
+                    color: var(--color-brand-500, #c53030);
                     text-decoration: underline;
                 }
                 .blog-content a:hover {

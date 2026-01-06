@@ -47,7 +47,7 @@ const FAQSection = () => {
                                         <React.Fragment key={i}>
                                             {part}
                                             {i < arr.length - 1 && (
-                                                <>RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity</>
+                                                <>REDgravity</>
                                             )}
                                         </React.Fragment>
                                     ))}

@@ -123,6 +123,16 @@ const Hero = () => {
             antialias: true,
             preserveDrawingBuffer: true // Helps with some context loss issues
           }}
+          onCreated={({ gl }) => {
+            if (!gl.getContext()) {
+              console.warn("WebGL not supported, disabling 3D scene");
+              setModelLoaded(false);
+            }
+          }}
+          onError={(error) => {
+            console.error("Canvas Error:", error);
+            setModelLoaded(false);
+          }}
         >
           <ambientLight intensity={0.4} color="#2d3250" /> {/* Deep Indigo Ambient */}
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} color="#ffffff" />
@@ -190,7 +200,7 @@ const Hero = () => {
                 <React.Fragment key={i}>
                   {part}
                   {i < arr.length - 1 && (
-                    <>RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity</>
+                    <>REDgravity</>
                   )}
                 </React.Fragment>
               ))}

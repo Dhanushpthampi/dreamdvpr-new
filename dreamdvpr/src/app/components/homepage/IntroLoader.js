@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function IntroLoader({ onComplete }) {
   const [startAnimation, setStartAnimation] = useState(false);
-  const brandColor = '#e53e3e';
+  const [isExiting, setIsExiting] = useState(false);
+  const brandColor = '#c53030';
 
   useEffect(() => {
     // Lock scroll
@@ -15,59 +16,75 @@ export default function IntroLoader({ onComplete }) {
     // Start animation sequence
     setStartAnimation(true);
 
-    const totalDuration = 1500; // Reduced duration
+    const animationDuration = 800;
+    const exitDuration = 300;
 
-    const timer = setTimeout(() => {
+    // Trigger exit animation before completion
+    const exitTimer = setTimeout(() => {
+      setIsExiting(true);
+    }, animationDuration);
+
+    const completionTimer = setTimeout(() => {
       onComplete?.();
-    }, totalDuration);
+    }, animationDuration + exitDuration);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(exitTimer);
+      clearTimeout(completionTimer);
       document.body.style.overflow = originalStyle;
     };
   }, [onComplete]);
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-white flex items-center justify-center overflow-hidden">
-
-      {/* Container - Gravity is the anchor */}
-      <div className="relative flex flex-col items-center justify-center">
-
-        {/* RED Text - Absolute above Gravity */}
-        <div
-          className="absolute bottom-full left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none"
-          style={{ marginBottom: '-10rem' }} // Tighten spacing to gravity
+    <AnimatePresence>
+      {!isExiting && (
+        <motion.div
+          key="loader"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="fixed inset-0 z-[9999] bg-[#f5f5f7] flex items-center justify-center overflow-hidden"
         >
-          <motion.h1
-            className="text-[400px] font-black tracking-tighter text-center whitespace-nowrap leading-none antialiased"
-            style={{
-              color: brandColor,
-              backfaceVisibility: 'hidden',
-              WebkitFontSmoothing: 'antialiased',
-              transformOrigin: 'center center'
-            }}
-            initial={{ scale: 0.25 }}
-            animate={startAnimation ? {
-              scale: [0.25, 0.25, 0.3, 0.2, 30] // Reduced final scale from 40 to 30
-            } : { scale: 0.25 }}
-            transition={{
-              duration: 1.2,
-              times: [0, 0.4, 0.5, 0.6, 1],
-              ease: "easeInOut"
-            }}
-          >
-            RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>
-          </motion.h1>
-        </div>
+          {/* Container - Gravity is the anchor */}
+          <div className="relative flex flex-col items-center justify-center">
 
-        {/* gravity Text - Center of Page (No animation, just static) */}
-        <p
-          className="text-4xl md:text-5xl font-bold tracking-widest relative z-20 text-black uppercase"
-        >
-          gravity
-        </p>
+            {/* RED Text - Absolute above Gravity */}
+            <div
+              className="absolute bottom-full left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none"
+              style={{ marginBottom: '-10rem' }} // Tighten spacing to gravity
+            >
+              <motion.h1
+                className="text-[200px] md:text-[300px] font-black tracking-tighter text-center whitespace-nowrap leading-none antialiased mb-20"
+                style={{
+                  color: brandColor,
+                  backfaceVisibility: 'hidden',
+                  WebkitFontSmoothing: 'antialiased',
+                  transformOrigin: 'center center'
+                }}
+                initial={{ scale: 0.5 }}
+                animate={startAnimation ? {
+                  scale: [0.5, 0.5, 0.6, 0.4, 60]
+                } : { scale: 0.5 }}
+                transition={{
+                  duration: 0.8,
+                  times: [0, 0.4, 0.5, 0.6, 1],
+                  ease: "easeInOut"
+                }}
+              >
+                RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>
+              </motion.h1>
+            </div>
 
-      </div>
-    </div>
+            {/* gravity Text - Center of Page */}
+            <p
+              className="text-4xl md:text-5xl font-bold tracking-widest relative z-20 text-black uppercase"
+            >
+              gravity
+            </p>
+
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

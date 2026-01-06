@@ -161,7 +161,7 @@ export default function AdminInvoicesPage() {
                         </div>
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="px-6 py-2 bg-[#10b981] text-white rounded-xl hover:opacity-90 transition-all flex items-center gap-2 font-semibold shadow-lg shadow-[#10b981]/10"
+                            className="px-6 py-2 bg-[#1d1d1f] text-white rounded-xl hover:bg-black transition-all flex items-center gap-2 font-semibold shadow-lg shadow-[#1d1d1f]/20"
                         >
                             <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
                                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
@@ -290,7 +290,7 @@ export default function AdminInvoicesPage() {
                                 <button
                                     onClick={handleCreateInvoice}
                                     disabled={creating}
-                                    className="px-8 py-2 bg-[#10b981] text-white rounded-xl font-bold hover:opacity-90 transition-all disabled:opacity-50"
+                                    className="px-8 py-2 bg-[#1d1d1f] text-white rounded-xl font-bold hover:bg-black transition-all disabled:opacity-50"
                                 >
                                     {creating ? 'Generating...' : 'Issue Invoice'}
                                 </button>
