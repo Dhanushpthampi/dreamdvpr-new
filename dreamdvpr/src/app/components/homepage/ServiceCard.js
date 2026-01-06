@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const isVideo = (url = '') => /\.(mp4|webm|ogg)$/i.test(url);
@@ -17,6 +17,8 @@ const ServiceCard = ({
   const [hovered, setHovered] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isDesktop, setIsDesktop] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const cardRef = useRef(null);
 
   /* ===============================
      BREAKPOINT DETECTION
@@ -26,6 +28,24 @@ const ServiceCard = ({
     update();
     window.addEventListener('resize', update);
     return () => window.removeEventListener('resize', update);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+          observer.disconnect(); // Once in view, keep it loaded
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   /* ===============================
@@ -50,6 +70,7 @@ const ServiceCard = ({
 
   return (
     <motion.div
+      ref={cardRef}
       className="
         relative overflow-hidden rounded-xl
         bg-white/70
@@ -91,24 +112,31 @@ const ServiceCard = ({
                 'linear-gradient(to bottom, black 75%, transparent 100%)',
             }}
           >
-            {isVideo(media) && (
-              <video
-                src={media}
-                autoPlay={isFeatured}
-                loop
-                muted
-                playsInline
-                preload="metadata"
-                className="w-full h-full object-cover"
-              />
-            )}
+            {isInView ? (
+              <>
+                {isVideo(media) && (
+                  <video
+                    src={media}
+                    autoPlay={isFeatured}
+                    loop
+                    muted
+                    playsInline
+                    preload="auto"
+                    className="w-full h-full object-cover"
+                  />
+                )}
 
-            {isImage(media) && (
-              <img
-                src={media}
-                alt={title}
-                className="w-full h-full object-cover"
-              />
+                {isImage(media) && (
+                  <img
+                    src={media}
+                    alt={title}
+                    loading="lazy"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </>
+            ) : (
+              <div className="w-full h-full bg-neutral-100/50 animate-pulse" />
             )}
 
             {/* Subtle Apple-style dark overlay */}

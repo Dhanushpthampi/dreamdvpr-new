@@ -13,12 +13,37 @@ import { useContent } from '../../lib/hooks';
 import ParticleBackground from './ParticleBackground';
 
 /* ===============================
+   ERROR BOUNDARY
+================================ */
+class ModelErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("3D Model Error:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) return null; // Don't show anything on error
+    return this.props.children;
+  }
+}
+
+/* ===============================
    3D MODEL WITH FREE FLOATING MOTION
 ================================ */
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils';
 
-function SpaceshipModel({ scale = 0.2 }) {
+function SpaceshipModel({ scale = 0.2, onLoad }) {
   const { scene } = useGLTF('/Spaceship.glb');
+
+  useEffect(() => {
+    if (scene) onLoad?.();
+  }, [scene, onLoad]);
+
   // Clone the scene to ensure we have a fresh instance for this component
   const clonedScene = React.useMemo(() => clone(scene), [scene]);
   const meshRef = useRef();
@@ -46,6 +71,7 @@ const Hero = () => {
   const [modelScale, setModelScale] = useState(0.2);
   const [textTranslateY, setTextTranslateY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [modelLoaded, setModelLoaded] = useState(false);
 
   useEffect(() => {
     const updatePosition = () => {
@@ -83,7 +109,12 @@ const Hero = () => {
       </div>
 
       {/* 3D Scene */}
-      <div className="absolute inset-0 z-[1]">
+      <motion.div
+        className="absolute inset-0 z-[1]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: modelLoaded ? 1 : 0 }}
+        transition={{ duration: 1, ease: 'easeOut' }}
+      >
         <Canvas
           camera={{ position: [0, 0, 8], fov: 45 }}
           dpr={[1, 2]} // Limit pixel ratio to 2 to improve performance on high-res mobile
@@ -109,15 +140,17 @@ const Hero = () => {
               config={{ mass: 1, tension: 120, friction: 14 }}
             >
               <Float speed={0.5} rotationIntensity={0.2} floatIntensity={0.1}>
-                {/* Suspense fallback prevents crash while loading */}
-                <React.Suspense fallback={null}>
-                  <SpaceshipModel scale={modelScale} />
-                </React.Suspense>
+                {/* Error Boundary + Suspense prevents crash while loading */}
+                <ModelErrorBoundary>
+                  <React.Suspense fallback={null}>
+                    <SpaceshipModel scale={modelScale} onLoad={() => setModelLoaded(true)} />
+                  </React.Suspense>
+                </ModelErrorBoundary>
               </Float>
             </PresentationControls>
           </group>
         </Canvas>
-      </div>
+      </motion.div>
 
       {/* Content Overlay */}
       <div className="container mx-auto max-w-7xl h-full relative z-[10] pointer-events-none px-4">

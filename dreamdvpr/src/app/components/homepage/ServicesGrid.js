@@ -9,6 +9,26 @@ const ServicesGrid = () => {
   const [hovered, setHovered] = useState(false);
   const overlayRef = React.useRef(null);
 
+  // Background Prefetching for Media
+  React.useEffect(() => {
+    if (!content?.items) return;
+
+    content.items.forEach(item => {
+      if (!item.media) return;
+
+      // Prefetch images including gifs
+      if (/\.(gif|png|jpg|jpeg|webp)$/i.test(item.media)) {
+        const img = new Image();
+        img.src = item.media;
+      }
+      // Prefetch video metadata/initial chunks
+      else if (/\.(mp4|webm|ogg)$/i.test(item.media)) {
+        fetch(item.media, { priority: 'low', cache: 'force-cache' })
+          .catch(() => { }); // Quietly fail if needed
+      }
+    });
+  }, [content?.items]);
+
   const handleMouseMove = (e) => {
     if (!overlayRef.current) return;
 
