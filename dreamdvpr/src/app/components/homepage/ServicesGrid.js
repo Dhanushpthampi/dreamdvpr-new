@@ -6,15 +6,21 @@ import ServiceCard from './ServiceCard';
 
 const ServicesGrid = () => {
   const { content } = useContent('services');
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
+  const overlayRef = React.useRef(null);
 
   const handleMouseMove = (e) => {
+    if (!overlayRef.current) return;
+
     const rect = e.currentTarget.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    overlayRef.current.style.background = `radial-gradient(
+      600px circle at ${x}px ${y}px,
+      rgba(229, 62, 62, 0.15),
+      transparent 60%
+    )`;
   };
 
   return (
@@ -42,14 +48,11 @@ const ServicesGrid = () => {
         >
           {/* Grid hover glow */}
           <div
+            ref={overlayRef}
             className="absolute inset-0 pointer-events-none transition-opacity duration-300 rounded-lg"
             style={{
               opacity: hovered ? 1 : 0,
-              background: `radial-gradient(
-                600px circle at ${mousePos.x}px ${mousePos.y}px,
-                rgba(229, 62, 62, 0.15),
-                transparent 60%
-              )`,
+              background: 'transparent',
             }}
           />
 

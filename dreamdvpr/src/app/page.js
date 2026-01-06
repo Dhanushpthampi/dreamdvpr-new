@@ -12,6 +12,7 @@ import CTASection from './components/homepage/CTASection';
 import Footer from './components/homepage/Footer';
 import IntroLoader from './components/homepage/IntroLoader';
 import WaveSeparator from './components/homepage/WaveSeparator';
+import GoogleAnalytics from './components/analytics/GoogleAnalytics';
 
 import "./styles/globals.css";
 
@@ -34,6 +35,7 @@ export default function Home() {
 
   return (
     <>
+      <GoogleAnalytics />
       {showLoader && <IntroLoader onComplete={handleLoaderComplete} />}
       <main
         className="min-h-screen overflow-x-hidden bg-bg-app"

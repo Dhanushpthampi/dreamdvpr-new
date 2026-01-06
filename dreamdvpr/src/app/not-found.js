@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import ParticleBackground from './components/homepage/ParticleBackground';
+// import ParticleBackground from './components/homepage/ParticleBackground';
 
 
 export default function NotFound() {
@@ -12,7 +12,7 @@ export default function NotFound() {
       className="relative min-h-screen flex items-center justify-center overflow-hidden bg-bg-app"
     >
       {/* Particle Background */}
-      <ParticleBackground />
+      {/* <ParticleBackground /> */}
 
       {/* Content */}
       <div className="relative z-10 max-w-3xl w-full px-6 text-center">

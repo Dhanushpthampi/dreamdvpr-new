@@ -15,8 +15,12 @@ import ParticleBackground from './ParticleBackground';
 /* ===============================
    3D MODEL WITH FREE FLOATING MOTION
 ================================ */
+import { clone } from 'three/examples/jsm/utils/SkeletonUtils';
+
 function SpaceshipModel({ scale = 0.2 }) {
   const { scene } = useGLTF('/Spaceship.glb');
+  // Clone the scene to ensure we have a fresh instance for this component
+  const clonedScene = React.useMemo(() => clone(scene), [scene]);
   const meshRef = useRef();
 
   useFrame((state) => {
@@ -30,7 +34,7 @@ function SpaceshipModel({ scale = 0.2 }) {
     }
   });
 
-  return <primitive ref={meshRef} object={scene} scale={scale} />;
+  return <primitive ref={meshRef} object={clonedScene} scale={scale} />;
 }
 
 /* ===============================
@@ -41,14 +45,18 @@ const Hero = () => {
   const [modelPosition, setModelPosition] = useState([2, 0, 0]); // Desktop default
   const [modelScale, setModelScale] = useState(0.2);
   const [textTranslateY, setTextTranslateY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const updatePosition = () => {
-      if (window.innerWidth >= 1024) {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+
+      if (width >= 1024) {
         setModelPosition([2, 0, 0]);   // Desktop: right
         setModelScale(0.18);
         setTextTranslateY(0);
-      } else if (window.innerWidth >= 768) {
+      } else if (width >= 768) {
         setModelPosition([1.4, 0, 0]); // Tablet: moderate right
         setModelScale(0.15);
         setTextTranslateY(0);
@@ -76,7 +84,15 @@ const Hero = () => {
 
       {/* 3D Scene */}
       <div className="absolute inset-0 z-[1]">
-        <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
+        <Canvas
+          camera={{ position: [0, 0, 8], fov: 45 }}
+          dpr={[1, 2]} // Limit pixel ratio to 2 to improve performance on high-res mobile
+          gl={{
+            powerPreference: "high-performance",
+            antialias: true,
+            preserveDrawingBuffer: true // Helps with some context loss issues
+          }}
+        >
           <ambientLight intensity={0.5} />
           <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
           <pointLight position={[-10, -10, -10]} intensity={1} />
@@ -93,7 +109,10 @@ const Hero = () => {
               config={{ mass: 1, tension: 120, friction: 14 }}
             >
               <Float speed={0.5} rotationIntensity={0.2} floatIntensity={0.1}>
-                <SpaceshipModel scale={modelScale} />
+                {/* Suspense fallback prevents crash while loading */}
+                <React.Suspense fallback={null}>
+                  <SpaceshipModel scale={modelScale} />
+                </React.Suspense>
               </Float>
             </PresentationControls>
           </group>
@@ -154,5 +173,8 @@ const Hero = () => {
     </div>
   );
 };
+
+// Preload the model to avoid pop-in
+useGLTF.preload('/Spaceship.glb');
 
 export default Hero;
