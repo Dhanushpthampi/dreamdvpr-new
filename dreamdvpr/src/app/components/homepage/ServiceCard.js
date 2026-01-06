@@ -71,13 +71,13 @@ const ServiceCard = ({
   return (
     <motion.div
       ref={cardRef}
-      className="
+      className={`
         relative overflow-hidden rounded-xl
         bg-white/70
         backdrop-blur-xl backdrop-saturate-150
-        border border-black/5
         flex flex-col
-      "
+        border ${isFeatured ? 'border-emerald-500/30' : 'border-black/5'}
+      `}
       style={{
         gridColumn: isDesktop ? `span ${colSpan}` : 'span 1',
         gridRow: isDesktop ? `span ${rowSpan}` : 'span 1',
@@ -87,11 +87,12 @@ const ServiceCard = ({
           ? `
             0 2px 4px rgba(0, 0, 0, 0.08),
             0 12px 32px rgba(0, 0, 0, 0.12),
-            0 0 20px rgba(229, 62, 62, 0.15)
+            0 0 20px ${isFeatured ? 'rgba(16, 185, 129, 0.2)' : 'rgba(71, 85, 105, 0.15)'}
           `
           : `
             0 1px 2px rgba(0, 0, 0, 0.06),
             0 4px 12px rgba(0, 0, 0, 0.08)
+            ${isFeatured ? ', 0 0 10px rgba(16, 185, 129, 0.1)' : ''}
           `,
       }}
       whileHover={isDesktop ? { scale: 1.01 } : undefined}
@@ -147,10 +148,10 @@ const ServiceCard = ({
 
       {/* CONTENT */}
       <div className="relative z-[3] px-5 pb-5 pt-3 flex-1 flex flex-col justify-end">
-        <h3 className="text-sm md:text-base font-semibold mb-1 text-neutral-900">
+        <h3 className="text-base md:text-xl font-semibold mb-1 text-neutral-900">
           {title}
         </h3>
-        <p className="text-xs md:text-sm leading-relaxed text-neutral-500">
+        <p className="text-sm md:text-base leading-relaxed text-neutral-500">
           {description}
         </p>
       </div>

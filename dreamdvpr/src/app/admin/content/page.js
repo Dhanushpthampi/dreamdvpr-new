@@ -73,12 +73,7 @@ export default function ContentManagementPage() {
           {/* Header Section */}
           <div className="flex justify-between items-start flex-wrap gap-4">
             <div className="flex-1">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="bg-[#e53e3e]/10 p-3 rounded-xl">
-                  <svg viewBox="0 0 24 24" className="w-6 h-6 text-[#e53e3e]" fill="currentColor">
-                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z" />
-                  </svg>
-                </div>
+              <div className="mb-3">
                 <div>
                   <h1 className="text-4xl md:text-5xl font-bold mb-1" style={{ color: '#1d1d1f' }}>
                     Content Management

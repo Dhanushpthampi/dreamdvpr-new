@@ -6,25 +6,6 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '', label }) => {
     const [count, setCount] = useState(0);
     const countRef = useRef(null);
     const [isVisible, setIsVisible] = useState(false);
-    const [brandColors, setBrandColors] = useState({ primary: '#e53e3e', secondary: '#008c8e' });
-
-    useEffect(() => {
-        const updateColors = () => {
-            if (typeof window !== 'undefined') {
-                const primary = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--color-brand-500')
-                    .trim() || '#e53e3e';
-                const secondary = getComputedStyle(document.documentElement)
-                    .getPropertyValue('--color-brand-600')
-                    .trim() || '#008c8e';
-                setBrandColors({ primary, secondary });
-            }
-        };
-        
-        updateColors();
-        window.addEventListener('theme-updated', updateColors);
-        return () => window.removeEventListener('theme-updated', updateColors);
-    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -60,8 +41,8 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '', label }) => {
 
             // Easing function for smooth counting
             const easeOutQuart = 1 - Math.pow(1 - percentage, 4);
-
-            setCount(Math.floor(easeOutQuart * end));
+            const rawCount = Math.floor(easeOutQuart * end);
+            setCount(rawCount);
 
             if (progress < duration) {
                 animationFrame = requestAnimationFrame(animate);
@@ -76,14 +57,10 @@ const AnimatedCounter = ({ end, duration = 2000, suffix = '', label }) => {
     }, [isVisible, end, duration]);
 
     return (
-        <div ref={countRef} className="text-center">
-            <div 
-                className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent"
-                style={{
-                    backgroundImage: `linear-gradient(to right, ${brandColors.primary}, ${brandColors.secondary})`
-                }}
-            >
-                {count}{suffix}
+        <div ref={countRef} className="text-center font-sans">
+            <div className="text-4xl md:text-6xl font-black tracking-tight flex items-baseline justify-center">
+                <span>{new Intl.NumberFormat().format(count)}</span>
+                {suffix && <span className="text-2xl md:text-3xl ml-0.5 opacity-80">{suffix}</span>}
             </div>
             {label && <div className="text-gray-500 mt-2 font-medium">{label}</div>}
         </div>

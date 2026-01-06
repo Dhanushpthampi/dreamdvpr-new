@@ -11,9 +11,13 @@ const CTASection = () => {
 
   return (
     <div
-      className="py-20 relative overflow-hidden bg-red-600"
+      className="py-20 relative overflow-hidden bg-[#1d1d1f]"
       id="contact"
     >
+      <div
+        className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_70%_50%,rgba(37,99,235,0.1),transparent_70%)]"
+      /> {/* Midnight Blue Depth Glow */}
+
 
       <div className="container mx-auto max-w-7xl px-4 relative z-[10]">
         <div className="flex flex-col md:flex-row items-end justify-between gap-12 min-h-[600px] md:min-h-[400px]">
@@ -72,7 +76,7 @@ const CTASection = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
                 <button
-                  className="px-8 h-14 text-base font-bold rounded-full bg-white transition-all hover:bg-gray-100 hover:-translate-y-0.5 text-brand-500 whitespace-nowrap min-w-[240px] flex items-center justify-center"
+                  className="px-8 h-14 text-base font-bold rounded-full bg-white transition-all hover:bg-gray-100 hover:-translate-y-0.5 text-black-500 whitespace-nowrap min-w-[240px] flex items-center justify-center"
                 >
                   {content?.buttonText}
                 </button>

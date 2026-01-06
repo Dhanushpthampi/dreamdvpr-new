@@ -13,8 +13,8 @@ const StatCard = ({ end, suffix, label, delay = 0 }) => {
   return (
     <div
       className={`flex flex-col items-center gap-2 bg-white/40 backdrop-blur-[24px] backdrop-saturate-[180%] p-8 rounded-xl border border-white/30 transition-all duration-300 ease-in-out ${hovered
-        ? 'shadow-[0_0_30px_rgba(229,62,62,0.22)]'
-        : 'shadow-[0_0_20px_rgba(229,62,62,0.12)]'
+        ? 'shadow-[0_10px_40px_rgba(0,0,0,0.1)]'
+        : 'shadow-[0_5px_20px_rgba(0,0,0,0.05)]'
         }`}
       style={{
         transform: `translateY(${delay}px)`,
@@ -25,8 +25,10 @@ const StatCard = ({ end, suffix, label, delay = 0 }) => {
         if (!hovered) setHovered(true);
       }}
     >
-      <AnimatedCounter end={end} suffix={suffix} />
-      <p className="font-semibold text-text-secondary">
+      <div className="text-brand-500 mb-1">
+        <AnimatedCounter end={end} suffix={suffix} />
+      </div>
+      <p className="text-[12px] uppercase font-black tracking-widest text-text-main">
         {label}
       </p>
     </div>
@@ -39,39 +41,21 @@ const StatCard = ({ end, suffix, label, delay = 0 }) => {
 const WhyChooseUs = () => {
   const { content } = useContent('whyChooseUs');
 
-  const titleParts = content?.title?.split(content?.titleHighlight || 'REDgravity') || [];
 
   return (
     <div
       className="py-24 relative overflow-hidden bg-bg-secondary"
     >
       <div
-        className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_20%,rgba(229,62,62,0.12),transparent_60%)]"
+        className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_20%_20%,rgba(0,0,0,0.03),transparent_60%)]"
       />
 
       <div className="container mx-auto max-w-7xl px-4 relative z-[1]">
         <div className="flex flex-col md:flex-row gap-12 items-center">
           {/* LEFT CONTENT */}
           <div className="flex-1">
-            <h2
-              className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-text-main"
-            >
-              {titleParts.map((part, i, arr) =>
-                i === arr.length - 1 ? (
-                  <React.Fragment key={i}>
-                    <span className="text-brand-500">
-                      {content?.titleHighlight === 'REDgravity' ? (
-                        <>RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity</>
-                      ) : (
-                        content?.titleHighlight || 'REDgravity'
-                      )}
-                    </span>
-                    {part}
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment key={i}>{part}</React.Fragment>
-                )
-              )}
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight text-text-main">
+              {content?.title}
             </h2>
 
             <p

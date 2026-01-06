@@ -12,7 +12,7 @@ const Footer = () => {
                 <div className="flex flex-col md:flex-row justify-between items-center gap-8">
                     <div className="text-center md:text-left">
                         <p className="font-bold text-lg mb-1 text-text-main">
-                            RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity
+                            RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>GRAVITY
                         </p>
                         <p className="text-sm">© 2025 RE<span style={{ display: 'inline-block', transform: 'scaleX(-1)' }}>D</span>gravity. All rights reserved.</p>
                     </div>

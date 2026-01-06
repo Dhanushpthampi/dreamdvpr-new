@@ -38,7 +38,7 @@ const ServicesGrid = () => {
 
     overlayRef.current.style.background = `radial-gradient(
       600px circle at ${x}px ${y}px,
-      rgba(229, 62, 62, 0.15),
+      rgba(255, 255, 255, 0.15),
       transparent 60%
     )`;
   };

@@ -48,7 +48,7 @@ export default function IntroLoader({ onComplete }) {
             }}
             initial={{ scale: 0.25 }}
             animate={startAnimation ? {
-              scale: [0.25, 0.25, 0.3, 0.2, 40]
+              scale: [0.25, 0.25, 0.3, 0.2, 30] // Reduced final scale from 40 to 30
             } : { scale: 0.25 }}
             transition={{
               duration: 1.2,
@@ -62,7 +62,7 @@ export default function IntroLoader({ onComplete }) {
 
         {/* gravity Text - Center of Page (No animation, just static) */}
         <p
-          className="text-4xl md:text-5xl font-bold tracking-widest relative z-20 text-black"
+          className="text-4xl md:text-5xl font-bold tracking-widest relative z-20 text-black uppercase"
         >
           gravity
         </p>

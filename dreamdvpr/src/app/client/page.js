@@ -158,7 +158,7 @@ export default function ClientDashboard() {
                                                 key={tab.id}
                                                 onClick={() => setActiveTab(tab.id)}
                                                 className={`pb-4 px-2 flex items-center gap-2 border-b-2 transition-all font-bold text-sm whitespace-nowrap ${activeTab === tab.id
-                                                    ? 'border-[#e53e3e] text-[#e53e3e]'
+                                                    ? 'border-[#1d1d1f] text-[#1d1d1f]'
                                                     : 'border-transparent text-gray-400 hover:text-gray-600'}`}
                                             >
                                                 <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">

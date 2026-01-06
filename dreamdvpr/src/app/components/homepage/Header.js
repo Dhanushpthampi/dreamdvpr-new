@@ -48,7 +48,7 @@ const Header = () => {
                   <a
                     key={link.href}
                     href={link.href}
-                    className={`font-bold transition-colors hover:text-brand-500 ${isHome ? 'text-white' : 'text-text-secondary'
+                    className={`font-bold transition-colors hover:text-brand-500 ${isHome ? 'text-white/70' : 'text-text-secondary'
                       }`}
                   >
                     {link.label}
@@ -57,7 +57,7 @@ const Header = () => {
                   <Link
                     key={link.href}
                     href={link.href}
-                    className={`font-bold transition-colors hover:text-brand-500 ${isHome ? 'text-white' : 'text-text-secondary'
+                    className={`font-bold transition-colors hover:text-brand-500 ${isHome ? 'text-white/70' : 'text-text-secondary'
                       }`}
                   >
                     {link.label}
@@ -70,7 +70,7 @@ const Header = () => {
             <div className="flex items-center gap-4">
               <a
                 href="#contact"
-                className="hidden md:flex px-8 py-3 text-base font-bold rounded-xl hover:opacity-90 transition-all hover:scale-105 bg-brand-500 text-white"
+                className="hidden md:flex px-6 py-2 text-sm font-bold rounded-xl hover:bg-black/90 transition-all hover:scale-105 bg-[#1d1d1f] text-white"
               >
                 Book a Call
               </a>

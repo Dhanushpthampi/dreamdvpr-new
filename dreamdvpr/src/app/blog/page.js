@@ -108,10 +108,6 @@ export default function BlogPage() {
       <Header />
 
       <div className="pt-24 pb-16 relative">
-        <div
-          className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50_0%,rgba(229,62,62,0.12),transparent_60%)]"
-        />
-
         <div className="container mx-auto max-w-7xl px-4 relative">
           <div className="flex flex-col gap-12">
             {/* Header */}

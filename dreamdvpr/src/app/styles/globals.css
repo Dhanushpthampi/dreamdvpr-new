@@ -229,10 +229,7 @@ body {
 
 /* src/app/styles/globals.css */
 
-::selection {
-  background-color: var(--color-brand-500);
-  color: white;
-}
+
 
 
 .wave {

@@ -124,9 +124,10 @@ const Hero = () => {
             preserveDrawingBuffer: true // Helps with some context loss issues
           }}
         >
-          <ambientLight intensity={0.5} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
-          <pointLight position={[-10, -10, -10]} intensity={1} />
+          <ambientLight intensity={0.4} color="#2d3250" /> {/* Deep Indigo Ambient */}
+          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} color="#ffffff" />
+          <pointLight position={[-10, -10, -10]} intensity={1} color="#451212" /> {/* Subtle Red Hint */}
+          <pointLight position={[0, 10, 0]} intensity={0.5} color="#2563eb" /> {/* Royal Blue Top Down */}
           <Environment preset="city" />
 
           <group position={modelPosition}>
@@ -180,7 +181,7 @@ const Hero = () => {
             </motion.h1>
 
             <motion.p
-              className="text-xl text-gray-300"
+              className="text-xl text-white/90" // Brighter white for visibility
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
