@@ -4,8 +4,18 @@ import { NextResponse } from 'next/server';
 const analyticsDataClient = google.analyticsdata('v1beta');
 
 async function getAuthClient() {
+    const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+    const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, '\n');
+
+    if (!email || !privateKey) {
+        throw new Error('Google Service Account credentials not found in environment variables');
+    }
+
     const auth = new google.auth.GoogleAuth({
-        keyFile: './service-account.json',
+        credentials: {
+            client_email: email,
+            private_key: privateKey,
+        },
         scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
     });
     return await auth.getClient();
