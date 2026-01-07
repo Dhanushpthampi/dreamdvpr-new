@@ -157,11 +157,6 @@ export default function ProjectsPage() {
                                     className="overflow-hidden hover:shadow-xl transition-all cursor-pointer group border border-gray-100 hover:border-[#1d1d1f]/30 shadow-sm relative pt-1"
                                     onClick={() => router.push(`/admin/projects/${project._id}`)}
                                 >
-                                    {/* Status Left Accent */}
-                                    <div className={`absolute left-0 top-0 bottom-0 w-1 ${project.status === 'completed' ? 'bg-emerald-500' :
-                                            project.status === 'active' ? 'bg-[#c53030]' : 'bg-amber-400'
-                                        }`} />
-
                                     <div className="p-6 flex flex-col h-full">
                                         <div className="flex justify-between items-start mb-4">
                                             <div className="flex flex-col">

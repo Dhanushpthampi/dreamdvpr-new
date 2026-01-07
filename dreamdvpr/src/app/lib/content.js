@@ -19,6 +19,7 @@ export const DEFAULT_CONTENT = {
             {
                 title: "Web & App Development",
                 description: "Building the foundations of your digital empire with Next.js, React, and native technologies.",
+                media: "/service1.gif",
                 colSpan: 2,
                 rowSpan: 2,
                 iconColor: "brand.500",
@@ -26,6 +27,7 @@ export const DEFAULT_CONTENT = {
             {
                 title: "UI/UX Design",
                 description: "Interfaces that feel as good as they look.",
+                media: "/service2.gif",
                 colSpan: 1,
                 rowSpan: 1,
                 iconColor: "accent.500",
@@ -33,6 +35,7 @@ export const DEFAULT_CONTENT = {
             {
                 title: "Brand Strategy",
                 description: "Crafting correct narratives.",
+                media: "/service3.gif",
                 colSpan: 1,
                 rowSpan: 1,
                 iconColor: "purple.400",
@@ -40,6 +43,7 @@ export const DEFAULT_CONTENT = {
             {
                 title: "Performance",
                 description: "Speed is a feature.",
+                media: "/service4.gif",
                 colSpan: 1,
                 rowSpan: 1,
                 iconColor: "green.400",
@@ -47,6 +51,7 @@ export const DEFAULT_CONTENT = {
             {
                 title: "SEO & Growth",
                 description: "Data-driven visibility.",
+                media: "/service5.gif",
                 colSpan: 2,
                 rowSpan: 1,
                 iconColor: "blue.400",
@@ -130,7 +135,25 @@ export function normalizeContent(contentData) {
         services: {
             title: contentData.services?.title || DEFAULT_CONTENT.services.title,
             subtitle: contentData.services?.subtitle || DEFAULT_CONTENT.services.subtitle,
-            items: contentData.services?.items || DEFAULT_CONTENT.services.items,
+            items: (() => {
+                const dbItems = contentData.services?.items;
+                const defaultItems = DEFAULT_CONTENT.services.items;
+
+                // If no database items, use defaults
+                if (!dbItems || !Array.isArray(dbItems)) {
+                    return defaultItems;
+                }
+
+                // Merge database items with defaults, using local GIFs as fallback
+                return dbItems.map((dbItem, index) => {
+                    const defaultItem = defaultItems[index] || {};
+                    return {
+                        ...dbItem,
+                        // Use local GIF from default if media is empty/missing in database
+                        media: dbItem.media || defaultItem.media || '',
+                    };
+                });
+            })(),
         },
         whyChooseUs: {
             title: contentData.whyChooseUs?.title || DEFAULT_CONTENT.whyChooseUs.title,
