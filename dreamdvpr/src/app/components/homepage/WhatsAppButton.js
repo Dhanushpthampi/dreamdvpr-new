@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 const WhatsAppButton = () => {
     const [isVisible, setIsVisible] = useState(false);
-    const phoneNumber = '7337816195';
+    const phoneNumber = '9945291958';
 
     useEffect(() => {
         const handleScroll = () => {

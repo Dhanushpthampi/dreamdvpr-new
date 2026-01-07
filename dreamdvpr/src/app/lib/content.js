@@ -110,7 +110,7 @@ export const DEFAULT_CONTENT = {
     cta: {
         title: "Ready to Transform Your Business with REDgravity?",
         subtitle: "Your Trusted Partner for Transformative Digital Solutions",
-        buttonText: "Book a Call today!",
+        buttonText: "Call Now",
         points: [
             "Premium Quality Guaranteed",
             "Fast Turnaround Times",

@@ -70,7 +70,7 @@ export default function LoginPage() {
                         <div className="flex flex-col gap-2">
                             <h1 className="text-4xl font-bold tracking-tight">
                                 <span className="text-[#c53030]">RED</span>
-                                <span className="text-[#1d1d1f]">gravity</span>
+                                <span className="text-[#1d1d1f]">GRAVITY</span>
                             </h1>
                             <p className="text-lg" style={{ color: '#86868b' }}>
                                 Sign in to your account

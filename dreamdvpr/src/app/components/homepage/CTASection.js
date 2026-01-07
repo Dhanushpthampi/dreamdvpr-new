@@ -76,7 +76,7 @@ const CTASection = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
                 <a
-                  href="tel:7337816195"
+                  href="tel:9945291958"
                   className="px-8 h-14 text-base font-bold rounded-full bg-white transition-all hover:bg-gray-100 hover:-translate-y-0.5 text-black-500 whitespace-nowrap min-w-[240px] flex items-center justify-center gap-2"
                 >
                   <svg
@@ -91,7 +91,7 @@ const CTASection = () => {
                 </a>
 
                 <a
-                  href="https://wa.me/7337816195"
+                  href="https://wa.me/9945291958"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-8 h-14 text-base font-bold rounded-full border-2 border-white text-white transition-all hover:bg-white/10 hover:-translate-y-0.5 flex items-center justify-center gap-2 whitespace-nowrap min-w-[240px]"

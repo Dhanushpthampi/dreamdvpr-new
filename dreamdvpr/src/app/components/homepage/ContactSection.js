@@ -77,7 +77,7 @@ export default function ContactSection() {
                         className="relative h-auto lg:h-full rounded-xl overflow-hidden border border-black/5 shadow-lg"
                     >
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3885.1234!2d77.4302613!3d13.0865972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDA1JzExLjgiTiA3N8KwMjUnNDguOSJF!5e0!3m2!1sen!2sin!4v1704567890123!5m2!1sen!2sin"
+                            src="https://maps.google.com/maps?q=13.065065,77.526860&z=15&output=embed"
                             width="100%"
                             height="100%"
                             style={{ border: 0 }}
