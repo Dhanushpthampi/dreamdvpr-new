@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import ParticleBackground from './ParticleBackground';
 
 export default function IntroLoader({ onComplete }) {
   const [startAnimation, setStartAnimation] = useState(false);
@@ -37,6 +38,7 @@ export default function IntroLoader({ onComplete }) {
 
   return (
     <AnimatePresence>
+      <ParticleBackground />
       {!isExiting && (
         <motion.div
           key="loader"
