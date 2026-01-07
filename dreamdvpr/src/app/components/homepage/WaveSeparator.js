@@ -15,7 +15,7 @@ export default function WaveSeparator() {
         layer.style.transform = `
           translateY(${scrollY * speed}px)
           rotateX(180deg)
-        `;  
+        `;
       });
     };
 
@@ -108,8 +108,7 @@ export default function WaveSeparator() {
             L2430,320 L0,320 Z
           "
         />
-      </svg> 
+      </svg>
     </div>
   );
 }
-    

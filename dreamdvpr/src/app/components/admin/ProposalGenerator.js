@@ -19,8 +19,7 @@ export default function ProposalGenerator({
 
     const [proposalData, setProposalData] = useState({
         client_name: '',
-        discovery: ['Initial Consultation', 'Requirements Gathering', 'Market Research'],
-        solutions: ['Responsive Web Design', 'SEO Optimization', 'Content Management System'],
+        recommended_services: ['Custom Website Development', 'SEO Optimization', 'Cloud Hosting'],
         timeline: [
             { phase: 'Phase 1', description: 'Design & Prototyping', time: '2 Weeks' },
             { phase: 'Phase 2', description: 'Development', time: '4 Weeks' }
@@ -29,10 +28,6 @@ export default function ProposalGenerator({
             ['Web Design', '$2,000'],
             ['Development', '$3,000'],
             ['SEO Setup', '$500']
-        ],
-        addons: [
-            { title: 'Priority Support', price: '$200/mo' },
-            { title: 'Content Writing', price: '$500' }
         ]
     });
 
@@ -87,6 +82,52 @@ export default function ProposalGenerator({
         newSubArray[subIndex] = value;
         newArray[index] = newSubArray;
         setProposalData({ ...proposalData, [key]: newArray });
+    };
+
+    const addRecommendedService = () => {
+        setProposalData({
+            ...proposalData,
+            recommended_services: [...proposalData.recommended_services, '']
+        });
+    };
+
+    const removeRecommendedService = (index) => {
+        const newServices = proposalData.recommended_services.filter((_, i) => i !== index);
+        setProposalData({
+            ...proposalData,
+            recommended_services: newServices
+        });
+    };
+
+
+    const addTimelineItem = () => {
+        setProposalData({
+            ...proposalData,
+            timeline: [...proposalData.timeline, { phase: '', description: '', time: '' }]
+        });
+    };
+
+    const removeTimelineItem = (index) => {
+        const newTimeline = proposalData.timeline.filter((_, i) => i !== index);
+        setProposalData({
+            ...proposalData,
+            timeline: newTimeline
+        });
+    };
+
+    const addPricingItem = () => {
+        setProposalData({
+            ...proposalData,
+            pricing: [...proposalData.pricing, ['', '']]
+        });
+    };
+
+    const removePricingItem = (index) => {
+        const newPricing = proposalData.pricing.filter((_, i) => i !== index);
+        setProposalData({
+            ...proposalData,
+            pricing: newPricing
+        });
     };
 
 
@@ -154,37 +195,49 @@ export default function ProposalGenerator({
                 />
             </div>
 
-            {/* Discovery Section */}
+            {/* Recommended Services Section */}
             <div>
-                <h3 className="text-xl font-semibold mb-2 text-[#1d1d1f]">Discovery Phase</h3>
-                {proposalData.discovery.map((item, index) => (
-                    <div key={index} className="mb-2">
-                        <ThemedInput
-                            value={item}
-                            onChange={(e) => handleArrayChange('discovery', index, e.target.value)}
-                        />
-                    </div>
-                ))}
-            </div>
-
-            {/* Solutions Section */}
-            <div>
-                <h3 className="text-xl font-semibold mb-2 text-[#1d1d1f]">Proposed Solutions</h3>
-                {proposalData.solutions.map((item, index) => (
-                    <div key={index} className="mb-2">
-                        <ThemedInput
-                            value={item}
-                            onChange={(e) => handleArrayChange('solutions', index, e.target.value)}
-                        />
+                <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-xl font-semibold text-[#1d1d1f]">Recommended Services</h3>
+                    <button
+                        onClick={addRecommendedService}
+                        className="text-sm px-3 py-1 bg-[#0f766e] text-white rounded hover:bg-[#0f766e]/80"
+                    >
+                        + Add Service
+                    </button>
+                </div>
+                {proposalData.recommended_services.map((item, index) => (
+                    <div key={index} className="flex gap-2 mb-2 items-center">
+                        <div className="flex-1">
+                            <ThemedInput
+                                value={item}
+                                onChange={(e) => handleArrayChange('recommended_services', index, e.target.value)}
+                                placeholder={`Service ${index + 1}`}
+                            />
+                        </div>
+                        <button
+                            onClick={() => removeRecommendedService(index)}
+                            className="text-red-500 hover:text-red-700 px-2"
+                        >
+                            ✕
+                        </button>
                     </div>
                 ))}
             </div>
 
             {/* Timeline Section */}
             <div>
-                <h3 className="text-xl font-semibold mb-2 text-[#1d1d1f]">Timeline</h3>
+                <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-xl font-semibold text-[#1d1d1f]">Timeline</h3>
+                    <button
+                        onClick={addTimelineItem}
+                        className="text-sm px-3 py-1 bg-[#0f766e] text-white rounded hover:bg-[#0f766e]/80"
+                    >
+                        + Add Phase
+                    </button>
+                </div>
                 {proposalData.timeline.map((item, index) => (
-                    <div key={index} className="flex gap-4 mb-2">
+                    <div key={index} className="flex gap-4 mb-2 items-center">
                         <div className="w-1/4">
                             <ThemedInput
                                 value={item.phase}
@@ -206,15 +259,29 @@ export default function ProposalGenerator({
                                 placeholder="Duration"
                             />
                         </div>
+                        <button
+                            onClick={() => removeTimelineItem(index)}
+                            className="text-red-500 hover:text-red-700 px-2"
+                        >
+                            ✕
+                        </button>
                     </div>
                 ))}
             </div>
 
             {/* Pricing Section */}
             <div>
-                <h3 className="text-xl font-semibold mb-2 text-[#1d1d1f]">Pricing</h3>
+                <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-xl font-semibold text-[#1d1d1f]">Pricing</h3>
+                    <button
+                        onClick={addPricingItem}
+                        className="text-sm px-3 py-1 bg-[#0f766e] text-white rounded hover:bg-[#0f766e]/80"
+                    >
+                        + Add Item
+                    </button>
+                </div>
                 {proposalData.pricing.map((item, index) => (
-                    <div key={index} className="flex gap-4 mb-2">
+                    <div key={index} className="flex gap-4 mb-2 items-center">
                         <div className="flex-1">
                             <ThemedInput
                                 value={item[0]}
@@ -229,29 +296,12 @@ export default function ProposalGenerator({
                                 placeholder="Price"
                             />
                         </div>
-                    </div>
-                ))}
-            </div>
-
-            {/* Addons Section */}
-            <div>
-                <h3 className="text-xl font-semibold mb-2 text-[#1d1d1f]">Optional Add-ons</h3>
-                {proposalData.addons.map((item, index) => (
-                    <div key={index} className="flex gap-4 mb-2">
-                        <div className="flex-1">
-                            <ThemedInput
-                                value={item.title}
-                                onChange={(e) => handleDictArrayChange('addons', index, 'title', e.target.value)}
-                                placeholder="Add-on Name"
-                            />
-                        </div>
-                        <div className="w-1/3">
-                            <ThemedInput
-                                value={item.price}
-                                onChange={(e) => handleDictArrayChange('addons', index, 'price', e.target.value)}
-                                placeholder="Price"
-                            />
-                        </div>
+                        <button
+                            onClick={() => removePricingItem(index)}
+                            className="text-red-500 hover:text-red-700 px-2"
+                        >
+                            ✕
+                        </button>
                     </div>
                 ))}
             </div>

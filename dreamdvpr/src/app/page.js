@@ -45,7 +45,8 @@ export default function Home() {
         }}
       >
         <Header />
-        <Hero /><WaveSeparator />
+        <Hero />
+        <WaveSeparator />
         <ServicesGrid />
         <WhyChooseUs />
         <ComparisonSection />
