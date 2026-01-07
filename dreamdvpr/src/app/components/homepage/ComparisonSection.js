@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useContent } from '../../lib/hooks';
+import { LuBuilding2, LuRocket } from 'react-icons/lu';
 const ComparisonSection = () => {
   const { content } = useContent('comparison');
 
@@ -27,7 +28,7 @@ const ComparisonSection = () => {
             className="p-8 rounded-2xl bg-white/50 backdrop-saturate-[160%] backdrop-blur-[20px] border border-gray-200"
           >
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-3xl">😑</span>
+              <LuBuilding2 className="text-3xl text-gray-400" />
               <h3 className="text-lg font-semibold text-text-secondary">
                 Traditional Agencies
               </h3>
@@ -55,9 +56,9 @@ const ComparisonSection = () => {
             </span>
 
             <div className="flex items-center gap-4 mb-6">
-              <span className="text-3xl">🤩</span>
+              <LuRocket className="text-3xl text-brand-500" />
               <h3 className="text-lg font-bold text-text-main">
-                REDgravity
+                REDGRAVITY
               </h3>
             </div>
 
