@@ -13,7 +13,6 @@ import ContactSection from './components/homepage/ContactSection';
 import Footer from './components/homepage/Footer';
 import IntroLoader from './components/homepage/IntroLoader';
 import WaveSeparator from './components/homepage/WaveSeparator';
-import GoogleAnalytics from './components/analytics/GoogleAnalytics';
 import WhatsAppButton from './components/homepage/WhatsAppButton';
 import "./styles/globals.css";
 
@@ -36,7 +35,6 @@ export default function Home() {
 
   return (
     <>
-      <GoogleAnalytics />
       {showLoader && <IntroLoader onComplete={handleLoaderComplete} />}
       <main
         suppressHydrationWarning
@@ -53,7 +51,7 @@ export default function Home() {
         <ComparisonSection />
         <BlogSection />
         <FAQSection />
-        
+
         <ContactSection /><CTASection />
         <Footer />
         <WhatsAppButton />
