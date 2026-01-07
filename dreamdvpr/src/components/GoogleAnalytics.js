@@ -5,13 +5,14 @@ import Script from "next/script";
 
 export default function GoogleAnalytics() {
     const pathname = usePathname();
-    const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
-
-    // Render only if we have an ID
-    if (!gaId) return null;
+    // Hardcoded for reliability during debugging
+    const gaId = 'G-1PNYQ3NRMV';
 
     // Check if we are on the landing page ("/") or any blog page ("/blog...")
     const isLandingOrBlog = pathname === "/" || pathname.startsWith("/blog");
+
+    // Debug log
+    console.log('GA Debug:', { pathname, isLandingOrBlog, gaId });
 
     if (!isLandingOrBlog) {
         return null;
