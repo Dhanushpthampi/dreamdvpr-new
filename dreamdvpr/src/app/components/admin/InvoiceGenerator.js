@@ -91,6 +91,8 @@ export default function InvoiceGenerator({
         return items.reduce((sum, item) => sum + (Number(item.quantity) * Number(item.price)), 0);
     };
 
+    const [sending, setSending] = useState(false);
+
     const handleGenerate = async () => {
         setGenerating(true);
         setGeneratedPdfUrl(null);
@@ -102,9 +104,9 @@ export default function InvoiceGenerator({
 
             const payload = {
                 client_name: clientDetails.client_name,
-                client_address: clientDetails.client_address || '123 Tech Street',
-                client_city: clientDetails.client_city || 'Innovation City',
-                client_country: clientDetails.client_country || 'Digital World',
+                client_address: clientDetails.client_address || ' ',
+                client_city: clientDetails.client_city || ' ',
+                client_country: clientDetails.client_country || ' ',
                 items: items.map(item => ({
                     name: item.description,
                     price: (Number(item.price) * Number(item.quantity)).toFixed(2)
@@ -140,6 +142,35 @@ export default function InvoiceGenerator({
         }
     };
 
+    const handleSendToDrive = async () => {
+        if (!generatedPdfUrl || !selectedProjectId) return;
+
+        setSending(true);
+        try {
+            const fileName = `Invoice_${clientDetails.client_name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+            const res = await fetch(`/api/projects/${selectedProjectId}/send-document`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    documentUrl: generatedPdfUrl,
+                    fileName
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert('Invoice sent to Google Drive successfully!');
+            } else {
+                alert(`Failed to send: ${data.error}`);
+            }
+        } catch (error) {
+            console.error('Error sending to Drive:', error);
+            alert('Failed to send invoice to Google Drive.');
+        } finally {
+            setSending(false);
+        }
+    };
+
     const clientOptions = clients.map(c => ({ value: c._id, label: c.name }));
     const projectOptions = projects.map(p => ({ value: p._id, label: p.name }));
 
@@ -169,13 +200,11 @@ export default function InvoiceGenerator({
                     label="Client Name"
                     value={clientDetails.client_name}
                     onChange={(e) => setClientDetails({ ...clientDetails, client_name: e.target.value })}
-                    disabled={readOnlyContext}
                 />
                 <ThemedInput
                     label="Project Name"
                     value={clientDetails.project_name}
                     onChange={(e) => setClientDetails({ ...clientDetails, project_name: e.target.value })}
-                    disabled={readOnlyContext}
                 />
                 <div className="col-span-2">
                     <ThemedInput
@@ -183,7 +212,6 @@ export default function InvoiceGenerator({
                         value={clientDetails.client_address}
                         onChange={(e) => setClientDetails({ ...clientDetails, client_address: e.target.value })}
                         placeholder="Street Address"
-                        disabled={readOnlyContext}
                     />
                 </div>
             </div>
@@ -256,17 +284,33 @@ export default function InvoiceGenerator({
 
             <div className="mt-8 flex justify-end gap-4">
                 {generatedPdfUrl && (
-                    <a
-                        href={generatedPdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-6 py-3 border border-[#c53030] text-[#c53030] font-semibold rounded-lg hover:bg-[#c53030]/10 transition-colors flex items-center gap-2"
-                    >
-                        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
-                        </svg>
-                        View Invoice
-                    </a>
+                    <>
+                        <a
+                            href={generatedPdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-6 py-3 border border-[#c53030] text-[#c53030] font-semibold rounded-lg hover:bg-[#c53030]/10 transition-colors flex items-center gap-2"
+                        >
+                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                            </svg>
+                            View Invoice
+                        </a>
+                        <button
+                            onClick={handleSendToDrive}
+                            disabled={sending}
+                            className="px-6 py-3 border border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors flex items-center gap-2 disabled:opacity-50"
+                        >
+                            {sending ? (
+                                <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z" />
+                                </svg>
+                            )}
+                            Send to Drive
+                        </button>
+                    </>
                 )}
 
                 <button

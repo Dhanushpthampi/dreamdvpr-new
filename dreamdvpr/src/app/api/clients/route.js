@@ -46,7 +46,7 @@ export async function POST(request) {
         }
 
         const body = await request.json();
-        const { name, email, password, company, industry, phone, website, role = 'client', onboardingCompleted = false } = body;
+        const { name, email, password, company, industry, phone, website, address, role = 'client', onboardingCompleted = false } = body;
 
         if (!name || !email || !password) {
             return NextResponse.json({ error: 'Name, email, and password are required' }, { status: 400 });
@@ -74,6 +74,7 @@ export async function POST(request) {
             industry: industry || '',
             phone: phone || '',
             website: website || '',
+            address: address || '',
             onboardingCompleted,
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -102,6 +103,7 @@ export async function POST(request) {
                 industry: newUser.industry,
                 phone: newUser.phone,
                 website: newUser.website,
+                address: newUser.address,
                 onboardingCompleted: newUser.onboardingCompleted,
             }
         }, { status: 201 });

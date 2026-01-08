@@ -6,6 +6,7 @@ import ThemedSelect from '@/app/components/ui/ThemedSelect';
 
 export default function NdaGenerator({
     initialClientId = '',
+    initialProjectId = '',
     readOnlyContext = false,
     clients = []
 }) {
@@ -13,11 +14,13 @@ export default function NdaGenerator({
 
     // Form State
     const [selectedClientId, setSelectedClientId] = useState(initialClientId);
+    const [selectedProjectId, setSelectedProjectId] = useState(initialProjectId);
 
     const [ndaData, setNdaData] = useState({
         client_name: '',
         counterparty_name: '',
         effective_date: new Date().toISOString().split('T')[0],
+        validity: new Date(new Date().setFullYear(new Date().getFullYear() + 5)).toISOString().split('T')[0],
         jurisdiction: 'Bangalore, India'
     });
 
@@ -38,8 +41,11 @@ export default function NdaGenerator({
 
     useEffect(() => {
         if (initialClientId) setSelectedClientId(initialClientId);
-    }, [initialClientId]);
+        if (initialProjectId) setSelectedProjectId(initialProjectId);
+    }, [initialClientId, initialProjectId]);
 
+
+    const [sending, setSending] = useState(false);
 
     const handleGenerate = async () => {
         setGenerating(true);
@@ -72,6 +78,35 @@ export default function NdaGenerator({
         }
     };
 
+    const handleSendToDrive = async () => {
+        if (!generatedPdfUrl || !selectedProjectId) return;
+
+        setSending(true);
+        try {
+            const fileName = `NDA_${ndaData.client_name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+            const res = await fetch(`/api/projects/${selectedProjectId}/send-document`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    documentUrl: generatedPdfUrl,
+                    fileName
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert('NDA sent to Google Drive successfully!');
+            } else {
+                alert(`Failed to send: ${data.error}`);
+            }
+        } catch (error) {
+            console.error('Error sending to Drive:', error);
+            alert('Failed to send NDA to Google Drive.');
+        } finally {
+            setSending(false);
+        }
+    };
+
     const clientOptions = clients.map(c => ({ value: c._id, label: c.name }));
 
     return (
@@ -93,7 +128,6 @@ export default function NdaGenerator({
                     label="Disclosing Party Name"
                     value={ndaData.client_name}
                     onChange={(e) => setNdaData({ ...ndaData, client_name: e.target.value })}
-                    disabled={readOnlyContext}
                 />
                 <ThemedInput
                     label="Receiving Party Name"
@@ -108,6 +142,12 @@ export default function NdaGenerator({
                     onChange={(e) => setNdaData({ ...ndaData, effective_date: e.target.value })}
                 />
                 <ThemedInput
+                    label="Validity Date (Default 5 Years)"
+                    type="date"
+                    value={ndaData.validity}
+                    onChange={(e) => setNdaData({ ...ndaData, validity: e.target.value })}
+                />
+                <ThemedInput
                     label="Jurisdiction"
                     value={ndaData.jurisdiction}
                     onChange={(e) => setNdaData({ ...ndaData, jurisdiction: e.target.value })}
@@ -117,17 +157,33 @@ export default function NdaGenerator({
 
             <div className="mt-8 flex justify-end gap-4">
                 {generatedPdfUrl && (
-                    <a
-                        href={generatedPdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-6 py-3 border border-[#c53030] text-[#c53030] font-semibold rounded-lg hover:bg-[#c53030]/10 transition-colors flex items-center gap-2"
-                    >
-                        <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
-                        </svg>
-                        View NDA
-                    </a>
+                    <>
+                        <a
+                            href={generatedPdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-6 py-3 border border-[#c53030] text-[#c53030] font-semibold rounded-lg hover:bg-[#c53030]/10 transition-colors flex items-center gap-2"
+                        >
+                            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                                <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                            </svg>
+                            View NDA
+                        </a>
+                        <button
+                            onClick={handleSendToDrive}
+                            disabled={sending}
+                            className="px-6 py-3 border border-blue-600 text-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors flex items-center gap-2 disabled:opacity-50"
+                        >
+                            {sending ? (
+                                <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z" />
+                                </svg>
+                            )}
+                            Send to Drive
+                        </button>
+                    </>
                 )}
 
                 <button

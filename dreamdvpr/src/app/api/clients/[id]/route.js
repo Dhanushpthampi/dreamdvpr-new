@@ -49,7 +49,7 @@ export async function PUT(request, { params }) {
 
         const { id } = await params;
         const data = await request.json();
-        const { name, email, company, industry, phone, website, password } = data;
+        const { name, email, company, industry, phone, website, address, password } = data;
 
         const client = await clientPromise;
         const db = client.db("dreamdvpr");
@@ -64,6 +64,7 @@ export async function PUT(request, { params }) {
         if (industry) updateData.industry = industry;
         if (phone) updateData.phone = phone;
         if (website) updateData.website = website;
+        if (address !== undefined) updateData.address = address;
 
         if (password) {
             const bcrypt = require('bcryptjs');

@@ -45,6 +45,7 @@ export default function ClientsPage() {
         industry: '',
         phone: '',
         website: '',
+        address: '',
     });
 
     useEffect(() => {
@@ -183,6 +184,7 @@ export default function ClientsPage() {
             industry: '',
             phone: '',
             website: '',
+            address: '',
         });
         setEditingClient(null);
     };
@@ -197,6 +199,7 @@ export default function ClientsPage() {
             industry: client.industry || '',
             phone: client.phone || '',
             website: client.website || '',
+            address: client.address || '',
         });
         setIsModalOpen(true);
     };
@@ -353,7 +356,7 @@ export default function ClientsPage() {
                                     <svg viewBox="0 0 24 24" className="w-6 h-6" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
                                 </button>
                             </div>
-                            <div className="p-6 overflow-y-auto space-y-4">
+                            <div className="p-6 overflow-y-auto flex-1 space-y-4">
                                 <ThemedInput label="Full Name" value={newClient.name} onChange={(e) => setNewClient({ ...newClient, name: e.target.value })} required />
                                 <ThemedInput label="Email" type="email" value={newClient.email} onChange={(e) => setNewClient({ ...newClient, email: e.target.value })} required />
                                 <ThemedInput
@@ -371,6 +374,14 @@ export default function ClientsPage() {
                                     <ThemedInput label="Phone" type="tel" value={newClient.phone} onChange={(e) => setNewClient({ ...newClient, phone: e.target.value })} />
                                     <ThemedInput label="Website" type="url" value={newClient.website} onChange={(e) => setNewClient({ ...newClient, website: e.target.value })} />
                                 </div>
+                                <ThemedInput
+                                    label="Full Address"
+                                    type="textarea"
+                                    rows={3}
+                                    value={newClient.address}
+                                    onChange={(e) => setNewClient({ ...newClient, address: e.target.value })}
+                                    placeholder="Street, City, State, ZIP..."
+                                />
                             </div>
                             <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-end gap-3">
                                 <button onClick={() => { setIsModalOpen(false); resetForm(); }} className="px-6 py-2 rounded-xl font-semibold text-gray-500 hover:bg-gray-100 transition-all">Cancel</button>

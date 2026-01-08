@@ -29,10 +29,10 @@ export default function AdminProjectDetail() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [editingEvent, setEditingEvent] = useState(null);
     const [newEvent, setNewEvent] = useState({
-        title: '',
-        description: '',
+        title: 'Project Kickoff',
+        description: 'Initial meeting and project start.',
         status: 'pending',
-        dueDate: '',
+        dueDate: new Date().toISOString().split('T')[0],
     });
 
     const showToast = (title, description, type = 'success') => {
@@ -81,6 +81,24 @@ export default function AdminProjectDetail() {
             console.error('Error fetching timeline:', error);
         }
     };
+
+    // Auto-sync estimated end date from timeline
+    useEffect(() => {
+        if (timeline && timeline.length > 0) {
+            const latestDate = timeline.reduce((latest, event) => {
+                if (!event.dueDate) return latest;
+                const eventDate = new Date(event.dueDate).toISOString().split('T')[0];
+                return eventDate > latest ? eventDate : latest;
+            }, '');
+
+            if (latestDate && latestDate !== (project?.estimatedEndDate?.split('T')[0])) {
+                setProject(prev => ({
+                    ...prev,
+                    estimatedEndDate: latestDate
+                }));
+            }
+        }
+    }, [timeline, project?.estimatedEndDate]);
 
     const handleUpdateStatus = async (newStatus) => {
         try {
@@ -335,7 +353,19 @@ export default function AdminProjectDetail() {
                                             Project Timeline
                                         </h2>
                                         <button
-                                            onClick={() => setIsModalOpen(true)}
+                                            onClick={() => {
+                                                const latestDate = timeline.reduce((latest, event) => {
+                                                    if (!event.dueDate) return latest;
+                                                    const eventDate = new Date(event.dueDate).toISOString().split('T')[0];
+                                                    return eventDate > latest ? eventDate : latest;
+                                                }, new Date().toISOString().split('T')[0]);
+
+                                                setNewEvent({
+                                                    ...newEvent,
+                                                    dueDate: latestDate
+                                                });
+                                                setIsModalOpen(true);
+                                            }}
                                             className="px-4 py-2 bg-[#1d1d1f] text-white rounded-lg hover:bg-black transition-colors text-sm flex items-center gap-2"
                                         >
                                             <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
@@ -398,6 +428,7 @@ export default function AdminProjectDetail() {
                                 <div className="mt-4">
                                     <NdaGenerator
                                         initialClientId={project.client?._id}
+                                        initialProjectId={project._id}
                                         readOnlyContext={true}
                                         clients={project.client ? [project.client] : []}
                                     />
@@ -433,9 +464,9 @@ export default function AdminProjectDetail() {
                                         <div>
                                             <p className="text-sm font-semibold mb-2">Budget ($)</p>
                                             <input
-                                                type="number"
+                                                type="text"
                                                 value={project.budget || ''}
-                                                onChange={(e) => setProject({ ...project, budget: parseFloat(e.target.value) })}
+                                                onChange={(e) => setProject({ ...project, budget: e.target.value })}
                                                 className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                                 placeholder="e.g., 5000"
                                             />
@@ -568,6 +599,27 @@ export default function AdminProjectDetail() {
                             <div className="p-6">
                                 <div className="flex flex-col gap-4">
                                     <div>
+                                        <p className="text-sm font-semibold mb-2 text-[#1d1d1f]">Quick Presets</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {[
+                                                { title: 'Onboarding', description: 'Initial onboarding and project setup.' },
+                                                { title: 'Strategy Meeting', description: 'Meeting to discuss project strategy and goals.' },
+                                                { title: 'Designing', description: 'UI/UX design and visual exploration.' },
+                                                { title: 'Development', description: 'Core implementation and coding work.' },
+                                                { title: 'Delivery', description: 'Final project delivery and review.' },
+                                                { title: 'Offboarding', description: 'Project closure and handoff.' },
+                                            ].map((preset) => (
+                                                <button
+                                                    key={preset.title}
+                                                    onClick={() => setNewEvent({ ...newEvent, title: preset.title, description: preset.description })}
+                                                    className="px-3 py-1 text-xs font-semibold bg-gray-50 hover:bg-[#1d1d1f] hover:text-white text-gray-600 rounded-full transition-all border border-gray-200"
+                                                >
+                                                    {preset.title}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
                                         <p className="text-sm font-semibold mb-2">Title *</p>
                                         <input
                                             type="text"
@@ -587,28 +639,50 @@ export default function AdminProjectDetail() {
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
                                         />
                                     </div>
-                                    <div>
-                                        <p className="text-sm font-semibold mb-2">Status</p>
-                                        <select
-                                            value={newEvent.status}
-                                            onChange={(e) => setNewEvent({ ...newEvent, status: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
-                                        >
-                                            <option value="pending">Pending</option>
-                                            <option value="in-progress">In Progress</option>
-                                            <option value="completed">Completed</option>
-                                            <option value="needs-action">Needs Action</option>
-                                            <option value="paid">Paid</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <p className="text-sm font-semibold mb-2">Due Date</p>
-                                        <input
-                                            type="date"
-                                            value={newEvent.dueDate}
-                                            onChange={(e) => setNewEvent({ ...newEvent, dueDate: e.target.value })}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
-                                        />
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p className="text-sm font-semibold mb-2">Due Date</p>
+                                            <input
+                                                type="date"
+                                                value={newEvent.dueDate}
+                                                onChange={(e) => {
+                                                    const selectedDate = e.target.value;
+                                                    const today = new Date().toISOString().split('T')[0];
+
+                                                    // Find the latest existing event date
+                                                    const latestEventDate = timeline?.reduce((latest, event) => {
+                                                        if (!event.dueDate) return latest;
+                                                        const eventDate = new Date(event.dueDate).toISOString().split('T')[0];
+                                                        return eventDate > latest ? eventDate : latest;
+                                                    }, '0000-00-00');
+
+                                                    const comparisonDate = latestEventDate === '0000-00-00' ? today : latestEventDate;
+
+                                                    if (selectedDate < today) {
+                                                        showToast('Invalid Date', 'Due date cannot be in the past', 'error');
+                                                        return;
+                                                    }
+                                                    if (selectedDate < comparisonDate) {
+                                                        showToast('Invalid Date', `Due date should be on or after existing events (${comparisonDate})`, 'error');
+                                                        return;
+                                                    }
+                                                    setNewEvent({ ...newEvent, dueDate: selectedDate });
+                                                }}
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
+                                            />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold mb-2">Status</p>
+                                            <select
+                                                value={newEvent.status}
+                                                onChange={(e) => setNewEvent({ ...newEvent, status: e.target.value })}
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1d1d1f]"
+                                            >
+                                                <option value="pending">Pending</option>
+                                                <option value="in-progress">In Progress</option>
+                                                <option value="completed">Completed</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
