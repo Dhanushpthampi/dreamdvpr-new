@@ -241,15 +241,15 @@ export default function InvoiceGenerator({
                 <div className="w-full md:w-1/3 space-y-2">
                     <div className="flex justify-between text-[#86868b]">
                         <span>Subtotal</span>
-                        <span>${calculateTotal().toFixed(2)}</span>
+                        <span>₹{calculateTotal().toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-[#86868b]">
                         <span>Tax (18%)</span>
-                        <span>${(calculateTotal() * 0.18).toFixed(2)}</span>
+                        <span>₹{(calculateTotal() * 0.18).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-xl font-bold text-[#1d1d1f] pt-2 border-t border-gray-100">
                         <span>Total</span>
-                        <span>${(calculateTotal() * 1.18).toFixed(2)}</span>
+                        <span>₹{(calculateTotal() * 1.18).toFixed(2)}</span>
                     </div>
                 </div>
             </div>

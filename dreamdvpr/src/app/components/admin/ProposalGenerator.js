@@ -25,9 +25,9 @@ export default function ProposalGenerator({
             { phase: 'Phase 2', description: 'Development', time: '4 Weeks' }
         ],
         pricing: [
-            ['Web Design', '$2,000'],
-            ['Development', '$3,000'],
-            ['SEO Setup', '$500']
+            ['Web Design', '1,60,000'],
+            ['Development', '2,50,000'],
+            ['SEO Setup', '40,000']
         ]
     });
 
@@ -56,6 +56,31 @@ export default function ProposalGenerator({
                     setSelectedClientId(project.clientId);
                 }
             }
+
+            // Fetch project timeline
+            const fetchProjectTimeline = async () => {
+                try {
+                    const res = await fetch(`/api/timeline?projectId=${selectedProjectId}`);
+                    const data = await res.json();
+
+                    if (res.ok && data.events && data.events.length > 0) {
+                        const mappedTimeline = data.events.map(event => ({
+                            phase: event.title,
+                            description: event.description || '',
+                            time: event.dueDate ? new Date(event.dueDate).toLocaleDateString() : 'TBD'
+                        }));
+
+                        setProposalData(prev => ({
+                            ...prev,
+                            timeline: mappedTimeline
+                        }));
+                    }
+                } catch (error) {
+                    console.error('Error fetching project timeline:', error);
+                }
+            };
+
+            fetchProjectTimeline();
         }
     }, [selectedProjectId, projects, selectedClientId, readOnlyContext]);
 
@@ -135,8 +160,16 @@ export default function ProposalGenerator({
         setGenerating(true);
         setGeneratedPdfUrl(null);
         try {
+            // Prepend Rupee symbol if not present
+            const formattedPricing = proposalData.pricing.map(item => {
+                const price = item[1];
+                const formattedPrice = price.toString().trim().startsWith('₹') ? price : `₹${price}`;
+                return [item[0], formattedPrice];
+            });
+
             const payload = {
-                ...proposalData
+                ...proposalData,
+                pricing: formattedPricing
             };
 
             const response = await fetch('https://doc-generator-service.onrender.com/generate/proposal', {
@@ -294,6 +327,7 @@ export default function ProposalGenerator({
                                 value={item[1]}
                                 onChange={(e) => handleNestedArrayChange('pricing', index, 1, e.target.value)}
                                 placeholder="Price"
+                                icon={<span className="font-bold text-gray-600">₹</span>}
                             />
                         </div>
                         <button

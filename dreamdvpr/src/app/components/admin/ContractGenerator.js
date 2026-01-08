@@ -151,6 +151,33 @@ export default function ContractGenerator({
 
             <div>
                 <h3 className="text-xl font-semibold mb-2 text-[#1d1d1f]">Scope of Work</h3>
+
+                {/* Scope Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {['Web Development', 'Hosting', 'Domain Setup', 'SEO Optimization', 'E-commerce Integration', 'Delivery Integration', 'Analytics Setup', 'UI/UX Design', 'Content Managment'].map((tag) => (
+                        <button
+                            key={tag}
+                            onClick={() => {
+                                // Add to last empty field or create new one
+                                const currentScopes = [...contractData.scope_of_work];
+                                const lastIndex = currentScopes.length - 1;
+
+                                if (currentScopes[lastIndex] === '') {
+                                    handleScopeChange(lastIndex, tag);
+                                } else {
+                                    setContractData({
+                                        ...contractData,
+                                        scope_of_work: [...currentScopes, tag]
+                                    });
+                                }
+                            }}
+                            className="px-3 py-1 text-xs font-semibold bg-gray-100 hover:bg-[#c53030]/10 hover:text-[#c53030] text-gray-600 rounded-full transition-colors border border-gray-200"
+                        >
+                            + {tag}
+                        </button>
+                    ))}
+                </div>
+
                 {contractData.scope_of_work.map((item, index) => (
                     <div key={index} className="flex gap-2 mb-2">
                         <div className="flex-1">
@@ -182,7 +209,7 @@ export default function ContractGenerator({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <ThemedInput
-                    label="Total Contract Amount ($)"
+                    label="Total Contract Amount (₹)"
                     value={contractData.total_amount}
                     onChange={(e) => setContractData({ ...contractData, total_amount: e.target.value })}
                     placeholder="5000"

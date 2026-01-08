@@ -18,7 +18,7 @@ export default function NdaGenerator({
         client_name: '',
         counterparty_name: '',
         effective_date: new Date().toISOString().split('T')[0],
-        jurisdiction: 'State of California'
+        jurisdiction: 'Bangalore, India'
     });
 
     const [generatedPdfUrl, setGeneratedPdfUrl] = useState(null);
