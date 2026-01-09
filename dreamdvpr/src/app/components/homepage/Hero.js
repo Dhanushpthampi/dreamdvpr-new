@@ -72,11 +72,16 @@ const Hero = () => {
   const [textTranslateY, setTextTranslateY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [modelLoaded, setModelLoaded] = useState(false);
+  const [isLowEndMobile, setIsLowEndMobile] = useState(false);
 
   useEffect(() => {
     const updatePosition = () => {
       const width = window.innerWidth;
       setIsMobile(width < 768);
+
+      const lowEnd = typeof navigator !== 'undefined' &&
+        (navigator.hardwareConcurrency <= 4 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && width < 768);
+      setIsLowEndMobile(lowEnd);
 
       if (width >= 1024) {
         setModelPosition([2, 0, 0]);   // Desktop: right
@@ -109,59 +114,77 @@ const Hero = () => {
       </div>
 
       {/* 3D Scene */}
-      <motion.div
-        className="absolute inset-0 z-[1]"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: modelLoaded ? 1 : 0 }}
-        transition={{ duration: 1, ease: 'easeOut' }}
-      >
-        <Canvas
-          camera={{ position: [0, 0, 8], fov: 45 }}
-          dpr={[1, 2]} // Limit pixel ratio to 2 to improve performance on high-res mobile
-          gl={{
-            powerPreference: "high-performance",
-            antialias: true,
-            preserveDrawingBuffer: true // Helps with some context loss issues
-          }}
-          onCreated={({ gl }) => {
-            if (!gl.getContext()) {
-              console.warn("WebGL not supported, disabling 3D scene");
-              setModelLoaded(false);
-            }
-          }}
-          onError={(error) => {
-            console.error("Canvas Error:", error);
-            setModelLoaded(false);
-          }}
+      {!isLowEndMobile && (
+        <motion.div
+          className="absolute inset-0 z-[1]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: modelLoaded ? 1 : 0 }}
+          transition={{ duration: 1, ease: 'easeOut' }}
         >
-          <ambientLight intensity={0.4} color="#2d3250" /> {/* Deep Indigo Ambient */}
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} color="#ffffff" />
-          <pointLight position={[-10, -10, -10]} intensity={1} color="#451212" /> {/* Subtle Red Hint */}
-          <pointLight position={[0, 10, 0]} intensity={0.5} color="#2563eb" /> {/* Royal Blue Top Down */}
-          <Environment preset="city" />
+          <Canvas
+            camera={{ position: [0, 0, 8], fov: 45 }}
+            dpr={[1, 2]} // Limit pixel ratio to 2 to improve performance on high-res mobile
+            gl={{
+              powerPreference: "high-performance",
+              antialias: false,
+              alpha: true,
+              stencil: false,
+              depth: true,
+            }}
+            onCreated={({ gl }) => {
+              const canvas = gl.domElement;
 
-          <group position={modelPosition}>
-            <PresentationControls
-              global={true}
-              snap={false}
-              speed={1.5}
-              rotation={[0, 0, 0]}
-              polar={[-Math.PI / 4, Math.PI / 4]}
-              azimuth={[-Math.PI, Math.PI]}
-              config={{ mass: 1, tension: 120, friction: 14 }}
-            >
-              <Float speed={0.5} rotationIntensity={0.2} floatIntensity={0.1}>
-                {/* Error Boundary + Suspense prevents crash while loading */}
-                <ModelErrorBoundary>
-                  <React.Suspense fallback={null}>
-                    <SpaceshipModel scale={modelScale} onLoad={() => setModelLoaded(true)} />
-                  </React.Suspense>
-                </ModelErrorBoundary>
-              </Float>
-            </PresentationControls>
-          </group>
-        </Canvas>
-      </motion.div>
+              const handleContextLost = (e) => {
+                e.preventDefault();
+                console.warn('WebGL context lost');
+              };
+
+              const handleContextRestored = () => {
+                console.warn('WebGL context restored');
+                window.location.reload(); // safest fix on mobile
+              };
+
+              canvas.addEventListener('webglcontextlost', handleContextLost);
+              canvas.addEventListener('webglcontextrestored', handleContextRestored);
+
+              if (!gl.getContext()) {
+                console.warn("WebGL not supported, disabling 3D scene");
+                setModelLoaded(false);
+              }
+            }}
+            onError={(error) => {
+              console.error("Canvas Error:", error);
+              setModelLoaded(false);
+            }}
+          >
+            <ambientLight intensity={0.4} color="#2d3250" />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} color="#ffffff" />
+            <pointLight position={[-10, -10, -10]} intensity={1} color="#451212" />
+            <pointLight position={[0, 10, 0]} intensity={0.5} color="#2563eb" />
+            <Environment preset="city" />
+
+            <group position={modelPosition}>
+              <PresentationControls
+                global={true}
+                snap={false}
+                speed={1.5}
+                rotation={[0, 0, 0]}
+                polar={[-Math.PI / 4, Math.PI / 4]}
+                azimuth={[-Math.PI, Math.PI]}
+                config={{ mass: 1, tension: 120, friction: 14 }}
+              >
+                <Float speed={0.5} rotationIntensity={0.2} floatIntensity={0.1}>
+                  <ModelErrorBoundary>
+                    <React.Suspense fallback={null}>
+                      <SpaceshipModel scale={modelScale} onLoad={() => setModelLoaded(true)} />
+                    </React.Suspense>
+                  </ModelErrorBoundary>
+                </Float>
+              </PresentationControls>
+            </group>
+          </Canvas>
+        </motion.div>
+      )}
 
       {/* Content Overlay */}
       <div className="container mx-auto max-w-7xl h-full relative z-[10] pointer-events-none px-4">
@@ -191,7 +214,7 @@ const Hero = () => {
             </motion.h1>
 
             <motion.p
-              className="text-xl text-white/90" // Brighter white for visibility
+              className="text-xl text-white/90"
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -224,8 +247,5 @@ const Hero = () => {
     </div>
   );
 };
-
-// Preload the model to avoid pop-in
-useGLTF.preload('/Spaceship.glb');
 
 export default Hero;

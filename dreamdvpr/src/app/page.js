@@ -16,10 +16,12 @@ import WaveSeparator from './components/homepage/WaveSeparator';
 import WhatsAppButton from './components/homepage/WhatsAppButton';
 import "./styles/globals.css";
 
+import { usePathname } from 'next/navigation';
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
+  const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
@@ -45,7 +47,7 @@ export default function Home() {
         }}
       >
         <Header />
-        <Hero />
+        <Hero key={pathname} />
         <WaveSeparator />
         <ServicesGrid />
         <WhyChooseUs />

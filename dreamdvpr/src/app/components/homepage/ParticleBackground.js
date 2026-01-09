@@ -4,12 +4,18 @@ import { useEffect, useRef } from 'react';
 
 export default function DreamSpaceBackground() {
   const canvasRef = useRef(null);
+  const rafRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
     let nebulaGradient;
-    let raf;
+    let running = true;
+    let isVisible = true;
+
     const createNebulaGradient = () => {
       nebulaGradient = ctx.createRadialGradient(
         canvas.width * 0.5,
@@ -24,15 +30,6 @@ export default function DreamSpaceBackground() {
       nebulaGradient.addColorStop(0.5, 'rgba(160,90,255,0.04)');
       nebulaGradient.addColorStop(1, 'rgba(0,0,30,0)');
     };
-
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      createNebulaGradient();
-    };
-
-    resize();
-    window.addEventListener('resize', resize);
 
     /* ---------------- Stars ---------------- */
 
@@ -71,6 +68,21 @@ export default function DreamSpaceBackground() {
 
     const stars = Array.from({ length: 350 }, () => new Star());
 
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      createNebulaGradient();
+
+      // Redistribute stars to fill new dimensions immediately
+      stars.forEach(star => {
+        star.x = Math.random() * canvas.width;
+        star.y = Math.random() * canvas.height;
+      });
+    };
+
+    resize();
+    window.addEventListener('resize', resize);
+
     /* ---------------- Shooting Stars ---------------- */
 
     class ShootingStar {
@@ -104,7 +116,7 @@ export default function DreamSpaceBackground() {
     /* ---------------- Nebula ---------------- */
 
     const drawNebula = () => {
-      if (!nebulaGradient) createNebulaGradient(); // Ensure gradient is created if not already
+      if (!nebulaGradient) createNebulaGradient();
       ctx.fillStyle = nebulaGradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     };
@@ -112,6 +124,8 @@ export default function DreamSpaceBackground() {
     /* ---------------- Animate ---------------- */
 
     const animate = () => {
+      if (!running || !isVisible) return;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       drawNebula();
@@ -131,14 +145,39 @@ export default function DreamSpaceBackground() {
         if (s.life > s.maxLife) shootingStars.splice(i, 1);
       });
 
-      raf = requestAnimationFrame(animate);
+      rafRef.current = requestAnimationFrame(animate);
     };
 
     animate();
 
+    const handleVisibility = () => {
+      running = !document.hidden;
+      if (running && isVisible) animate();
+      else cancelAnimationFrame(rafRef.current);
+    };
+
+    // Intersection Observer to stop RAF when out of view
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && running) {
+          animate();
+        } else {
+          cancelAnimationFrame(rafRef.current);
+        }
+      },
+      { threshold: 0 }
+    );
+
+    observer.observe(canvas);
+    document.addEventListener('visibilitychange', handleVisibility);
+
     return () => {
-      cancelAnimationFrame(raf);
+      running = false;
+      observer.disconnect();
+      cancelAnimationFrame(rafRef.current);
       window.removeEventListener('resize', resize);
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
 
