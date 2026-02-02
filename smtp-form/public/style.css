@@ -1,0 +1,23 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+input, button {
+  margin: 8px 0;
+  padding: 10px;
+  font-size: 1em;
+}
+
+button {
+  cursor: pointer;
+}
